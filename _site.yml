@@ -2,7 +2,7 @@ name: "."
 title: "Mi sitio"
 description: |
   Mi sitio
-output_dir: "."
+output_dir: "_site"
 navbar:
   right:
     - text: "Home"
