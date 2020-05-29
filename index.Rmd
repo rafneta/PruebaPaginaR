@@ -1,8 +1,19 @@
 ---
-title: "Mi sitio"
+title: "Presentación"
 description: |
-  Welcome to the website. I hope you enjoy it!
-site: distill::distill_website
+  Presentamos la visualización y análisis econométrico para los
+  datos del COVID-19, presentados como serie de tiempo con las siguientes supuestos.   
+author:
+  - name: "Rafael Martínez Martínez"
+    url: https://github.com/rafneta
+    affiliation: CIDE-ME2019
+    affiliation_url: https://www.rstudio.com
+#site: distill::distill_website
+output: 
+  distill::distill_article:
+    toc: true
+    toc_depth: 2
+bibliography: bibliografia.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -10,6 +21,37 @@ knitr::opts_chunk$set(echo = FALSE)
 
 # Learn more about creating websites with Distill at:
 # https://rstudio.github.io/distill/website.html
-
 ```
 
+# Series de tiempo
+
+* Los datos presentan un orden temporal [@xie2015] 
+* Dado que no concemos los resultado de estas variables no se conocen entonces pueden verse como variales aleatorias. <aside>
+This content will appear in the gutter of the article.
+</aside>
+* Tenemos un proceso estocastico indexado por el tiempo
+* CUando observamos estos datos tenemos una realización ^[This will become a hover-able footnote].. 
+
+```{r, layout="l-body-outset", fig.width=6, fig.height=1.5}
+library(ggplot2)
+ggplot(diamonds, aes(carat, price)) + geom_smooth() +
+  facet_grid(~ cut)
+```
+
+<aside>
+This content will appear in the gutter of the article.
+</aside>
+
+<a id='equation-infinite'></a>
+$$
+1 + c + c^2 + c^3 + \cdots = \frac{1}{1 -c } \tag{1}
+$$
+To prove key formula [(1)](#equation-infinite), ahora para poner otra bibliografia [@flacsosegasi]
+
+![](https://youtu.be/zNzZ1PfUDNk)
+![](https://www.youtube.com/watch?v=zNzZ1PfUDNk)
+
+## Acknowledgments {.appendix}
+
+This is a place to recognize people and institutions. It may also be a good place
+to acknowledge and cite software that makes your work possible.
