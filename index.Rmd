@@ -7,49 +7,69 @@ author:
   - name: "Rafael Martínez Martínez"
     url: https://github.com/rafneta
     affiliation: CIDE-ME2019
-    affiliation_url: https://www.rstudio.com
+    affiliation_url: https://cide.edu/programas/me
 #site: distill::distill_website
 output: 
   distill::distill_article:
     toc: true
-    toc_depth: 2
+    toc_depth: 3
 bibliography: bibliografia.bib
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = TRUE)#con esto se depliegan los teoremas
 
 # Learn more about creating websites with Distill at:
 # https://rstudio.github.io/distill/website.html
 ```
 
-# Series de tiempo
 
-* Los datos presentan un orden temporal [@xie2015] 
-* Dado que no concemos los resultado de estas variables no se conocen entonces pueden verse como variales aleatorias. <aside>
-This content will appear in the gutter of the article.
-</aside>
-* Tenemos un proceso estocastico indexado por el tiempo
-* CUando observamos estos datos tenemos una realización ^[This will become a hover-able footnote].. 
-
-```{r, layout="l-body-outset", fig.width=6, fig.height=1.5}
-library(ggplot2)
-ggplot(diamonds, aes(carat, price)) + geom_smooth() +
-  facet_grid(~ cut)
-```
 
 <aside>
 This content will appear in the gutter of the article.
 </aside>
 
-<a id='equation-infinite'></a>
-$$
-1 + c + c^2 + c^3 + \cdots = \frac{1}{1 -c } \tag{1}
-$$
-To prove key formula [(1)](#equation-infinite), ahora para poner otra bibliografia [@flacsosegasi]
 
-![](https://youtu.be/zNzZ1PfUDNk)
-![](https://www.youtube.com/watch?v=zNzZ1PfUDNk)
+<div align="center">
+<iframe width="560" height="315" src="https://youtu.be/bdubU8iTLwg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+
+
+
+
+Existen varias consideraciones sobre que y como modelar la pandemia, en la platica de Rafael Prieto Curiel [@flacsorafael], se expone a manera de divulgación el modelo SIR (Suseptibles-Infectados-Recuperados), y como el número de casos reportados esta relacionado con el número de priebas realizadas.
+
+Para la recopilación de los datos y visualisación, hay varios factores a considerar, por ejmplo la actualización de las bases de datos, resulta ser que los datos (numero de infectados, numñero de muertes, etc.) a la fecha, se siguen actuizando, lo que hace complicado tomar decisiones de pólitica pública, pues no se tienen toda la información, esto es comentado por Sebastian Garrido [@flacsosegasi], y reportado en FALTA DOCUMENTO.
+
+El modelo CENTINELA propone estimar los casos confirmados de acuerdo a ciertas mediciones elaboradas, algunos investigadores han tomado estos datos y ha elaborado sus propios proyecciones, una de estas proyecciones, debida a Arturo Erdely [@flacsoerdely], establece una preycción de casos maximos reportados para el 5 de junio  diarios aproximadamente 2500, pero al 30 de mayo la fecha oficial ya es de $2885$ 
+
+```{r}
+84627-87512
+```
+
+La vigilancia epidemiologica no tiene rigor estadístico, 
+
+Para fines de vigilancia se considera
+
+- Caso confirmado. A la persona que cuente con un diagnóstico conformado
+
+En los estandares mudiales de vigilancia, no se tienen la intención de capturar todos los casos, se quiere describor tendencias a lo largo del tiempo.  
+
+- vigilancia rutunaria. Notificación de casos
+- vigilancia centinela. Complementaris, para obtener información nominal detallada, se debe realizar en lugares estratégicamente seleccionados (representativos de la población).
+
+En México se cuenta con 475 unidades centinela,[@flacsoricardo]
+
+
+Ahora evidentemente este es un problema de comunicación, y evdentemente cada la comunicación de las noticias sobre la pandemia deber de hacerse con responsabilidad [@flacsomaria] 
+
+## Prpopuesta del trabajo
+La propuestadel trabajo es poryectar la serie de los datos confirmados un un valor de equilibrio y asi proyectar lo s casos confrmados por dñia mediate una serie de tiempo. 
+
+
+
+
+
 
 ## Acknowledgments {.appendix}
 

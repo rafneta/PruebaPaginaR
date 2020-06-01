@@ -40,12 +40,15 @@
   
   <!--/radix_placeholder_meta_tags-->
   
-  <meta name="citation_reference" content="citation_title=Dynamic documents with r and knitr;citation_publication_date=2015;citation_publisher=Chapman; Hall/CRC;citation_author=Yihui Xie"/>
-  <meta name="citation_reference" content="citation_="/>
+  <meta name="citation_reference" content="citation_title=La visualización de la epidemia;citation_publisher=Flacso México;citation_author=Sebastián Garrido"/>
+  <meta name="citation_reference" content="citation_title=Los datos, los modelos y las simulaciones de una pandemia;citation_publisher=Flacso México;citation_author=Rafael Prieto"/>
+  <meta name="citation_reference" content="citation_title=Midiendo el pulso de la epidemia;citation_publisher=Flacso México;citation_author=Arturo Erdely"/>
+  <meta name="citation_reference" content="citation_title=De los mitos a las datos;citation_publisher=Flacso México;citation_author=Ricardo Peñal"/>
+  <meta name="citation_reference" content="citation_title=Riesgo en tiempos de pandemia: Cómo se investiga y cómo comunicarlo;citation_publisher=Flacso México;citation_author=María Carmen Climént"/>
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","output","bibliography"]}},"value":[{"type":"character","attributes":{},"value":["Presentación"]},{"type":"character","attributes":{},"value":["Presentamos la visualización y análisis econométrico para los\ndatos del COVID-19, presentados como serie de tiempo con las siguientes supuestos.   \n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Rafael Martínez Martínez"]},{"type":"character","attributes":{},"value":["https://github.com/rafneta"]},{"type":"character","attributes":{},"value":["CIDE-ME2019"]},{"type":"character","attributes":{},"value":["https://www.rstudio.com"]}]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[2]}]}]},{"type":"character","attributes":{},"value":["bibliografia.bib"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","output","bibliography"]}},"value":[{"type":"character","attributes":{},"value":["Presentación"]},{"type":"character","attributes":{},"value":["Presentamos la visualización y análisis econométrico para los\ndatos del COVID-19, presentados como serie de tiempo con las siguientes supuestos.   \n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Rafael Martínez Martínez"]},{"type":"character","attributes":{},"value":["https://github.com/rafneta"]},{"type":"character","attributes":{},"value":["CIDE-ME2019"]},{"type":"character","attributes":{},"value":["https://cide.edu/programas/me"]}]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]}]}]},{"type":"character","attributes":{},"value":["bibliografia.bib"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -1276,7 +1279,7 @@
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Presentación","description":"Presentamos la visualización y análisis econométrico para los\ndatos del COVID-19, presentados como serie de tiempo con las siguientes supuestos.","authors":[{"author":"Rafael Martínez Martínez","authorURL":"https://github.com/rafneta","affiliation":"CIDE-ME2019","affiliationURL":"https://www.rstudio.com"}]}
+{"title":"Presentación","description":"Presentamos la visualización y análisis econométrico para los\ndatos del COVID-19, presentados como serie de tiempo con las siguientes supuestos.","authors":[{"author":"Rafael Martínez Martínez","authorURL":"https://github.com/rafneta","affiliation":"CIDE-ME2019","affiliationURL":"https://cide.edu/programas/me"}]}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1287,6 +1290,8 @@
 <a href="index.html" class="title">Técnicas econométricas COVID-19</a>
 </div>
 <div class="nav-right">
+<a href="Visualizacion.html">Visualizacion</a>
+<a href="SeriesTiempo.html">Series de Tiempo</a>
 <a href="about.html">Conclusiones</a>
 <a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
 </div>
@@ -1302,7 +1307,7 @@
 </div>
 
 <div class="d-byline">
-  Rafael Martínez Martínez <a href="https://github.com/rafneta" class="uri">https://github.com/rafneta</a> (CIDE-ME2019)<a href="https://www.rstudio.com" class="uri">https://www.rstudio.com</a>
+  Rafael Martínez Martínez <a href="https://github.com/rafneta" class="uri">https://github.com/rafneta</a> (CIDE-ME2019)<a href="https://cide.edu/programas/me" class="uri">https://cide.edu/programas/me</a>
   
 
 </div>
@@ -1311,48 +1316,60 @@
 <h3 class="d-toc-header">Table of Contents</h3>
 <nav class="d-toc" id="TOC">
 <ul>
-<li><a href="#series-de-tiempo">Series de tiempo</a><ul>
+<li><a href="#prpopuesta-del-trabajo">Prpopuesta del trabajo</a></li>
 <li><a href="#acknowledgments">Acknowledgments</a></li>
-</ul></li>
 </ul>
 </nav>
 <hr class="d-toc-separator"/>
-<h1 id="series-de-tiempo">Series de tiempo</h1>
-<ul>
-<li>Los datos presentan un orden temporal <span class="citation" data-cites="xie2015">(Xie <a href="#ref-xie2015">2015</a>)</span></li>
-<li>Dado que no concemos los resultado de estas variables no se conocen entonces pueden verse como variales aleatorias.
-<aside>
-This content will appear in the gutter of the article.
-</aside></li>
-<li>Tenemos un proceso estocastico indexado por el tiempo</li>
-<li>CUando observamos estos datos tenemos una realización.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</li>
-</ul>
-<div class="layout-chunk" data-layout="l-body-outset">
-<p><img src="index_files/figure-html5/unnamed-chunk-1-1.png" width="576" /></p>
-</div>
 <aside>
 This content will appear in the gutter of the article.
 </aside>
-<p><a id='equation-infinite'></a> <span class="math display">\[
-1 + c + c^2 + c^3 + \cdots = \frac{1}{1 -c } \tag{1}
-\]</span> To prove key formula <a href="#equation-infinite">(1)</a>, ahora para poner otra bibliografia <span class="citation" data-cites="flacsosegasi">(<a href="#ref-flacsosegasi">n.d.</a>)</span></p>
-<p><img src="https://youtu.be/zNzZ1PfUDNk" /> <img src="https://www.youtube.com/watch?v=zNzZ1PfUDNk" /></p>
+<div data-align="center">
+<iframe width="560" height="315" src="https://youtu.be/bdubU8iTLwg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+</iframe>
+</div>
+<p>Existen varias consideraciones sobre que y como modelar la pandemia, en la platica de Rafael Prieto Curiel <span class="citation" data-cites="flacsorafael">(Prieto, <a href="#ref-flacsorafael">n.d.</a>)</span>, se expone a manera de divulgación el modelo SIR (Suseptibles-Infectados-Recuperados), y como el número de casos reportados esta relacionado con el número de priebas realizadas.</p>
+<p>Para la recopilación de los datos y visualisación, hay varios factores a considerar, por ejmplo la actualización de las bases de datos, resulta ser que los datos (numero de infectados, numñero de muertes, etc.) a la fecha, se siguen actuizando, lo que hace complicado tomar decisiones de pólitica pública, pues no se tienen toda la información, esto es comentado por Sebastian Garrido <span class="citation" data-cites="flacsosegasi">(Garrido, <a href="#ref-flacsosegasi">n.d.</a>)</span>, y reportado en FALTA DOCUMENTO.</p>
+<p>El modelo CENTINELA propone estimar los casos confirmados de acuerdo a ciertas mediciones elaboradas, algunos investigadores han tomado estos datos y ha elaborado sus propios proyecciones, una de estas proyecciones, debida a Arturo Erdely <span class="citation" data-cites="flacsoerdely">(Erdely, <a href="#ref-flacsoerdely">n.d.</a>)</span>, establece una preycción de casos maximos reportados para el 5 de junio diarios aproximadamente 2500, pero al 30 de mayo la fecha oficial ya es de <span class="math inline">\(2885\)</span></p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+84627-87512</code></pre>
+<pre><code>
+[1] -2885</code></pre>
+</div>
+<p>La vigilancia epidemiologica no tiene rigor estadístico,</p>
+<p>Para fines de vigilancia se considera</p>
+<ul>
+<li>Caso confirmado. A la persona que cuente con un diagnóstico conformado</li>
+</ul>
+<p>En los estandares mudiales de vigilancia, no se tienen la intención de capturar todos los casos, se quiere describor tendencias a lo largo del tiempo.</p>
+<ul>
+<li>vigilancia rutunaria. Notificación de casos</li>
+<li>vigilancia centinela. Complementaris, para obtener información nominal detallada, se debe realizar en lugares estratégicamente seleccionados (representativos de la población).</li>
+</ul>
+<p>En México se cuenta con 475 unidades centinela,<span class="citation" data-cites="flacsoricardo">(Peñal, <a href="#ref-flacsoricardo">n.d.</a>)</span></p>
+<p>Ahora evidentemente este es un problema de comunicación, y evdentemente cada la comunicación de las noticias sobre la pandemia deber de hacerse con responsabilidad <span class="citation" data-cites="flacsomaria">(Carmen Climént, <a href="#ref-flacsomaria">n.d.</a>)</span></p>
+<h2 id="prpopuesta-del-trabajo">Prpopuesta del trabajo</h2>
+<p>La propuestadel trabajo es poryectar la serie de los datos confirmados un un valor de equilibrio y asi proyectar lo s casos confrmados por dñia mediate una serie de tiempo.</p>
 <h2 id="acknowledgments" class="appendix">Acknowledgments</h2>
 <p>This is a place to recognize people and institutions. It may also be a good place to acknowledge and cite software that makes your work possible.</p>
 <div id="refs" class="references">
-<div id="ref-xie2015">
-<p>Xie, Yihui. 2015. <em>Dynamic Documents with R and Knitr</em>. 2nd ed. Boca Raton, Florida: Chapman; Hall/CRC. <a href="http://yihui.name/knitr/">http://yihui.name/knitr/</a>.</p>
+<div id="ref-flacsomaria">
+<p>Carmen Climént, María del. n.d. “Riesgo En Tiempos de Pandemia: Cómo Se Investiga Y Cómo Comunicarlo.” In <em>Ciclo de Conferencias: El Covid-19 En México</em>. Flacso México. <a href="https://youtu.be/IcA0j7zIuas">https://youtu.be/IcA0j7zIuas</a>.</p>
+</div>
+<div id="ref-flacsoerdely">
+<p>Erdely, Arturo. n.d. “Midiendo El Pulso de La Epidemia.” In <em>Ciclo de Conferencias: El Covid-19 En México</em>. Flacso México. <a href="https://youtu.be/JvPvmQvPGAY">https://youtu.be/JvPvmQvPGAY</a>.</p>
 </div>
 <div id="ref-flacsosegasi">
-<p>n.d.</p>
+<p>Garrido, Sebastián. n.d. “La Visualización de La Epidemia.” In <em>Ciclo de Conferencias: El Covid-19 En México</em>. Flacso México. <a href="https://youtu.be/s6Kwl3X-t2c">https://youtu.be/s6Kwl3X-t2c</a>.</p>
+</div>
+<div id="ref-flacsoricardo">
+<p>Peñal, Ricardo de la. n.d. “De Los Mitos a Las Datos.” In <em>Ciclo de Conferencias: El Covid-19 En México</em>. Flacso México. <a href="https://youtu.be/JvPvmQvPGAY">https://youtu.be/JvPvmQvPGAY</a>.</p>
+</div>
+<div id="ref-flacsorafael">
+<p>Prieto, Rafael. n.d. “Los Datos, Los Modelos Y Las Simulaciones de Una Pandemia.” In <em>Ciclo de Conferencias: El Covid-19 En México</em>. Flacso México. <a href="https://youtu.be/9ODm8m3U4Xk">https://youtu.be/9ODm8m3U4Xk</a>.</p>
 </div>
 </div>
-<section class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>This will become a hover-able footnote<a href="#fnref1" class="footnote-back">↩</a></p></li>
-</ol>
-</section>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
@@ -1375,22 +1392,51 @@ This content will appear in the gutter of the article.
 <!--radix_placeholder_appendices-->
 <div class="appendix-bottom"></div>
 <script id="distill-bibliography" type="text/bibtex">
-@Book{xie2015,
-  title = {Dynamic Documents with R and knitr},
-  author = {Yihui Xie},
-  publisher = {Chapman and Hall/CRC},
-  address = {Boca Raton, Florida},
-  year = {2015},
-  edition = {2nd},
-  note = {ISBN 978-1498716963},
-  url = {http://yihui.name/knitr/},
+
+
+@inproceedings{flacsosegasi,
+author = {Sebastián Garrido},
+title = {La visualización de la epidemia},
+booktitle = {Ciclo de conferencias: El COVID-19 en México},
+publisher = {Flacso México},
+url = {https://youtu.be/s6Kwl3X-t2c},
+year ={consulta 29 de mayo de 2019}
 }
 
-@misc{flacsosegasi,
-author = {},
-title = {},
-url = {},
-year ={}
+@inproceedings{flacsorafael,
+author = {Rafael Prieto},
+title = {Los datos, los modelos y las simulaciones de una pandemia},
+booktitle = {Ciclo de conferencias: El COVID-19 en México},
+publisher = {Flacso México},
+url = {https://youtu.be/9ODm8m3U4Xk},
+year ={consulta 31 de mayo de 2019}
+}
+
+@inproceedings{flacsoerdely,
+author = {Arturo Erdely},
+title = {Midiendo el pulso de la epidemia},
+booktitle = {Ciclo de conferencias: El COVID-19 en México},
+publisher = {Flacso México},
+url = {https://youtu.be/JvPvmQvPGAY},
+year ={consulta 31 de mayo de 2019}
+}
+
+@inproceedings{flacsoricardo,
+author = {Ricardo de la Peñal},
+title = {De los mitos a las datos},
+booktitle = {Ciclo de conferencias: El COVID-19 en México},
+publisher = {Flacso México},
+url = {https://youtu.be/JvPvmQvPGAY},
+year ={consulta 31 de mayo de 2019}
+}
+
+@inproceedings{flacsomaria,
+author = {María del Carmen Climént},
+title = {Riesgo en tiempos de pandemia: cómo se investiga y cómo comunicarlo},
+booktitle = {Ciclo de conferencias: El COVID-19 en México},
+publisher = {Flacso México},
+url = {https://youtu.be/IcA0j7zIuas},
+year ={consulta 31 de mayo de 2019}
 }
 </script>
 <!--/radix_placeholder_appendices-->

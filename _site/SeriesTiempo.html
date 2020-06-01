@@ -19,29 +19,34 @@
  <!--/radix_placeholder_import_source-->
 
   <!--radix_placeholder_meta_tags-->
-  <title>Técnicas econométricas COVID-19: About this site</title>
+  <title>Técnicas econométricas COVID-19: Series de Tiempo</title>
   
-  <meta property="description" itemprop="description" content="Some additional details about the website"/>
+  <meta property="description" itemprop="description" content="Se presentan los conceptos básicos de series de tiempo, y las su estudñio econométrico"/>
   
   
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2020-05-31"/>
+  <meta property="article:created" itemprop="dateCreated" content="2020-05-31"/>
+  <meta name="article:author" content="Rafael Martínez Martínez"/>
   
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="Técnicas econométricas COVID-19: About this site"/>
+  <meta property="og:title" content="Técnicas econométricas COVID-19: Series de Tiempo"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="Some additional details about the website"/>
+  <meta property="og:description" content="Se presentan los conceptos básicos de series de tiempo, y las su estudñio econométrico"/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:site_name" content="Técnicas econométricas COVID-19"/>
   
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="Técnicas econométricas COVID-19: About this site"/>
-  <meta property="twitter:description" content="Some additional details about the website"/>
+  <meta property="twitter:title" content="Técnicas econométricas COVID-19: Series de Tiempo"/>
+  <meta property="twitter:description" content="Se presentan los conceptos básicos de series de tiempo, y las su estudñio econométrico"/>
   
   <!--/radix_placeholder_meta_tags-->
+  
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description"]}},"value":[{"type":"character","attributes":{},"value":["About this site"]},{"type":"character","attributes":{},"value":["Some additional details about the website"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","bibliography"]}},"value":[{"type":"character","attributes":{},"value":["Series de Tiempo"]},{"type":"character","attributes":{},"value":["Se presentan los conceptos básicos de series de tiempo, y las su estudñio econométrico\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Rafael Martínez Martínez"]},{"type":"character","attributes":{},"value":["https://github.com/rafneta"]},{"type":"character","attributes":{},"value":["CIDE-ME2019"]},{"type":"character","attributes":{},"value":["https://cide.edu/programas/me"]}]}]},{"type":"character","attributes":{},"value":["2020-05-31"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]}]}]},{"type":"character","attributes":{},"value":["bibliografia.bib"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -1272,7 +1277,7 @@
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"About this site","description":"Some additional details about the website","authors":[]}
+{"title":"Series de Tiempo","description":"Se presentan los conceptos básicos de series de tiempo, y las su estudñio econométrico","authors":[{"author":"Rafael Martínez Martínez","authorURL":"https://github.com/rafneta","affiliation":"CIDE-ME2019","affiliationURL":"https://cide.edu/programas/me"}],"publishedDate":"2020-05-31T00:00:00.000-05:00","citationText":"Martínez, 2020"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1295,13 +1300,122 @@
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>About this site</h1>
-<p>Some additional details about the website</p>
+<h1>Series de Tiempo</h1>
+<p>Se presentan los conceptos básicos de series de tiempo, y las su estudñio econométrico</p>
 </div>
 
+<div class="d-byline">
+  Rafael Martínez Martínez <a href="https://github.com/rafneta" class="uri">https://github.com/rafneta</a> (CIDE-ME2019)<a href="https://cide.edu/programas/me" class="uri">https://cide.edu/programas/me</a>
+  
+<br/>2020-05-31
+</div>
 
 <div class="d-article">
+<h3 class="d-toc-header">Table of Contents</h3>
+<nav class="d-toc" id="TOC">
+<ul>
+<li><a href="#series-de-tiempo">Series de Tiempo</a><ul>
+<li><a href="#regresión-con-series-de-tiempo">Regresión con series de tiempo</a><ul>
+<li><a href="#modelo-ma1-moving-average">Modelo MA(1) (MOving average)</a></li>
+<li><a href="#trabajo">Trabajo</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#series-de-tiempo-1">Series de tiempo</a></li>
+</ul>
+</nav>
+<hr class="d-toc-separator"/>
+<p>Distill is a publication format for scientific and technical writing, native to the web.</p>
+<p>Learn more about using Distill for R Markdown at <a href="https://rstudio.github.io/distill" class="uri">https://rstudio.github.io/distill</a>.</p>
+<h1 id="series-de-tiempo">Series de Tiempo</h1>
+<h2 id="regresión-con-series-de-tiempo">Regresión con series de tiempo</h2>
+<p>Colección de observaciones, igualmente espaciados.</p>
+<p><span class="math display">\[\{X_t\}_{t\in\mathbb{N}}\]</span></p>
+<p>donde <span class="math inline">\(X_t:\Omega\rightarrow\mathbb{R}\)</span> es una variable aleatoria, uan serie de tiempo es una realización de todas las posibles,</p>
+<p><span class="math display">\[\mathbb{E}(X_t)=\frac{1}{T}\sum_t X_t\]</span> Propiedad de ergodicidad.</p>
+<p>Propiedad de estacionariedad</p>
+<ul>
+<li>Fuerte: <span class="math display">\[(X_{i_1},X_{i_2},\ldots,X{i_n})=(X_{i_1+h},X_{i_2+h},\ldots,X{i_n+h})\]</span></li>
+</ul>
+<p>orden (1) <span class="math inline">\(\forall t,s\)</span> <span class="math inline">\(X_t=X_s\)</span></p>
+<p>orden (2) <span class="math inline">\(\forall t,s\)</span> <span class="math inline">\((X_t,X_s)=(X_{t+h},X_{s+h}\)</span></p>
+<p>Orden 1 media, varianza y predicción</p>
+<p>Estacinaonalidad (debil de segundo orden)</p>
+<ol type="1">
+<li><span class="math inline">\(\forall t\)</span> <span class="math inline">\(\mathbb{E}(X_t)=\mu\)</span></li>
+<li><span class="math inline">\(\forall t\)</span> <span class="math inline">\(\mathbb{V}(X_t)=\sigma^2\)</span> (se optienen de la tercera)</li>
+<li><span class="math inline">\(\gamma(s,t)=Cov(X_t,X_s)=\gamma(|t-s|)\)</span></li>
+<li>equivalente a 3) <span class="math inline">\(\gamma(h)=Cov(X_t,X_{t+h})=\gamma(|h|)\)</span> <span class="math inline">\(\gamma\)</span> <em>función de autocovarianzao (autocorrelacion)</em> como el presente y el pasado estan realcionados entre si, dependencia dinámica</li>
+</ol>
+<p>Esto determina el mejor predictor lineal.</p>
+<p>Función de autocorrelación</p>
+<p><span class="math display">\[\begin{equation}
+\rho(h)=\frac{\gamma(h)}{\gamma(0)}
+\end{equation}\]</span></p>
+<p>Solo pintamos el lado derecho</p>
+<p><span class="math display">\[\rho(0)=1\]</span></p>
+<p>La evalaución nos da un aidea del poder predictivo para diferentes intervalos de tiempo, si lo vemos hacia el futuro. Hacia el pasado le llamas memoria.</p>
+<h3 id="modelo-ma1-moving-average">Modelo MA(1) (MOving average)</h3>
+<p><span class="math inline">\(\{\epsilon_t\}\)</span> estacionario con <span class="math inline">\(\mathbb{E}(\epsilon_t)=0\)</span> <span class="math inline">\(\mathbb{V}ar(\epsilon_t)=\sigma^2\)</span></p>
+<p><span class="math display">\[
+\rho(h)=\begin{cases}
+1&amp;\text{ si } h=0\\
+0&amp;\text{otro caso}
+\end{cases}
+\]</span></p>
+<p>Sea <span class="math inline">\(\{\epsilon_t\}\)</span> <span class="math inline">\(RB(0,\sigma^2)\)</span>, y definimos</p>
+<p><span class="math display">\[X_t = \varepsilon_t + \theta\varepsilon_{t-1}\]</span></p>
+<p>entonces</p>
+<p><span class="math display">\[
+\rho(X_t,X_{t+h})=\begin{cases}
+\theta\sigma^2&amp;\text{ si } h=1\\
+0&amp;\text{otro caso}
+\end{cases}
+\]</span> Trabajo final, normalmente</p>
+<ol type="1">
+<li>Pregunta economica</li>
+<li>Recopilacion de datos</li>
+<li>Justifiación metodologiac que puedes hacer con esos datos</li>
+<li>Estimación</li>
+<li>Analisis de validez de essa estimación</li>
+<li>Conclusión</li>
+</ol>
+<h3 id="trabajo">Trabajo</h3>
+<p>Reflexionar sobre la técnica ecónometricas, discusión sobre como se estima o como se puede estimar, toda tecnica econometrica la matriz robusta, etc, EL INTERES DE COMO SE HIZO LA ECONOMETRIA Y PORQUE ASÍ ORIENTADO A LO TÉCNICO</p>
+<p><span class="math display" id="eq:binom1">\[\begin{equation}
+1 + c + c^2 + c^3 + \cdots = \frac{1}{1 -c } 
+ \tag{1}
+\end{equation}\]</span></p>
+<p>To prove key formula <a href="#eq:binom1">(1)</a></p>
+<div class="layout-chunk" data-layout="l-body">
 
+<div class="theorem">
+<span id="thm:foo" class="theorem"><strong>Theorem 1  (Teorema de pitadoras)  </strong></span>Here is my theorem.
+</div>
+</div>
+<p>el teorema <a href="#thm:foo">1</a></p>
+<h1 id="series-de-tiempo-1">Series de tiempo</h1>
+<ul>
+<li>Los datos presentan un orden temporal</li>
+<li>Dado que no concemos los resultado de estas variables no se conocen entonces pueden verse como variales aleatorias.
+<aside>
+This content will appear in the gutter of the article.
+</aside></li>
+<li>Tenemos un proceso estocastico indexado por el tiempo</li>
+<li>CUando observamos estos datos tenemos una realización.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+library(ggplot2)
+ggplot(diamonds, aes(carat, price)) + geom_smooth() +
+  facet_grid(~ cut)</code></pre>
+<p><img src="SeriesTiempo_files/figure-html5/unnamed-chunk-1-1.png" width="576" /></p>
+</div>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>This will become a hover-able footnote<a href="#fnref1" class="footnote-back">↩</a></p></li>
+</ol>
+</section>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
@@ -1309,11 +1423,68 @@
 <div class="d-appendix">
 </div>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 <!--radix_placeholder_site_after_body-->
 <!--/radix_placeholder_site_after_body-->
 <!--radix_placeholder_appendices-->
 <div class="appendix-bottom"></div>
+<script id="distill-bibliography" type="text/bibtex">
+
+
+@inproceedings{flacsosegasi,
+author = {Sebastián Garrido},
+title = {La visualización de la epidemia},
+booktitle = {Ciclo de conferencias: El COVID-19 en México},
+publisher = {Flacso México},
+url = {https://youtu.be/s6Kwl3X-t2c},
+year ={consulta 29 de mayo de 2019}
+}
+
+@inproceedings{flacsorafael,
+author = {Rafael Prieto},
+title = {Los datos, los modelos y las simulaciones de una pandemia},
+booktitle = {Ciclo de conferencias: El COVID-19 en México},
+publisher = {Flacso México},
+url = {https://youtu.be/9ODm8m3U4Xk},
+year ={consulta 31 de mayo de 2019}
+}
+
+@inproceedings{flacsoerdely,
+author = {Arturo Erdely},
+title = {Midiendo el pulso de la epidemia},
+booktitle = {Ciclo de conferencias: El COVID-19 en México},
+publisher = {Flacso México},
+url = {https://youtu.be/JvPvmQvPGAY},
+year ={consulta 31 de mayo de 2019}
+}
+
+@inproceedings{flacsoricardo,
+author = {Ricardo de la Peñal},
+title = {De los mitos a las datos},
+booktitle = {Ciclo de conferencias: El COVID-19 en México},
+publisher = {Flacso México},
+url = {https://youtu.be/JvPvmQvPGAY},
+year ={consulta 31 de mayo de 2019}
+}
+
+@inproceedings{flacsomaria,
+author = {María del Carmen Climént},
+title = {Riesgo en tiempos de pandemia: cómo se investiga y cómo comunicarlo},
+booktitle = {Ciclo de conferencias: El COVID-19 en México},
+publisher = {Flacso México},
+url = {https://youtu.be/IcA0j7zIuas},
+year ={consulta 31 de mayo de 2019}
+}
+</script>
 <!--/radix_placeholder_appendices-->
 <!--radix_placeholder_navigation_after_body-->
 <!--/radix_placeholder_navigation_after_body-->

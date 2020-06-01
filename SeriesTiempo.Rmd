@@ -1,0 +1,142 @@
+---
+title: "Series de Tiempo"
+description: |
+  Se presentan los conceptos básicos de series de tiempo, y las su estudñio econométrico
+author:
+  - name: Rafael Martínez Martínez
+    url: https://github.com/rafneta
+    affiliation: CIDE-ME2019
+    affiliation_url: https://cide.edu/programas/me
+date: "`r Sys.Date()`"
+output: 
+  distill::distill_article:
+    toc: true
+    toc_depth: 3
+bibliography: bibliografia.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Distill is a publication format for scientific and technical writing, native to the web. 
+
+Learn more about using Distill for R Markdown at <https://rstudio.github.io/distill>.
+
+# Series de Tiempo
+
+## Regresión con series de tiempo
+
+Colección de observaciones, igualmente espaciados.
+
+
+
+$$\{X_t\}_{t\in\mathbb{N}}$$
+
+
+donde $X_t:\Omega\rightarrow\mathbb{R}$ es una variable aleatoria, uan serie de tiempo es una realización de todas las posibles, 
+
+$$\mathbb{E}(X_t)=\frac{1}{T}\sum_t X_t$$
+ Propiedad de ergodicidad.
+ 
+ Propiedad de estacionariedad
+ 
+ - Fuerte: 
+ $$(X_{i_1},X_{i_2},\ldots,X{i_n})=(X_{i_1+h},X_{i_2+h},\ldots,X{i_n+h})$$
+ 
+ orden (1) $\forall t,s$ $X_t=X_s$
+ 
+ orden (2) $\forall t,s$ $(X_t,X_s)=(X_{t+h},X_{s+h}$
+ 
+ Orden 1  media, varianza y predicción
+ 
+ Estacinaonalidad  (debil de segundo orden)
+ 
+1) $\forall t$ $\mathbb{E}(X_t)=\mu$
+2)  $\forall t$ $\mathbb{V}(X_t)=\sigma^2$ (se optienen de la tercera)
+3) $\gamma(s,t)=Cov(X_t,X_s)=\gamma(|t-s|)$
+4) equivalente a 3) $\gamma(h)=Cov(X_t,X_{t+h})=\gamma(|h|)$
+$\gamma$ *función de autocovarianzao (autocorrelacion)* como el presente y el pasado estan realcionados entre si, dependencia dinámica
+
+Esto determina el mejor predictor lineal. 
+
+Función de autocorrelación
+
+\begin{equation}
+\rho(h)=\frac{\gamma(h)}{\gamma(0)}
+\end{equation}
+
+Solo pintamos el lado derecho 
+
+$$\rho(0)=1$$
+
+La evalaución nos da un aidea del poder predictivo para diferentes intervalos de tiempo, si lo vemos hacia el futuro. Hacia el pasado le llamas memoria. 
+
+### Modelo MA(1) (MOving average)
+
+$\{\epsilon_t\}$ estacionario con $\mathbb{E}(\epsilon_t)=0$ $\mathbb{V}ar(\epsilon_t)=\sigma^2$
+
+
+$$
+\rho(h)=\begin{cases}
+1&\text{ si } h=0\\
+0&\text{otro caso}
+\end{cases}
+$$
+
+
+
+Sea $\{\epsilon_t\}$ $RB(0,\sigma^2)$, y definimos
+
+$$X_t = \varepsilon_t + \theta\varepsilon_{t-1}$$
+
+entonces 
+
+$$
+\rho(X_t,X_{t+h})=\begin{cases}
+\theta\sigma^2&\text{ si } h=1\\
+0&\text{otro caso}
+\end{cases}
+$$
+Trabajo final, normalmente
+
+1. Pregunta economica
+2. Recopilacion de datos
+3. Justifiación metodologiac que puedes hacer con esos datos
+4. Estimación 
+5. Analisis de validez de essa estimación 
+6. Conclusión
+
+
+### Trabajo 
+Reflexionar sobre la técnica ecónometricas, discusión sobre como se estima o como se puede estimar, toda tecnica econometrica la matriz robusta, etc, 
+EL INTERES DE COMO SE HIZO LA ECONOMETRIA Y PORQUE ASÍ ORIENTADO A LO TÉCNICO
+
+\begin{equation}
+1 + c + c^2 + c^3 + \cdots = \frac{1}{1 -c } 
+ (\#eq:binom1)
+\end{equation}
+
+
+To prove key formula \@ref(eq:binom1)
+
+```{theorem, name="Teorema de pitadoras", label='foo'}
+Here is my theorem.
+```
+
+el teorema \@ref(thm:foo)
+
+# Series de tiempo
+
+* Los datos presentan un orden temporal
+* Dado que no concemos los resultado de estas variables no se conocen entonces pueden verse como variales aleatorias. <aside>
+This content will appear in the gutter of the article.
+</aside>
+* Tenemos un proceso estocastico indexado por el tiempo
+* CUando observamos estos datos tenemos una realización ^[This will become a hover-able footnote].. 
+
+```{r, layout="l-body-outset", fig.width=6, fig.height=1.5}
+library(ggplot2)
+ggplot(diamonds, aes(carat, price)) + geom_smooth() +
+  facet_grid(~ cut)
+```

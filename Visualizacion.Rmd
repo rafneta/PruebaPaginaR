@@ -1,0 +1,77 @@
+---
+title: "Visualización"
+description: |
+  Visualizacion de los datos, despues de varias busquedas.
+author:
+  - name: Nora Jones 
+    url: https://example.com/norajones
+    affiliation: Spacely Sprockets
+    affiliation_url: https://example.com/spacelysprokets
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+```{r, echo=TRUE}
+library("highcharter")
+data(diamonds, mpg, package = "ggplot2")
+
+data(diamonds$price, mpg, package = "ggplot2")
+hchart(diamonds$price, color = "#B71C1C", name = "Price") %>% 
+  hc_title(text = "You can zoom me")
+```
+
+```{r, echo=TRUE}
+library("forecast")
+
+airforecast <- forecast(auto.arima(AirPassengers), level = 95)
+
+hchart(airforecast)
+```
+
+
+```{r}
+data(unemployment)
+
+hcmap("countries/us/us-all-all", data = unemployment,
+      name = "Unemployment", value = "value", joinBy = c("hc-key", "code"),
+      borderColor = "transparent") %>%
+  hc_colorAxis(dataClasses = color_classes(c(seq(0, 10, by = 2), 50))) %>% 
+  hc_legend(layout = "vertical", align = "right",
+            floating = TRUE, valueDecimals = 0, valueSuffix = "%") 
+```
+
+
+
+
+
+
+
+Leemos los datos desde un repositorio de github ^[Para ello se cosultó la página https://rpubs.com/lokraj/github_csv]
+
+
+
+```{r}
+library("highcharter")
+datos <- read.csv(url("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"))
+str(datos)
+colnames(datos)
+Im = datos$Country.Region=='Mexico'
+Mexico=datos[Im,]
+str(Mexico)
+
+```
+
+
+```{r}
+hchart(datos$X5.30.20, color = "#B71C1C", name = "Price") %>% 
+  hc_title(text = "You can zoom me")
+```
+
+
