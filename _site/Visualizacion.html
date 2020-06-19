@@ -1337,7 +1337,7 @@
 <a href="index.html" class="title">Casos de CoVID-19 como serie de tiempo</a>
 </div>
 <div class="nav-right">
-<a href="Visualizacion.html">Visualizacion</a>
+<a href="Visualizacion.html">Visualización</a>
 <a href="SeriesTiempo.html">Series de Tiempo</a>
 <a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
 </div>
@@ -1395,7 +1395,7 @@
 </script>
 </div>
 </aside>
-<p>Para esta parte se instalo el paquete <em>covidMex</em> con las instrucciones de la siguiente <a href="https://github.com/pablorm296/covidMex">página</a>, este paquete permite una adquisión de datos preprocesados.</p>
+<p>Para esta parte se instaló el paquete <em>covidMex</em> con las instrucciones de la siguiente <a href="https://github.com/pablorm296/covidMex">página</a>, este paquete permite una adquisión de datos preprocesados.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 install.packages(&#39;devtools&#39;)
@@ -1466,8 +1466,8 @@ Figure 1: Casos acumulados confirmados por países
 </p>
 </div>
 </div>
-<p>Observamos que los casos confirmados acumulados en Estados Unidos son más de <span class="math inline">\(2\)</span> millones, mientras que en China son un poco más de <span class="math inline">\(84\,000\)</span>, y en México <span class="math inline">\(129\,184\)</span>, se tiene que considerar que a menos que se diga lo contrario los datos mostrados corresponden al cierre del 10 de junio de 2020.</p>
-<p>Para tener los datos a disposición, se utilizo código como el siguiente en donde se leyeron los datos el 10 de junio y estos se guardaron para tener acceso posterior a esta fecha.</p>
+<p>Observamos que los casos confirmados acumulados en Estados Unidos son más de <span class="math inline">\(2\)</span> millones, mientras que en China son un poco más de <span class="math inline">\(84\,000\)</span>, y en México <span class="math inline">\(129\,184\)</span>, se tiene que considerar que a menos que se diga lo contrario, los datos mostrados corresponden al cierre del 10 de junio de 2020.</p>
+<p>Para tener los datos a disposición, se utilizó código como el siguiente, donde se leyeron los datos el 10 de junio y estos se guardaron para tener acceso, posterior a esta fecha.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 datos_abiertos &lt;- covidOfficialMx()
@@ -1500,9 +1500,10 @@ Figure 2: Casos confirmados acumulados por estado
 </p>
 </div>
 </div>
-<p>Observamos que la Ciudad de México tiene el mayor número de casos confirmados acumulados con <span class="math inline">\(40\,117\)</span>, seguido del Estado de México con <span class="math inline">\(13\,879\)</span> y por Baja Califronia con <span class="math inline">\(6\,585\)</span>. Cabe destacar que el Estado de México y la ciudad de Mexico ocupan la primer y segunda posición en número de habitantes del país, lo cual podría explicar la cantidad de casos confirmados acumulados, por otro lado la densidad de población en la Ciudad e México es la primera y la del Estado de México la segunda de la nación, podríamos plantear al siguiente pregunta ¿la densidad de la entidad federativa explica el número de casos confirmados?, de manera intuitiva parece que no, pues en ese caso Baja California, y otros tantos estados, no figurarian en las primeras posiciones de casos confirmados<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
-<p>Probablemente la <em>movilidad</em> que hay en estas ciudades o la <em>cercania</em> con otras entidades que presenten <em>grandes</em> cantidades de casos confimados podría explicar estos resultados, por el momento es una hipótesis que en un trabajo futuro sería bueno responder.</p>
-<p>Otras preguntas que se puede hacer: ¿la edad de lo individuos influye en la suceptibilidad para contraer el enfermedad?, ¿Un determinado sexo es más propenso a contrar la enfermedad que el otro?, si un determinado sexo es más propenso a contraer la enfermedad ¿esta propensión es independiente de la edad?, la Figura <a href="#fig:casosedad">3</a> muestra los casos confirmados agrupados por edad en intervalos de 10 años y la Figura <a href="#fig:casosedadsexo">4</a> muestra los casos confirmados agrupados por edad y sexo en intervalos de 10 años.</p>
+<p>Observamos que la Ciudad de México tiene el mayor número de casos confirmados acumulados con <span class="math inline">\(40\,117\)</span>, seguido del Estado de México con <span class="math inline">\(13\,879\)</span> y por Baja California con <span class="math inline">\(6\,585\)</span>. Cabe destacar que el Estado de México y la ciudad de Mexico ocupan la primer y segunda posición en número de habitantes del país, lo cual podría explicar la cantidad de casos confirmados acumulados. Por otro lado la densidad de población en la Ciudad e México es la primera y la del Estado de México la segunda de la nación. Se podría plantear al siguiente pregunta ¿la densidad de la entidad federativa explica el número de casos confirmados?, de manera intuitiva parece que no, pues en ese caso Baja California, y otros tantos estados, no figurarían en las primeras posiciones de casos confirmados<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<p>Probablemente la <em>movilidad</em> que hay en estas ciudades o la <em>cercanía</em> con otras entidades que presenten <em>grandes</em> cantidades de casos confimados podría explicar estos resultados, por el momento es una hipótesis que en un trabajo futuro sería bueno responder.</p>
+<p>Otras preguntas que se pueden hacer son: ¿la edad de los individuos influye en la suceptibilidad para contraer el enfermedad?, ¿un determinado sexo es más propenso a contrar la enfermedad que el otro?, si un determinado sexo es más propenso a contraer la enfermedad ¿esta propensión es independiente de la edad?</p>
+<p>La Figura <a href="#fig:casosedad">3</a> muestra los casos confirmados agrupados por edad en intervalos de 10 años y la Figura <a href="#fig:casosedadsexo">4</a> muestra los casos confirmados agrupados por edad y sexo en intervalos de 10 años.</p>
 <div class="layout-chunk" data-layout="l-body-outset">
 <pre class="r"><code>
 confirmados&lt;-
@@ -1558,14 +1559,14 @@ Figure 4: Casos acumulados confirmados por edad y sexo
 </p>
 </div>
 </div>
-<p>Estás últimas gráficas pueden ayudar a tener una intuición sobre las respuestas a las preguntas previamente planteadas. Pare precisar las respuestas se pueden platear modelos econónometicos, en un futuro se espera responder a estas preguntas.</p>
-<p>Se pueden plantear más preguntas que pueden ser de intéres para ayudar a la prevención en población vulnerable: ¿Los casos confirmados presentan alguna enfermedad respiratoria?, ¿Los casos confirmados presentan diabetes?, ¿Los casos confirmados presentan obesidad?, ¿Los casos confirmados presentan hipertención?, etc., para poder responder estas preguntas es necesario tener datos al respecto, algunas preguntas podrían ser importantes pero si no se cuenta con la información no será posible intenrtar responderlas de forma correcta.</p>
+<p>Estás últimas gráficas pueden ayudar a tener una intuición sobre las respuestas a las preguntas previamente planteadas. Para precisar las respuestas se pueden plantear modelos econométricos, en un futuro se espera responder a estas preguntas.</p>
+<p>Se pueden plantear más preguntas que pueden ser de intéres para ayudar a la prevención en población vulnerable: ¿los casos confirmados presentan alguna enfermedad respiratoria?, ¿los casos confirmados presentan diabetes?, ¿Los casos confirmados presentan obesidad?, ¿Los casos confirmados presentan hipertensión?, etc. Para poder responder estas preguntas es necesario tener datos al respecto, algunas preguntas podrían ser importantes, pero si no se cuenta con la información, no será posible intentar responderlas de forma correcta.</p>
 <blockquote>
 <p>Se pueden realizar bastantes visualizaciones, recomiendo revisar la página del <a href="http://segasi.com.mx/adn40/covid19/#el-mundo">Dr. Sebastián Garrindo</a>, la página del <a href="https://coronavirus.gob.mx/datos/">gobierno de México</a> y la página <a href="https://informationisbeautiful.net/visualizations/covid-19-coronavirus-infographic-datapack/">information is beautiful</a></p>
 </blockquote>
 <h1 id="adquicisión-y-manipulación-de-datos">Adquicisión y manipulación de datos</h1>
 <p>Aquí se hace una pausa para comentar como pueden ser prepararados los datos.</p>
-<p>Una fuente oficial de información son los <a href="https://www.gob.mx/salud/documentos/datos-abiertos-152127">Datos Abiertos</a> proporcionados por la Dirección General de Epidemiología. Estos datos que se actualiza a diario, en el caso estudiado se toman los del 10 de junio de 2020, se ofrecen en un archivo zip que contiene la base de datos en formato csv, y 2 archivo xls sobre la descripción de las variables y los valores que estás toman. El archico descriptores da información de las 35 variables, entre las que se pueden encontrar RESULTADO, FECHA_ACTUALIZACION, TABAQUISMO, NEUMONIA, SEXO, EDAD, etc., la Figura <a href="#fig:tabladescriptores">5</a> muestra este archivo, se puede navegar sobre esta tabla y buscar información epecifica.</p>
+<p>Una fuente oficial de información son los <a href="https://www.gob.mx/salud/documentos/datos-abiertos-152127">Datos Abiertos</a> proporcionados por la Dirección General de Epidemiología. Estos datos se actualizan a diario, en el caso estudiado se toman los del 10 de junio de 2020, se ofrecen en un archivo zip que contiene la base de datos en formato csv, y dos archivos xls sobre la descripción de las variables y los valores que estás toman. El archivo descriptores da información de las 35 variables, entre las que se pueden encontrar RESULTADO, FECHA_ACTUALIZACION, TABAQUISMO, NEUMONIA, SEXO, EDAD, etc. La Figura <a href="#fig:tabladescriptores">5</a> muestra este archivo, se puede navegar sobre esta tabla y buscar información epecífica.</p>
 <div class="layout-chunk" data-layout="l-body-outset">
 <pre class="r"><code>
 Descriptores&lt;-read.xlsx(
@@ -1579,7 +1580,7 @@ Figure 5: Tabla de descriptores
 </p>
 </div>
 </div>
-<p>Si se quiere saber los valores que las variables toman y el significado de cada valor, se tiene que consultar el catalogo, cada variable se encuentra en hojas distintas cuyo número tiene que encontrarse, en nuestro caso nos interesa saber los valores de la varibale RESULTADO, así la hoja de interés es la <span class="math inline">\(7\)</span>, en la Figura <a href="#fig:tablacatalogo">6</a> se muestra esta información</p>
+<p>Si se quieren saber los valores que las variables toman y el significado de cada valor, se tiene que consultar el catálogo, cada variable se encuentra en hojas distintas cuyo número tiene que encontrarse, en nuestro caso nos interesa saber los valores de la varibale RESULTADO, así la hoja de interés es la <span class="math inline">\(7\)</span>, en la Figura <a href="#fig:tablacatalogo">6</a> se muestra esta información.</p>
 <div class="layout-chunk" data-layout="l-body-outset">
 <pre class="r"><code>
 Catalogo&lt;-read.xlsx(
@@ -1596,7 +1597,7 @@ Figure 6: Tabla de descriptores
 </div>
 <p>Como se puede observar la preparación de los datos puede complicarse.</p>
 <h1 id="casos-confirmados-como-serie-de-tiempo">Casos confirmados como serie de tiempo</h1>
-<p>Para esta parte se toman los datos del repositorio de <a href="https://github.com/mariorz/covid19-mx-time-series">mariorz</a> en github,<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> aunque los dados ya están bastante preprocesados se hacen algunas adecuaciones sobre el formato de fecha.</p>
+<p>Para esta parte se toman los datos del repositorio de <a href="https://github.com/mariorz/covid19-mx-time-series">mariorz</a> en github,<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> aunque los dados ya están bastante preprocesados, se hacen algunas adecuaciones sobre el formato de fecha.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 #casos_mx_st &lt;- read_csv(
@@ -1612,7 +1613,7 @@ pivot_longer(-Estado, names_to = &quot;fecha_corte&quot;,
 casos_m$fecha &lt;- format(as.Date(casos_m$fecha_corte,
                                 format = &quot;%d-%m-%Y&quot;), &quot;%Y-%m-%d&quot;)</code></pre>
 </div>
-<p>En al Figura <a href="#fig:seriesmexico">7</a> se muestra la evolución en el tiempo de los casos confirmados <em>acumulados</em><a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> en México para cada entidad federativa.</p>
+<p>En la Figura <a href="#fig:seriesmexico">7</a> se muestra la evolución en el tiempo de los casos confirmados <em>acumulados</em><a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> en México para cada entidad federativa.</p>
 <div class="layout-chunk" data-layout="l-screen-inset">
 <pre class="r"><code>
 casos_m %&gt;% 
@@ -1641,8 +1642,8 @@ Figure 7: Casos confirmados acumulados para cada estado por día
 </p>
 </div>
 </div>
-<p>La Ciudad de México, Estado de México y Baja California han sido las ciudades que durante cada día se han colocado en los primeros 3 lugares nacionales, en particular se habia mostrado en la Figura <a href="#fig:casosestado">2</a> para el corte al día del 10 de junio</p>
-<p>Para tener una mejor visualización se tratará a los datos para escribirlos en un formato de fecha tipo <em>xts</em>, para ello se crea una matriz donde cada columna corresponde a un estado, cada fila a una fecha, y cada celda a los casos confirmados reportados, posteriormente esta matriz será la información para nuestro variable tipo <em>xts</em></p>
+<p>La Ciudad de México, Estado de México y Baja California han sido las ciudades que durante cada día se han colocado en los primeros 3 lugares nacionales, en particular se había mostrado en la Figura <a href="#fig:casosestado">2</a> para el corte al día del 10 de junio.</p>
+<p>Para tener una mejor visualización se tratará a los datos para escribirlos en un formato de fecha tipo <em>xts</em>, para ello se crea una matriz donde cada columna corresponde a un estado, cada fila a una fecha, y cada celda a los casos confirmados reportados, posteriormente esta matriz será la información para nuestro variable tipo <em>xts</em>.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 casosor_m&lt;-casos_m %&gt;% 
@@ -1724,7 +1725,7 @@ Figure 9: Casos confirmados para México
 </p>
 </div>
 </div>
-<p>Para verificar si los datos de la base de <a href="https://github.com/mariorz/covid19-mx-time-series">mariorz</a> concuerdan con los datos de la Dirección General de Epidemiología, de la última se calculo el acumulado nacional de casos confirmado al 10 de junio de 2020, lo cual es consistente con el dato <span class="math inline">\(129\,184\)</span> de la base utilizada</p>
+<p>Para verificar si los datos de la base de <a href="https://github.com/mariorz/covid19-mx-time-series">mariorz</a> concuerdan con los datos de la Dirección General de Epidemiología, de la última se calculó el acumulado nacional de casos confirmado al 10 de junio de 2020, lo cual es consistente con el dato <span class="math inline">\(129\,184\)</span> de la base utilizada</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 oficiales&lt;- read_csv(&quot;Datos10junio/200610COVID19MEXICO.csv&quot;)
@@ -1735,7 +1736,7 @@ oficiales%&gt;%
 <pre><code>
 [1] 129184</code></pre>
 </div>
-<p>Los casos confimados acumulados por estado al 10 de junio pueden observarse en el sigueinte mapa</p>
+<p>Los casos confimados acumulados por estado al 10 de junio pueden observarse en el siguiente mapa</p>
 <div class="layout-chunk" data-layout="l-page">
 <pre class="r"><code>
 mapdata &lt;- get_data_from_map(download_map_data(&quot;countries/mx/mx-all&quot;))

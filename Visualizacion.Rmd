@@ -28,7 +28,7 @@ codefolder::distill(init = "show")
 </aside>
 
 
-Para esta parte se instalo el paquete *covidMex* con las instrucciones de la siguiente [página](https://github.com/pablorm296/covidMex), este paquete permite una adquisión de datos preprocesados.
+Para esta parte se instaló el paquete *covidMex* con las instrucciones de la siguiente [página](https://github.com/pablorm296/covidMex), este paquete permite una adquisión de datos preprocesados.
 
 ```{r, warning=FALSE,message=FALSE, eval=FALSE}
 install.packages('devtools')
@@ -99,9 +99,9 @@ mundiales%>%
                buttons = list(contextButton = list(menuItems = myMenuItems)))
 ```
 
-Observamos que los casos confirmados acumulados en Estados Unidos son más de $2$ millones, mientras que en China son un poco más de $84\,000$, y en México $129\,184$, se tiene que considerar que a menos que se diga lo contrario los datos mostrados corresponden al cierre del 10 de junio de 2020. 
+Observamos que los casos confirmados acumulados en Estados Unidos son más de $2$ millones, mientras que en China son un poco más de $84\,000$, y en México $129\,184$, se tiene que considerar que a menos que se diga lo contrario, los datos mostrados corresponden al cierre del 10 de junio de 2020. 
 
-Para tener los datos a disposición, se utilizo código como el siguiente en donde se leyeron los datos el 10 de junio y estos se guardaron para tener acceso posterior a esta fecha. 
+Para tener los datos a disposición, se utilizó código como el siguiente, donde se leyeron los datos el 10 de junio y estos se guardaron para tener acceso, posterior a esta fecha. 
 
 ```{r, warning=FALSE,message=FALSE, eval=FALSE}
 datos_abiertos <- covidOfficialMx()
@@ -129,13 +129,15 @@ confirmados%>%
                buttons = list(contextButton = list(menuItems = myMenuItems)))
 ```
 
-Observamos que la Ciudad de México tiene el mayor número de casos confirmados acumulados con $40\,117$, seguido del Estado de México con $13\,879$ y por Baja Califronia con $6\,585$. Cabe destacar que el Estado de México y la ciudad de Mexico ocupan la primer y segunda posición en número de habitantes del país, lo cual podría explicar la cantidad de casos confirmados acumulados, por otro lado la densidad de población en la Ciudad e México es la primera y la del Estado de México la segunda de la nación, podríamos plantear al siguiente pregunta ¿la densidad de la entidad federativa explica el número de casos confirmados?, de manera intuitiva parece que no, pues en ese caso Baja California, y otros tantos estados, no figurarian en las primeras posiciones de casos confirmados ^[Aquí podría plantearse de manera formal un problema de regresión, para confirmar o desechar tal conjetura] 
+Observamos que la Ciudad de México tiene el mayor número de casos confirmados acumulados con $40\,117$, seguido del Estado de México con $13\,879$ y por Baja California con $6\,585$. Cabe destacar que el Estado de México y la ciudad de Mexico ocupan la primer y segunda posición en número de habitantes del país, lo cual podría explicar la cantidad de casos confirmados acumulados. Por otro lado la densidad de población en la Ciudad e México es la primera y la del Estado de México la segunda de la nación. Se podría plantear al siguiente pregunta ¿la densidad de la entidad federativa explica el número de casos confirmados?, de manera intuitiva parece que no, pues en ese caso Baja California, y otros tantos estados, no figurarían en las primeras posiciones de casos confirmados ^[Aquí podría plantearse de manera formal un problema de regresión, para confirmar o desechar tal conjetura] 
 
-Probablemente la _movilidad_ que hay en estas ciudades o la _cercania_ con otras entidades que presenten _grandes_ cantidades de casos confimados podría explicar estos resultados, por el momento es una hipótesis que en un trabajo futuro sería bueno responder.  
+Probablemente la _movilidad_ que hay en estas ciudades o la _cercanía_ con otras entidades que presenten _grandes_ cantidades de casos confimados podría explicar estos resultados, por el momento es una hipótesis que en un trabajo futuro sería bueno responder.  
 
 
 
-Otras preguntas que se puede hacer: ¿la edad de lo individuos influye en la suceptibilidad para contraer el enfermedad?, ¿Un determinado sexo es más propenso a contrar la enfermedad que el otro?, si un determinado sexo es más propenso a contraer la enfermedad ¿esta propensión es independiente de la edad?, la Figura \@ref(fig:casosedad)  muestra los casos confirmados agrupados por edad en intervalos de 10 años y la Figura \@ref(fig:casosedadsexo) muestra los casos confirmados agrupados por edad y sexo en intervalos de 10 años.
+Otras preguntas que se pueden hacer son: ¿la edad de los individuos influye en la suceptibilidad para contraer el enfermedad?, ¿un determinado sexo es más propenso a contrar la enfermedad que el otro?, si un determinado sexo es más propenso a contraer la enfermedad ¿esta propensión es independiente de la edad? 
+
+La Figura \@ref(fig:casosedad)  muestra los casos confirmados agrupados por edad en intervalos de 10 años y la Figura \@ref(fig:casosedadsexo) muestra los casos confirmados agrupados por edad y sexo en intervalos de 10 años.
 
 ```{r,"casosedad", fig.cap="Casos acumulados confirmados por edad",  out.extra="class=external", layout="l-body-outset"}
 confirmados<-
@@ -181,9 +183,9 @@ confirmados%>%
                filename = "datos",
                buttons = list(contextButton = list(menuItems = myMenuItems)))
 ```
-Estás últimas gráficas pueden ayudar a tener una intuición sobre las respuestas a las preguntas previamente planteadas. Pare precisar las respuestas se pueden platear modelos econónometicos, en un futuro se espera responder a estas preguntas.
+Estás últimas gráficas pueden ayudar a tener una intuición sobre las respuestas a las preguntas previamente planteadas. Para precisar las respuestas se pueden plantear modelos econométricos, en un futuro se espera responder a estas preguntas.
 
-Se pueden plantear más preguntas que pueden ser de intéres para ayudar a la prevención en población vulnerable: ¿Los casos confirmados presentan alguna enfermedad respiratoria?, ¿Los casos confirmados presentan diabetes?, ¿Los casos confirmados presentan obesidad?, ¿Los casos confirmados presentan hipertención?, etc., para poder responder estas preguntas es necesario tener datos al respecto, algunas preguntas podrían ser importantes pero si no se cuenta con la información no será posible intenrtar responderlas de forma correcta. 
+Se pueden plantear más preguntas que pueden ser de intéres para ayudar a la prevención en población vulnerable: ¿los casos confirmados presentan alguna enfermedad respiratoria?, ¿los casos confirmados presentan diabetes?, ¿Los casos confirmados presentan obesidad?, ¿Los casos confirmados presentan hipertensión?, etc. Para poder responder estas preguntas es necesario tener datos al respecto, algunas preguntas podrían ser importantes, pero si no se cuenta con la información, no será posible intentar responderlas de forma correcta. 
 
 > Se pueden realizar bastantes visualizaciones, recomiendo revisar la página del [Dr. Sebastián Garrindo](http://segasi.com.mx/adn40/covid19/#el-mundo), la página del [gobierno de México](https://coronavirus.gob.mx/datos/) y la página [information is beautiful](https://informationisbeautiful.net/visualizations/covid-19-coronavirus-infographic-datapack/) 
 
@@ -191,7 +193,7 @@ Se pueden plantear más preguntas que pueden ser de intéres para ayudar a la pr
 
 Aquí se hace una pausa para comentar como pueden ser prepararados los datos. 
 
-Una fuente oficial de información son los [Datos Abiertos](https://www.gob.mx/salud/documentos/datos-abiertos-152127) proporcionados por la Dirección General de Epidemiología. Estos datos que se actualiza a diario, en el caso estudiado se toman los del 10 de junio de 2020, se ofrecen en un archivo zip que contiene la base de datos en formato csv, y 2 archivo xls sobre la descripción de las variables y los valores que estás toman.  El archico descriptores da información de las 35 variables, entre las que se pueden encontrar RESULTADO, FECHA_ACTUALIZACION, TABAQUISMO, NEUMONIA, SEXO, EDAD, etc., la Figura \@ref(fig:tabladescriptores) muestra este archivo, se puede navegar sobre esta tabla y buscar información epecifica.
+Una fuente oficial de información son los [Datos Abiertos](https://www.gob.mx/salud/documentos/datos-abiertos-152127) proporcionados por la Dirección General de Epidemiología. Estos datos se actualizan a diario, en el caso estudiado se toman los del 10 de junio de 2020, se ofrecen en un archivo zip que contiene la base de datos en formato csv, y dos archivos xls sobre la descripción de las variables y los valores que estás toman.  El archivo descriptores da información de las 35 variables, entre las que se pueden encontrar RESULTADO, FECHA_ACTUALIZACION, TABAQUISMO, NEUMONIA, SEXO, EDAD, etc. La Figura \@ref(fig:tabladescriptores) muestra este archivo, se puede navegar sobre esta tabla y buscar información epecífica.
 
 
 ```{r,"tabladescriptores", fig.cap="Tabla de descriptores",  out.extra="class=external", layout="l-body-outset"}
@@ -199,7 +201,7 @@ Descriptores<-read.xlsx(
   xlsxFile = "Datos10Junio/diccionario_datos_covid19/Descriptores_0419.xlsx")
 datatable(as.data.table(Descriptores),options = list(pageLength = 5))
 ```
-Si se quiere saber los valores que las variables toman y el significado de cada valor, se tiene que consultar el catalogo, cada variable se encuentra en hojas distintas cuyo número tiene que encontrarse, en nuestro caso nos interesa saber los valores de la varibale RESULTADO, así la hoja de interés es la $7$, en la Figura \@ref(fig:tablacatalogo) se muestra esta información 
+Si se quieren saber los valores que las variables toman y el significado de cada valor, se tiene que consultar el catálogo, cada variable se encuentra en hojas distintas cuyo número tiene que encontrarse, en nuestro caso nos interesa saber los valores de la varibale RESULTADO, así la hoja de interés es la $7$, en la Figura \@ref(fig:tablacatalogo) se muestra esta información. 
 
 ```{r,"tablacatalogo", fig.cap="Tabla de descriptores",  out.extra="class=external", layout="l-body-outset"}
 Catalogo<-read.xlsx(
@@ -212,7 +214,7 @@ Como se puede observar la preparación de los datos puede complicarse.
 
 # Casos confirmados como serie de tiempo
 
-Para esta parte se toman los datos del repositorio de [mariorz](https://github.com/mariorz/covid19-mx-time-series) en github ^[Para ello se cosultó la página https://rpubs.com/lokraj/github_csv], aunque los dados ya están bastante preprocesados se hacen algunas adecuaciones sobre el formato de fecha.
+Para esta parte se toman los datos del repositorio de [mariorz](https://github.com/mariorz/covid19-mx-time-series) en github ^[Para ello se cosultó la página https://rpubs.com/lokraj/github_csv], aunque los dados ya están bastante preprocesados, se hacen algunas adecuaciones sobre el formato de fecha.
 
 
 ```{r,warning=FALSE,message=FALSE}
@@ -231,7 +233,7 @@ casos_m$fecha <- format(as.Date(casos_m$fecha_corte,
 ```
 
 
-En al Figura \@ref(fig:seriesmexico) se muestra la evolución en el tiempo de los casos confirmados *acumulados*^[nos referimos a los *casos confirmados acumulados* como *casos confirmados*] en México para cada entidad federativa. 
+En la Figura \@ref(fig:seriesmexico) se muestra la evolución en el tiempo de los casos confirmados *acumulados*^[nos referimos a los *casos confirmados acumulados* como *casos confirmados*] en México para cada entidad federativa. 
 
 ```{r,"seriesmexico", fig.cap="Casos confirmados acumulados para cada estado por día ",  out.extra="class=external", layout="l-screen-inset"}
 
@@ -256,9 +258,9 @@ casos_m %>%
 ```
 
 
-La Ciudad de México, Estado de México y Baja California han sido las ciudades que durante cada día se han colocado en los primeros 3 lugares nacionales, en particular se habia mostrado en la Figura \@ref(fig:casosestado) para el corte al día del 10 de junio 
+La Ciudad de México, Estado de México y Baja California han sido las ciudades que durante cada día se han colocado en los primeros 3 lugares nacionales, en particular se había mostrado en la Figura \@ref(fig:casosestado) para el corte al día del 10 de junio. 
 
-Para tener una mejor visualización se tratará a los datos para escribirlos en un formato de fecha tipo *xts*, para ello se crea una matriz donde cada columna corresponde a un estado, cada fila a una fecha, y cada celda a los casos confirmados reportados, posteriormente esta matriz será la información para nuestro variable tipo *xts*
+Para tener una mejor visualización se tratará a los datos para escribirlos en un formato de fecha tipo *xts*, para ello se crea una matriz donde cada columna corresponde a un estado, cada fila a una fecha, y cada celda a los casos confirmados reportados, posteriormente esta matriz será la información para nuestro variable tipo *xts*.
 
 ```{r,warning=FALSE,message=FALSE}
 casosor_m<-casos_m %>% 
@@ -330,7 +332,7 @@ highchart(type="stock")%>%
 ```
 
 
-Para verificar si los datos de la base de  [mariorz](https://github.com/mariorz/covid19-mx-time-series) concuerdan con los datos de la Dirección General de Epidemiología, de la última se calculo el acumulado nacional de casos confirmado al 10 de junio de 2020, lo cual es consistente con el dato $129\,184$ de la base utilizada
+Para verificar si los datos de la base de  [mariorz](https://github.com/mariorz/covid19-mx-time-series) concuerdan con los datos de la Dirección General de Epidemiología, de la última se calculó el acumulado nacional de casos confirmado al 10 de junio de 2020, lo cual es consistente con el dato $129\,184$ de la base utilizada
 
 ```{r, message=FALSE, warning=FALSE}
 oficiales<- read_csv("Datos10junio/200610COVID19MEXICO.csv")
@@ -340,7 +342,7 @@ oficiales%>%
   sum()
 ```
 
-Los casos confimados acumulados por estado al 10 de junio pueden observarse en el sigueinte mapa
+Los casos confimados acumulados por estado al 10 de junio pueden observarse en el siguiente mapa
 
 ```{r,"mapacasostotales", fig.cap="Casos confirmados para México al 10 junio de 2020",  out.extra="class=external", layout="l-page"}
 mapdata <- get_data_from_map(download_map_data("countries/mx/mx-all"))

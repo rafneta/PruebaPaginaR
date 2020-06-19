@@ -1338,7 +1338,7 @@
 <a href="index.html" class="title">Casos de CoVID-19 como serie de tiempo</a>
 </div>
 <div class="nav-right">
-<a href="Visualizacion.html">Visualizacion</a>
+<a href="Visualizacion.html">Visualización</a>
 <a href="SeriesTiempo.html">Series de Tiempo</a>
 <a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
 </div>
@@ -1367,7 +1367,7 @@
 <li><a href="#serie-de-tiempo-estacionaria">Serie de tiempo estacionaria</a></li>
 <li><a href="#autocorrelación-y-autocorrelación-parcial">Autocorrelación y autocorrelación parcial</a></li>
 <li><a href="#modelos-armapq">Modelos ARMA(<span class="math inline">\(p\)</span>,<span class="math inline">\(q\)</span>)</a></li>
-<li><a href="#seriede-tiempo-no-estacionarias">Seriede tiempo no estacionarias</a></li>
+<li><a href="#serie-de-tiempo-no-estacionaria">Serie de tiempo no estacionaria</a></li>
 <li><a href="#transformaciones-de-series-no-estacionarias">Transformaciones de series no estacionarias</a></li>
 <li><a href="#modelos-arimapdq">Modelos ARIMA(<span class="math inline">\(p,d,q\)</span>)</a></li>
 <li><a href="#estimación-del-modelo-de-un-serie-de-tiempo">Estimación del modelo de un serie de tiempo</a></li>
@@ -1376,9 +1376,7 @@
 </ul>
 </nav>
 <hr class="d-toc-separator"/>
-<div class="layout-chunk" data-layout="l-body">
-
-</div>
+<p>Se cargan las librerias a utilizar</p>
 <aside>
 <div class="layout-chunk" data-layout="l-body">
 <input onclick="codefolder(&#39;d-code&#39;);" type="button" value="Hide Code" id="codefolder-button" style=""/>
@@ -1405,9 +1403,39 @@
 </script>
 </div>
 </aside>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+library(covidMex)
+library(urca)
+library(tseries)
+library(dplyr)
+library(ggplot2)
+library(highcharter)
+library(tidyverse)
+library(lubridate)
+library(openxlsx)
+library(DT)
+library(data.table)
+library(xts)
+library(forecast)
+library(astsa)
+myMenuItems &lt;- c(&quot;downloadPNG&quot;, &quot;downloadJPEG&quot;, &quot;downloadPDF&quot;, &quot;downloadCSV&quot; )
+casos_mx_st &lt;- read_csv(&quot;Datos10deJunioSeries.csv&quot;)  %&gt;%
+select(-X1)
+casos_m&lt;-casos_mx_st   %&gt;%
+pivot_longer(-Estado, names_to = &quot;fecha_corte&quot;, 
+               values_to = &quot;casos&quot;) 
+casos_m$fecha &lt;- format(as.Date(casos_m$fecha_corte,
+                                format = &quot;%d-%m-%Y&quot;), &quot;%Y-%m-%d&quot;)
+casostotales&lt;-casos_m %&gt;% 
+  group_by(fecha)%&gt;%
+  summarise(casost=sum(casos))
+casostotales_xts&lt;-xts(casostotales$casost,
+                 order.by = as.Date(casostotales$fecha))</code></pre>
+</div>
 <h1 id="introducción-a-series-de-tiempo">Introducción a series de tiempo</h1>
-<p>Los conceptos necesarios para series de tiempo pueden desarrollarse bajo diferentes motivaciones depende de la literatura que se consulte, para los fines de este trabajo se combinan algunas definiciones formales y unas un poco <em>relajadas</em>, esto último con la intensión de hacer el documento sea más amigable.</p>
-<p>A continuación se definiran algunos conceptos</p>
+<p>Los conceptos necesarios para series de tiempo pueden desarrollarse bajo diferentes motivaciones, depende de la literatura que se consulte, para los fines de este trabajo se combinan algunas definiciones formales y unas un poco <em>relajadas</em>, esto último con la intención de hacer que el documento sea más amigable.</p>
+<p>A continuación se definirán algunos conceptos.</p>
 <hr />
 <div class="layout-chunk" data-layout="l-body">
 
@@ -1432,7 +1460,7 @@ donde <span class="math inline">\(T\)</span> es un conjunto ordenado cronológic
 <ul>
 <li>Los datos presentan un orden temporal</li>
 <li>Dado que no concemos los resultado de estas variables, hay una falta de información, número de pruebas insuficiente, no hay distanciamiento social efectivo, etc.</li>
-<li>Tenemos un proceso estocastico indexado por el tiempo</li>
+<li>Tenemos un proceso estocástico indexado por el tiempo</li>
 <li>Cuando observamos estos datos tenemos una realización, <span class="math inline">\(S=\mathbb{Z}_+\)</span></li>
 </ul>
 <p>con las observaciones anteriores se tiene un PED <span class="math inline">\(\{C_t\}\)</span>.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> Cabe aclarar que en términos prácticos tenemos una realización finita por la cantidad de datos disponible. La Figura <a href="#fig:casostotaless">1</a> superior muestra la gráfica de la serie. Se podría estar interesado en estudiar el cambio en los casos reportados <span class="math inline">\(\Delta C_t=C_t-C_{t-1}\)</span>, ver Figura <a href="#fig:casostotaless">1</a> inferior, a algún otro comportamento como <span class="math inline">\(\log(C_t)\)</span> o <span class="math inline">\(\Delta \log(C_t)\approx \frac{C_t-C_{t-1}}{C_{t-1}}\)</span>.</p>
@@ -1464,7 +1492,7 @@ Figure 1: Casos confirmados para México
 </p>
 </div>
 </div>
-<p>Una primera observación es que se trabajaran con los datos a partir donde se detectó el primer caso, no tiene sentido trabajar con observaciones nulas, pues la observación de la variable es cero desde <span class="math inline">\(-\infty\)</span> hasta el día anterior del primer caso, el primer caso confirmado en México fue el 28 de febrero, la Figura <a href="#fig:casospar">2</a> muestra esta ventana de datos para las variables, <span class="math inline">\(C_t\)</span>, <span class="math inline">\(\Delta C_t\)</span>, <span class="math inline">\(\log(C_t)\)</span>, <span class="math inline">\(\Delta \log(C_t)\)</span>.</p>
+<p>Una primera observación es que se trabajará con los datos a partir de la detección del primer caso, no tiene sentido trabajar con observaciones nulas, pues la observación de la variable es cero desde <span class="math inline">\(-\infty\)</span> hasta el día anterior del primer caso, el primer caso confirmado en México fue el 28 de febrero, la Figura <a href="#fig:casospar">2</a> muestra esta ventana de datos para las variables, <span class="math inline">\(C_t\)</span>, <span class="math inline">\(\Delta C_t\)</span>, <span class="math inline">\(\log(C_t)\)</span>, <span class="math inline">\(\Delta \log(C_t)\)</span>.</p>
 <div class="layout-chunk" data-layout="l-body-outset">
 <pre class="r"><code>
 casospar&lt;-casos_m %&gt;% 
@@ -1515,9 +1543,9 @@ Figure 2: Casos confirmados para México
 <li><span class="math inline">\(\mathbb{C}ov(X_t,X_{t-k})\)</span> a lo sumo de pende de <span class="math inline">\(k\)</span> pero no depende de <span class="math inline">\(t\)</span></li>
 </ol>
 <hr />
-<p>para trabajar con series de tiempo se pide normalmente que se suponga que la serie es <strong>debilmente estacionaria de segundo orden</strong>. Por el momento no se realiza esta prueba a los datos de CoVID, en secciones posteriores regresamos a esta pregunta. Por el momento se supondrá <span class="math inline">\(\{C_t\}\)</span> es estacinaria.</p>
+<p>para trabajar con series de tiempo se pide normalmente que se suponga que la serie es <strong>debilmente estacionaria de segundo orden</strong>. Por el momento no se realiza esta prueba a los datos de CoVID, en secciones posteriores regresamos a esta pregunta. Por el momento se supondrá <span class="math inline">\(\{C_t\}\)</span> es estacionaria.</p>
 <h1 id="autocorrelación-y-autocorrelación-parcial">Autocorrelación y autocorrelación parcial</h1>
-<p>¿Existe una relación entre <span class="math inline">\(C_t\)</span> y <span class="math inline">\(C_{t-1},C_{t-2},\dots,C_{t-k},\)</span>?, la <em>función de autorrelación</em> representa la duración y la intensidad de la memoria de un proceso, podría decirse que es una medida de que tanto afectan los valores pasados a los actuales.</p>
+<p>¿Existe una relación entre <span class="math inline">\(C_t\)</span> y <span class="math inline">\(C_{t-1},C_{t-2},\dots,C_{t-k},\)</span>?, la <em>función de autorrelación</em> representa la duración y la intensidad de la memoria de un proceso, podría decirse que es una medida de qué tanto afectan los valores pasados a los actuales.</p>
 <hr />
 <p>La <strong>autocovarianza de orden <span class="math inline">\(k\)</span></strong>, de un PED <span class="math inline">\(\{X_t\}\)</span> <em>estacionario</em> se define como</p>
 <p><span class="math display">\[\gamma_k=\mathbb{C}ov(X_t,X_{t+k})\]</span></p>
@@ -1526,7 +1554,7 @@ Figure 2: Casos confirmados para México
 <p><span class="math display">\[\rho_k=\frac{\gamma_k}{\gamma_0};\;\; k=0,1\dots\]</span></p>
 <hr />
 <p>La función <span class="math inline">\(k\rightarrow\rho_k\)</span> es llamada la <em>función de autocorrelación (ACF)</em>, el dominio de la función se deduce a partir del supuesto de <em>estacionariedad</em>, esta función nos da la relación entre entre <span class="math inline">\(X_t\)</span> y <span class="math inline">\(X_{t-k}\)</span>.</p>
-<p>En la práctica se tienen que utilizar estimadores, el valor númerico para el estimador <span class="math inline">\(\hat\rho_k\)</span> es</p>
+<p>En la práctica se tienen que utilizar estimadores, el valor numérico para el estimador <span class="math inline">\(\hat\rho_k\)</span> es</p>
 <p><span class="math display">\[r_{k} = \frac{\sum\limits_{t=k+1}^T (x_{t}-\bar{x})(x_{t-k}-\bar{x})}
  {\sum\limits_{t=1}^T (x_{t}-\bar{x})^2}\]</span></p>
 <p>donde <span class="math inline">\(x_t\)</span> es el valor observado de <span class="math inline">\(X_t\)</span>, <span class="math inline">\(T\)</span> denota el número de datos. Cada valor se considera individualmente significativo al <span class="math inline">\(5%\)</span> cuando <span class="math inline">\(r_k&gt;1.96/\sqrt{T}\)</span>. Si se quiere hacer una prueba conjunta de significancia de las <span class="math inline">\(K\)</span> primeras autocorrelaciones usualmente se calcula el <strong>estadístico de Ljuang-Box</strong> que aproximadamente sigue una distribución <span class="math inline">\(~\chi^2(K)\)</span></p>
@@ -1545,7 +1573,7 @@ Figure 3: Función de autocorrelación
 </p>
 </div>
 </div>
-<p>Observamos una dependencia entre <span class="math inline">\(C_t\)</span> y sus valores anteriores, esta dependencia va dismunuyendo conforme <span class="math inline">\(k\)</span> aumenta, una herramienta visual para corroborar esta situaciónes es gráficar <span class="math inline">\(C_t\)</span> vs <span class="math inline">\(C_{t-k}\)</span> para diferentes valores de <span class="math inline">\(k\)</span>, la Figura <a href="#fig:scatteracf">4</a> muestra dichas gráficas.</p>
+<p>Observamos una dependencia entre <span class="math inline">\(C_t\)</span> y sus valores anteriores, esta dependencia va dismunuyendo conforme <span class="math inline">\(k\)</span> aumenta, una herramienta visual para corroborar estas situaciones es graficar <span class="math inline">\(C_t\)</span> vs <span class="math inline">\(C_{t-k}\)</span> para diferentes valores de <span class="math inline">\(k\)</span>, la Figura <a href="#fig:scatteracf">4</a> muestra dichas gráficas.</p>
 <div class="layout-chunk" data-layout="l-body-outset">
 <pre class="r"><code>
 gglagplot(capar) +
@@ -1558,7 +1586,7 @@ Figure 4: Grafias de C_t vs C_{t-k}
 </p>
 </div>
 </div>
-<p>Existe una medida del grado de asociacion lineal entre dos componentes de <span class="math inline">\(\{X_t\}\)</span> que descarta que dicha asociación suceda por los componentes intermedios entre ellos, precisando:</p>
+<p>Existe una medida del grado de asociación lineal entre dos componentes de <span class="math inline">\(\{X_t\}\)</span> que descarta que dicha asociación suceda por los componentes intermedios entre ellos, precisando:</p>
 <hr />
 <p>La <strong>autocorrelación parcial de orden <span class="math inline">\(k\)</span></strong> de un PED <span class="math inline">\(\{X_t\}\)</span> <em>estacionario</em> se define como el parámetro <span class="math inline">\(\phi_{kk}\)</span> de la regresión</p>
 <p><span class="math display" id="eq:pac">\[\begin{equation}
@@ -1585,7 +1613,7 @@ Figure 5: Función de autocorrelación parcial
 <p>Un proceso estocástico <em>estacionario</em> <span class="math inline">\(\{X_t\}\)</span> sigue un <strong>modelo autorregresivo-media móvil</strong> de orden <span class="math inline">\((p,q)\)</span> o <strong>ARMA(<span class="math inline">\(p,q\)</span>)</strong>, si y sólo si</p>
 <p><span class="math display">\[X_t=\mu+\sum_{i=1}^p\phi_iX_{t-i}-\sum_{j=1}^q\theta_jA_{t-j}+A_t\]</span> para <span class="math inline">\(t\in\mathbb{Z}\)</span>, donde <span class="math inline">\(\{A_t\}\sim NIID(0,\sigma_A^2)\)</span>, <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\phi_i\)</span> y <span class="math inline">\(\theta_j\)</span> son parametros.</p>
 <hr />
-<p>para la <strong>condición de estacionariedad</strong> se tiene que las soluciones de la siguiente ecuación están fuera del circulo unitario</p>
+<p>para la <strong>condición de estacionariedad</strong> se tiene que las soluciones de la siguiente ecuación están fuera del círculo unitario</p>
 <p><span class="math display">\[1-\sum_{i=1}^p\phi_ix^i=0\]</span> se dice que el <strong>modelo es invertible</strong> si las soluciones de la siguente ecuación están fuera del círculo unitario</p>
 <p><span class="math display">\[1-\sum_{j=1}^q\theta_jx^j=0\]</span></p>
 <p>Cuando los parámetros <span class="math inline">\(\theta_j\)</span> son nulos se dice que el proceso sigue un modelo <strong>AR(<span class="math inline">\(p\)</span>)=ARMA(<span class="math inline">\(p,0\)</span>)</strong>, si los parámetros <span class="math inline">\(\phi_i\)</span> son nulos se dice que el proceso sigue un modelo <strong>MA(<span class="math inline">\(q\)</span>)=ARMA(<span class="math inline">\(0,q\)</span>)</strong></p>
@@ -1598,7 +1626,7 @@ Figure 6: Tabla de ACF y PACF
 </p>
 </div>
 </div>
-<p>Si se revisan las grafias de ACF y PACF para <span class="math inline">\(\{C_t\}\)</span> entonces probablemente la variable <span class="math inline">\(C_t\)</span> se pueda escribir como un modelo autorregresivo de orden <span class="math inline">\(p\)</span>, <strong>AR(p)</strong>, es decir</p>
+<p>Si se revisan las gráficas de ACF y PACF para <span class="math inline">\(\{C_t\}\)</span> entonces probablemente la variable <span class="math inline">\(C_t\)</span> se pueda escribir como un modelo autorregresivo de orden <span class="math inline">\(p\)</span>, <strong>AR(p)</strong>, es decir</p>
 <p><span class="math display">\[C_t=\beta_0+\beta_1 C_{t-1}+\beta_{t-2}C_{t-2}+\dots+\beta_{t-p}C_{t-p}+U_t\]</span> suponiendo <span class="math inline">\(\mathbb{E}(U_t|C_{t-1},C_{t-2},\dots)=0\)</span>. Con base en los resultados obtenidos de autocorrelación se realizan las regresiones para 1, 2 y 3 retardos.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
@@ -1672,7 +1700,7 @@ Residual standard error: 178.9 on 77 degrees of freedom
 Multiple R-squared:  0.9999,    Adjusted R-squared:  0.9999 
 F-statistic: 2.337e+05 on 3 and 77 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-<p>Observamos que los 3 modelos tiene <span class="math inline">\(R^2\)</span> y <span class="math inline">\(R^2\)</span>-ajustada bastante alta, tenemos que los coeficientes en los dos primeros modelos por separado y conjuntamete son estadisticamente significativos, en el tercero dos de los coeficientes no son significativos, pero esto no interfiere en la predicción que pueda hacerse <span class="citation" data-cites="forecasting1">(Hyndman and Athanasopoulos <a href="#ref-forecasting1">2018</a>)</span>, entonces se aplica un criterio para elegir uno de estos modelos, se utiliza el criterio de información de Bayes<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> (BIC) <span class="citation" data-cites="stock">(Stock and Watson <a href="#ref-stock">2012</a>)</span>, el cual se define como:</p>
+<p>Observamos que los 3 modelos tienen <span class="math inline">\(R^2\)</span> y <span class="math inline">\(R^2\)</span>-ajustada bastante alta, tenemos que los coeficientes en los dos primeros modelos por separado y conjuntamete son estadísticamente significativos, en el tercero dos de los coeficientes no son significativos, pero esto no interfiere en la predicción que pueda hacerse <span class="citation" data-cites="forecasting1">(Hyndman and Athanasopoulos <a href="#ref-forecasting1">2018</a>)</span>. Entonces se aplica un criterio para elegir uno de estos modelos, se utiliza el criterio de información de Bayes<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> (BIC) <span class="citation" data-cites="stock">(Stock and Watson <a href="#ref-stock">2012</a>)</span>, el cual se define como:</p>
 <p><span class="math display">\[BIC(p)=\ln\left(\frac{SR(p)}{T}\right)+\frac{p+1}{T}\ln(T)\]</span> aquí <span class="math inline">\(SR(p)\)</span> es la suma de los cuadrados de los residuos del modelo <strong>AR(<span class="math inline">\(p\)</span>)</strong> estimado, se elige el modelo que presente menor BIC</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
@@ -1688,7 +1716,7 @@ c(a,b,c)</code></pre>
 </div>
 <p>Se elige <strong>AR(<span class="math inline">\(2\)</span>)</strong>, así el modelo estimado es</p>
 <p><span class="math display">\[\hat{C}_t=68.35218+1.565 C_{t-1}-0.541C_{t-2}\]</span></p>
-<p>La Figura <a href="#fig:estimadosar">7</a> muestra los estimados con el modolo AR(2) y la Figura <a href="#fig:estimadosarlog">8</a> muestra la misma información pero en escala logaritmica.</p>
+<p>La Figura <a href="#fig:estimadosar">7</a> muestra los estimados con el modelo AR(2) y la Figura <a href="#fig:estimadosarlog">8</a> muestra la misma información pero en escala logarítmica.</p>
 <div class="layout-chunk" data-layout="l-body-outset">
 <pre class="r"><code>
 autoplot(ts(capar), series=&quot;Casos observados&quot;) +
@@ -1725,16 +1753,16 @@ Box.test(residuals(capar_AR2), type=&quot;Ljung-Box&quot;)</code></pre>
 data:  residuals(capar_AR2)
 X-squared = 0.11569, df = 1, p-value = 0.7338</code></pre>
 </div>
-<p>No se rechaza que los residuos se distribuyan como ruido blanco. Hasta este momento todo parece indicar que se encontro un modelo que puede ser usado para predecir el número de casos confirmados, el problema que se presenta es que se ha supuesto que la serie es <strong>estacinaria</strong>, se aplicara un test para ver si esto es correcto.</p>
-<h1 id="seriede-tiempo-no-estacionarias">Seriede tiempo no estacionarias</h1>
-<p>Si la serie presenta una <strong>raíz unitaria</strong> (y con esto <strong>no estacionaria</strong>), es decir, <span class="math inline">\(z=1\)</span> es una solución de la ecuación</p>
-<p><span class="math display">\[1-\beta_1z-\beta_2z^2-\dots+\beta_pz^p=0\]</span> entonces la serie presenta una tendencia estocastica lo cual implica que los coeficientes y los estadisticos <span class="math inline">\(t\)</span> de las regresiones previamente realizados no tienen <em>buenas caracteristicas</em> (los coeficientes son sesgados y el estadistico no se distribuye de forma normal). Para revisar si es el caso, se realiza el contraste de <strong>Dickey-Fuller aumentado</strong> <span class="citation" data-cites="stock">(Stock and Watson <a href="#ref-stock">2012</a>)</span>, para ello se estima el siguiente modelo<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
+<p>No se rechaza que los residuos se distribuyan como ruido blanco. Hasta este momento todo parece indicar que se encontró un modelo que puede ser usado para predecir el número de casos confirmados, el problema que se presenta es que se ha supuesto que la serie es <strong>estacionaria</strong>, se aplicará un test para ver si esto es correcto.</p>
+<h1 id="serie-de-tiempo-no-estacionaria">Serie de tiempo no estacionaria</h1>
+<p>Si la serie presenta una <strong>raíz unitaria</strong> (y con esto es <strong>no estacionaria</strong>), es decir, <span class="math inline">\(z=1\)</span> es una solución de la ecuación</p>
+<p><span class="math display">\[1-\beta_1z-\beta_2z^2-\dots+\beta_pz^p=0\]</span> entonces la serie presenta una tendencia estocástica, lo que implica que los coeficientes y los estadísticos <span class="math inline">\(t\)</span> de las regresiones previamente realizados no tienen <em>buenas características</em> (los coeficientes son sesgados y el estadístico no se distribuye de forma normal). Para revisar si es el caso, se realiza el contraste de <strong>Dickey-Fuller aumentado</strong> <span class="citation" data-cites="stock">(Stock and Watson <a href="#ref-stock">2012</a>)</span>, para ello se estima el siguiente modelo<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
 <p><span class="math display" id="eq:adf">\[\begin{equation}
 \Delta C_t=\beta_0+\delta C_{t-1} + \gamma_1\Delta C_{t-1}+\gamma_2 C _{t-2}+\dots+\gamma_p \Delta C_{t-p+1}+u_t
 \tag{2}
 \end{equation}\]</span></p>
 <p>donde <span class="math display">\[H_0:\delta=0\;\;\text{vs}\;\;H_1:\delta&lt;0 \]</span></p>
-<p>bajo la hipotesis nula <span class="math inline">\(C_t\)</span> tiene tendencia estocástica, bajo la hipotesis alternatica <span class="math inline">\(C_t\)</span> es <strong>estacionaria</strong>. Para calcular esta regresión se tiene que proponer un orden <span class="math inline">\(p\)</span>,<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> la instrucción <code>urca::ur.df</code> nos proporciona un criterio de selección y nos permite configurar la regresión como en la ecuación <a href="#eq:adf">(2)</a></p>
+<p>bajo la hipótesis nula, <span class="math inline">\(C_t\)</span> tiene tendencia estocástica, bajo la hipótesis alternativa, <span class="math inline">\(C_t\)</span> es <strong>estacionaria</strong>. Para calcular esta regresión se tiene que proponer un orden <span class="math inline">\(p\)</span>,<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> la instrucción <code>urca::ur.df</code> nos proporciona un criterio de selección y nos permite configurar la regresión como en la ecuación <a href="#eq:adf">(2)</a></p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 a&lt;-ur.df(capar, selectlags = &quot;BIC&quot;, type=&quot;drift&quot;)
@@ -1774,7 +1802,7 @@ Critical values for test statistics:
 tau2 -3.51 -2.89 -2.58
 phi1  6.70  4.71  3.86</code></pre>
 </div>
-<p>se tiene que no se puede rechazar la hipótesis nula, pues el estadístico <span class="math inline">\(t\)</span> para el coeficiente <code>z.lag.1</code> (que juega el papel de <span class="math inline">\(\delta\)</span>) es positivo, la linea tau2 indica los valores criticos y los porcentajes de significancia. Se Repite el calculo pero sin utilizar las herramientas preconstruidas y se obtiene el mismo resultado, en este caso el estadistico de interes es el asociado a la variable <code>lag(capar)[-1]</code> (que juega el papel de <span class="math inline">\(\delta\)</span>).</p>
+<p>los resultados indican que no se puede rechazar la hipótesis nula, pues el estadístico <span class="math inline">\(t\)</span> para el coeficiente <code>z.lag.1</code> (que juega el papel de <span class="math inline">\(\delta\)</span>) es positivo, la línea tau2 indica los valores críticos y los porcentajes de significancia. Se repite el cálculo, pero sin utilizar las herramientas preconstruidas y se obtiene el mismo resultado. En este caso el estadístico de interés es el asociado a la variable <code>lag(capar)[-1]</code> (que juega el papel de <span class="math inline">\(\delta\)</span>).</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 capar_adf&lt;-lm(diff(capar)~lag(capar)[-1]+diff(lag(capar)))
@@ -1800,12 +1828,12 @@ Residual standard error: 177.3 on 79 degrees of freedom
 Multiple R-squared:  0.954, Adjusted R-squared:  0.9528 
 F-statistic: 819.2 on 2 and 79 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-<p>Si en la prueba anterior se modifica la hipotesis alternativa: <span class="math inline">\(C_t\)</span> es estacionaria en torno a una tendencia temporal lineal determinística, entonces la regresión de Dickey-Fuller se escribe como</p>
+<p>Si en la prueba anterior se modifica la hipótesis alternativa: <span class="math inline">\(C_t\)</span> es estacionaria en torno a una tendencia temporal lineal determinística, entonces la regresión de Dickey-Fuller se escribe como</p>
 <p><span class="math display" id="eq:adft">\[\begin{equation}
 \Delta C_t=\beta_0+\alpha t+\delta C_{t-1} + \gamma_1\Delta C_{t-1}+\gamma_2 C _{t-2}+\dots+\gamma_p \Delta C_{t-p+1}+u_t
 \tag{3}
 \end{equation}\]</span></p>
-<p>Se calcula la regresión de la ecuación <a href="#eq:adft">(3)</a>, para comprabar que los resultados sean correctos se utiliza la instrucción <code>tseries::adf.test</code> que tiene por defecto la estimación temporal.</p>
+<p>Se calcula la regresión de la ecuación <a href="#eq:adft">(3)</a>, para comprobar que los resultados sean correctos, se utiliza la instrucción <code>tseries::adf.test</code> que tiene por defecto la estimación temporal.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 capar_adft&lt;-lm(diff(capar)~lag(capar)[-1]+diff(lag(capar))+c(1:(length(capar)-1)))
@@ -1841,10 +1869,10 @@ data:  capar
 Dickey-Fuller = 5.8402, Lag order = 1, p-value = 0.99
 alternative hypothesis: stationary</code></pre>
 </div>
-<p>Dado el valor estadistico (<span class="math inline">\(5.84\)</span>) no se puede rechazar en favor de una <span class="math inline">\(C_t\)</span> estacionaria con tendencia temporal lineal determinística.</p>
-<p>Así la hipótesis sobre la estacionariedad de <span class="math inline">\(\{C_t\}\)</span> debe de abandonarse, lo cual implica que los resultado obtenidos bajo la suposición de estacionariedad deben descartarse.</p>
+<p>Dado el valor estadístico (<span class="math inline">\(5.84\)</span>), no se puede rechazar en favor de una <span class="math inline">\(C_t\)</span> estacionaria con tendencia temporal lineal determinística.</p>
+<p>Así, la hipótesis sobre la estacionariedad de <span class="math inline">\(\{C_t\}\)</span> debe de abandonarse, lo cual implica que los resultados obtenidos bajo la suposición de estacionariedad deben descartarse.</p>
 <h1 id="transformaciones-de-series-no-estacionarias">Transformaciones de series no estacionarias</h1>
-<p>Algunos series no estacionarias se pueden transformar para convertirlas en series estacionarias. Normalmente se tienen dos transformaciones</p>
+<p>Algunos series no estacionarias se pueden transformar para convertirlas en series estacionarias. Normalmente se tienen dos transformaciones:</p>
 <ol type="1">
 <li>Transformación de Box-Cox para estabilizar la dispersión, es decir, obtener estacionariedad en la varianza</li>
 </ol>
@@ -1854,10 +1882,10 @@ log(x_t)&amp;\lambda=0\\
 \frac{x_t^\lambda-1}{\lambda}&amp;\lambda\neq 0
 \end{cases}\]</span></p>
 <ol start="2" type="1">
-<li>Aplicar diferencias es los datos para estabilizar el nivel, es decir, obtener estacionariedad en media</li>
+<li>Aplicar diferencias es los datos para estabilizar el nivel; es decir, obtener estacionariedad en media</li>
 </ol>
-<p>Se recomienda trabajar con las diferencias de <span class="math inline">\(C_t\)</span> <span class="citation" data-cites="stock">(Stock and Watson <a href="#ref-stock">2012</a>)</span>-<span class="citation" data-cites="wool">(Wooldridge <a href="#ref-wool">2010</a>)</span>-<span class="citation" data-cites="asa">(Holmes, M. D, and Ward <a href="#ref-asa">2020</a>)</span>, es decir, con <span class="math inline">\(\Delta C_t=C_t-C_{t-1}\)</span> o con las segundas diferencias <span class="math inline">\(\Delta^2 C_t=C_t-2C_{t-1}+C_{t-2}\)</span>, de tal forma que al aplicar la preba de Dickey-Fuller a la serie resultante se rechaze al hipotesis nula en favor de una serie estacionaria.</p>
-<p>Existen varias formas de abordar este problema, se ha elegido utilizar la instrucción <code>forecast::ndiffs</code> que calcula la cantidad de diferencias necesarias, una vez que se tiene este numero se aplica la prueba mencionada para verificar dicha situación.</p>
+<p>Se recomienda trabajar con las diferencias de <span class="math inline">\(C_t\)</span> <span class="citation" data-cites="stock">(Stock and Watson <a href="#ref-stock">2012</a>)</span>-<span class="citation" data-cites="wool">(Wooldridge <a href="#ref-wool">2010</a>)</span>-<span class="citation" data-cites="asa">(Holmes, M. D, and Ward <a href="#ref-asa">2020</a>)</span>, es decir, con <span class="math inline">\(\Delta C_t=C_t-C_{t-1}\)</span> o con las segundas diferencias <span class="math inline">\(\Delta^2 C_t=C_t-2C_{t-1}+C_{t-2}\)</span>, de tal forma que al aplicar la preba de Dickey-Fuller a la serie resultante se rechaze la hipétesis nula en favor de una serie estacionaria.</p>
+<p>Existen varias formas de abordar este problema, se ha elegido utilizar la instrucción <code>forecast::ndiffs</code> que calcula la cantidad de diferencias necesarias, una vez que se tiene este número se aplica la prueba mencionada para verificar dicha situación.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 ndiffs(capar, test = &quot;adf&quot;)</code></pre>
@@ -1901,7 +1929,7 @@ Critical values for test statistics:
 tau2 -3.51 -2.89 -2.58
 phi1  6.70  4.71  3.86</code></pre>
 </div>
-<p>En este caso se aplico la prueba sin el factor de tendencia, pues las primeras diferencias eliminan la tendencia lineal determinista <span class="citation" data-cites="stock">(Stock and Watson <a href="#ref-stock">2012</a>)</span>-<span class="citation" data-cites="wool">(Wooldridge <a href="#ref-wool">2010</a>)</span> se comprueba que <span class="math inline">\(\Delta^2 C_t=C_t-2C_{t-1}+C_{t-2}\)</span> es una serie estacionaria. La Figura <a href="#fig:acfdd2">9</a> muestra muestra el correlograma y la Figura <a href="#fig:pacfdd2">10</a></p>
+<p>En este caso, se aplicó la prueba sin el factor de tendencia, pues las primeras diferencias eliminan la tendencia lineal determinista, ver <span class="citation" data-cites="stock">(Stock and Watson <a href="#ref-stock">2012</a>)</span>-<span class="citation" data-cites="wool">(Wooldridge <a href="#ref-wool">2010</a>)</span>. Se comprueba que <span class="math inline">\(\Delta^2 C_t=C_t-2C_{t-1}+C_{t-2}\)</span> es una serie estacionaria. La Figura <a href="#fig:acfdd2">9</a> muestra el correlograma y la Figura <a href="#fig:pacfdd2">10</a> la autocorrelación parcial.</p>
 <div class="layout-chunk" data-layout="l-body-outset">
 <pre class="r"><code>
 capardd1&lt;-diff(capar)
@@ -1928,8 +1956,8 @@ Figure 10: Función de autocorrelación parcial
 </p>
 </div>
 </div>
-<p>Puesto que <span class="math inline">\(\Delta^2 C_t\)</span> es estacionaria, al observar las graficas de ACF, PACF, y de acuerdo a la <a href="#fig:tablaacf">6</a> se obtiene que la estructura propuesta es un modelo <strong>ARMA(<span class="math inline">\(0,1\)</span>)</strong>. Es decir</p>
-<p><span class="math display">\[\Delta^2 C_t=-\theta_1A_{t-1}+A_t\]</span> en terminos del proceso <span class="math inline">\(\{C_t\}\)</span></p>
+<p>Puesto que <span class="math inline">\(\Delta^2 C_t\)</span> es estacionaria, al observar las gráficas de ACF, PACF, y de acuerdo a la Figura <a href="#fig:tablaacf">6</a> se obtiene que la estructura propuesta es un modelo <strong>ARMA(<span class="math inline">\(0,1\)</span>)</strong>. Es decir,</p>
+<p><span class="math display">\[\Delta^2 C_t=-\theta_1A_{t-1}+A_t\]</span> en términos del proceso <span class="math inline">\(\{C_t\}\)</span></p>
 <p><span class="math display" id="eq:arimam">\[\begin{equation}
 C_t=2C_{t-1}-C_{t-2}-\theta_1A_{t-1}+A_t
 \tag{4}
@@ -1937,29 +1965,29 @@ C_t=2C_{t-1}-C_{t-2}-\theta_1A_{t-1}+A_t
 <p>Más adelante se llega a esta estructura con las herramientas preconstruidas en R.</p>
 <h1 id="modelos-arimapdq">Modelos ARIMA(<span class="math inline">\(p,d,q\)</span>)</h1>
 <p>Se definen algunos conceptos para escribir la definición del modelo</p>
-<p>EL <em>operador de retardo</em> se define como</p>
+<p>El <em>operador de retardo</em> se define como</p>
 <p><span class="math display">\[B^dX_t=X_{t-d};\;\;d\in\mathbb{N}\]</span></p>
 <hr />
-<p>El <em>operador diferencias</em> se define como</p>
+<p>El <em>operador de diferencia</em> se define como</p>
 <p><span class="math display">\[\Delta^dX_t=(1-B)^dX_t;\;\;d\in\mathbb{N}\]</span></p>
 <hr />
 <p>Un proceso estocástico <span class="math inline">\(\{X_t\}\)</span> es <strong>integrado de orden <span class="math inline">\(d\)</span></strong>, <span class="math inline">\(d\in\mathbb{N}\)</span>, si y sólo si el proceso <span class="math inline">\(\{\Delta^d X_t\}\)</span> sigue un modelo <strong>ARMA(<span class="math inline">\(p,q\)</span>)</strong> estacionario e invertible.</p>
 <hr />
-<p>Un proceso estocástico <span class="math inline">\(\{X_t\}\)</span> es integrado de orden <span class="math inline">\(d\)</span> si y solo si <span class="math inline">\(\{X_t\}\)</span> sigue un <strong>modelo autorregresivo-integrado-media móvil</strong> de orden <span class="math inline">\((p,d,q)\)</span>, o <strong>ARIMA(<span class="math inline">\(p,d,q\)</span>)</strong> del tipo</p>
+<p>Un proceso estocástico <span class="math inline">\(\{X_t\}\)</span> es integrado de orden <span class="math inline">\(d\)</span> si y sólo si <span class="math inline">\(\{X_t\}\)</span> sigue un <strong>modelo autorregresivo-integrado-media móvil</strong> de orden <span class="math inline">\((p,d,q)\)</span>, o <strong>ARIMA(<span class="math inline">\(p,d,q\)</span>)</strong> del tipo</p>
 <p><span class="math display">\[\phi(B)\Delta^dX_t=\mu+\theta(B)A_t\]</span></p>
-<p>donde <span class="math inline">\(\{A_t\}\sim NIID(0,\sigma_A^2)\)</span>, <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\phi_i\)</span> y <span class="math inline">\(\theta_j\)</span> son parametros y</p>
+<p>donde <span class="math inline">\(\{A_t\}\sim NIID(0,\sigma_A^2)\)</span>, <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\phi_i\)</span> y <span class="math inline">\(\theta_j\)</span> son parámetros y</p>
 <p><span class="math display">\[1-\sum_{i=1}^p\phi_ix^i=\phi(x)\]</span></p>
 <p><span class="math display">\[1-\sum_{j=1}^q\theta_jx^j=\theta(x)\]</span></p>
 <hr />
 <p>Siguiendo las definiciones se puede decir que un proceso <span class="math inline">\(\{X_t\}\)</span> que sigue un modelo <strong>ARIMA(<span class="math inline">\(p,d,q\)</span>)</strong> equivale a que el proceso estacionario <span class="math inline">\(\{\Delta^d X_t\}\)</span> siga un modelo <strong>ARMA(<span class="math inline">\(p,q\)</span>)</strong></p>
 <h1 id="estimación-del-modelo-de-un-serie-de-tiempo">Estimación del modelo de un serie de tiempo</h1>
-<p>Se estima el modelo <strong>ARIMA(<span class="math inline">\(p,d,q\)</span>)</strong> para <span class="math inline">\(\{C_t\}\)</span> se utilizan las herramientas prediseñadas en R en especifico <code>forecast::auto.arima</code>, que tiene las siguientes caracteristicas</p>
+<p>Se estima el modelo <strong>ARIMA(<span class="math inline">\(p,d,q\)</span>)</strong> para <span class="math inline">\(\{C_t\}\)</span> se utilizan las herramientas prediseñadas en R, en específico <code>forecast::auto.arima</code>, que tiene las siguientes características</p>
 <ul>
 <li>Se estima el modelo con la estructura <span class="math inline">\(\phi(B)(\Delta^dX_t-\mu_1)=(1+\sum_{j=1}^q\theta_jB^j)A_t\)</span></li>
 <li>Para elegir al mejor modelo se prefiere utilizar el criterio de información de Akaike corregido</li>
 <li>Se utiliza el método MLE (Maximum likelihood estimation) para encontrar los parámetros</li>
 </ul>
-<p>Teniendo esto en cuenta, se obtiene el modelo <strong>ARIMA(<span class="math inline">\(0,2,1\)</span>)</strong> que coincide con lo obtenido en la ecuación <a href="#eq:arimam">(4)</a></p>
+<p>Teniendo esto en cuenta, se obtiene el modelo <strong>ARIMA(<span class="math inline">\(0,2,1\)</span>)</strong>, que coincide con lo obtenido en la ecuación <a href="#eq:arimam">(4)</a></p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 fit1&lt;-auto.arima(capar, trace=TRUE)</code></pre>
@@ -1974,7 +2002,7 @@ fit1&lt;-auto.arima(capar, trace=TRUE)</code></pre>
 
  Best model: ARIMA(0,2,1)                    </code></pre>
 </div>
-<p>Con este modelo se tiene que los paramtros son</p>
+<p>Con este modelo se tiene que los parámetros son</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 fit1</code></pre>
@@ -1995,7 +2023,7 @@ AIC=1100.2   AICc=1100.36   BIC=1105.02</code></pre>
 C_t=2C_{t-1}-C_{t-2}-0.3403A_{t-1}+A_t
 \]</span></p>
 <p>donde <span class="math inline">\(A_t\)</span> es un ruido blanco con varianza <span class="math inline">\(37844\)</span>, el signo del parámetro se conserva por la propuesta de R del modelo antes comentada.</p>
-<p>Falta verificar la condiciones las codiciones de ruido blanco sobre los residuales de la estimación,</p>
+<p>Falta verificar las codiciones de ruido blanco sobre los residuales de la estimación,</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 checkresiduals(fit1)</code></pre>
@@ -2008,8 +2036,8 @@ Q* = 34.03, df = 9, p-value = 8.823e-05
 
 Model df: 1.   Total lags used: 10</code></pre>
 </div>
-<p>Se rechaza la hipótesis nula y como puede comprobarse en las grafica anterior los residuales no presentan varianza constante.</p>
-<p>Así se tiene que regresar a los datos para estabilizar la varianza, para esto se utiliza la tranformación de Cox- Box</p>
+<p>Se rechaza la hipótesis nula, como puede comprobarse en la gráfica anterior, los residuales no presentan varianza constante.</p>
+<p>Así, se tiene que regresar a los datos para estabilizar la varianza, para esto se utiliza la tranformación de Cox- Box</p>
 <p><span class="math display">\[w_t=\begin{cases}
 log(c_t)&amp;\lambda=0\\
 &amp;\\
@@ -2061,7 +2089,7 @@ s.e.   0.1071
 sigma^2 estimated as 0.05546:  log likelihood=2.52
 AIC=-1.03   AICc=-0.88   BIC=3.78</code></pre>
 </div>
-<p>Los residuales de la estimación se comportan como ruido blanco la prueba estadistica y los apoyos gráficos lo confirman.</p>
+<p>Los residuales de la estimación se comportan como ruido blanco, la prueba estadística y gráficos lo confirman.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 checkresiduals(fit)</code></pre>
@@ -2088,7 +2116,7 @@ C_t=(\lambda W_t+1)^{1/\lambda}
 \hat C_{t+h|T}=(\lambda W_{t+h|T}+1)^{1/\lambda}
 \tag{6}
 \end{align}\]</span></p>
-<p>Cada predicción tiene asociada un intervalo de confianza <span class="citation" data-cites="forecasting1">(Hyndman and Athanasopoulos <a href="#ref-forecasting1">2018</a>)</span>, en particular el intervalo de confianza para la primer estimación <span class="math inline">\(\hat W_{t+1|T}\)</span> es <span class="math inline">\(\hat W_{t+1|T}\pm 1.96\hat\sigma_A\)</span>. La Figura <a href="#fig:tablapre">12</a> muestra la predicción y dos intervalos con nivel diferente de confianza.</p>
+<p>Cada predicción tiene asociada un intervalo de confianza <span class="citation" data-cites="forecasting1">(Hyndman and Athanasopoulos <a href="#ref-forecasting1">2018</a>)</span>, en particular el intervalo de confianza para la primer estimación <span class="math inline">\(\hat W_{t+1|T}\)</span> es <span class="math inline">\(\hat W_{t+1|T}\pm 1.96\hat\sigma_A\)</span>. La Figura <a href="#fig:tablapre">12</a> muestra la predicción y dos intervalos con nivel de confianza diferente.</p>
 <div class="layout-chunk" data-layout="l-body-outset">
 <pre class="r"><code>
 estimacion&lt;-forecast(fit,20)
@@ -2101,7 +2129,7 @@ Figure 12: Tabla de prediccion
 </p>
 </div>
 </div>
-<p>Desde el comienzo del analísis se trabajo con aproximadamente el <span class="math inline">\(80\%\)</span> de los datos disponibles, dejando un <span class="math inline">\(20\%\)</span> para probar la predicción, en particular el modelo estimado predice que al 10 de junio de 2020 abría un total de <span class="math inline">\(137624\)</span> y la medición dispoible a ese día fue de <span class="math inline">\(129184\)</span>.</p>
+<p>Desde el comienzo del análisis se trabajó con aproximadamente el <span class="math inline">\(80\%\)</span> de los datos disponibles, dejando un <span class="math inline">\(20\%\)</span> para probar la predicción, en particular el modelo estimado predice que al 10 de junio de 2020 habría un total de <span class="math inline">\(137624\)</span> y la medición disponible a ese día fue de <span class="math inline">\(129184\)</span>.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 autoplot(estimacion,series=&quot;Predicción&quot;)+
@@ -2120,7 +2148,7 @@ autoplot(estimacion0,series=&quot;Predicción sin Box&quot;)+
   ggtitle(&quot;Casos observdos y predicción sin Box&quot;)</code></pre>
 <p><img src="SeriesTiempo_files/figure-html5/unnamed-chunk-15-1.png" width="624" /></p>
 </div>
-<p>Tenemos que el observado incluso esta más alla del intervalo de confianza. Se realizará la prueba de Diebold-Mariano cuya hipótesis nula establece que las dos metodos a probar tienen el misma nivel de exactitud ( <em>accuracy</em><a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a> ) y la alternativa es que estos niveles son distintos.</p>
+<p>Tenemos que el observado incluso esta más allá del intervalo de confianza. Se realizará la prueba de Diebold-Mariano cuya hipótesis nula establece que los dos métodos a probar tienen el mismo nivel de exactitud ( <em>accuracy</em><a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a> ) y la alternativa es que estos niveles son distintos.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 dm.test(estimacion$residuals,estimacion0$residuals)</code></pre>
@@ -2144,15 +2172,15 @@ DM = -4.4059, Forecast horizon = 1, Loss function power = 2,
 p-value = 1.562e-05
 alternative hypothesis: less</code></pre>
 </div>
-<p>En este caso indica que el método donde no se realizo la transformación de Box tiene menos exactitud (el segundo argumento de la función dm.test).</p>
-<p>Existen otras medidas que se pueden realizar para decidir sobre las predicciones. Algunos son las siguientes:</p>
+<p>Lo anterior indica que el método donde no se realizó la transformación de Box tiene menos exactitud (el segundo argumento de la función dm.test).</p>
+<p>Existen otras medidas que se pueden realizar para decidir sobre las predicciones. Algunas son las siguientes:</p>
 <p><span class="math display">\[\begin{align*}
   \text{Mean error: ME} &amp; = \text{mean}(e_{t}),\\
   \text{Root mean squared error: RMSE} &amp; = \sqrt{\text{mean}(e_{t}^2)}\\
   \text{Mean absolute error: MAE} &amp; = \text{mean}(|e_{t}|),\\
   \text{Mean absolute percentage error: MAPE}&amp; = \text{mean}(|p_{t}|).
 \end{align*}\]</span></p>
-<p>donde <span class="math inline">\(e_{T+h} = x_{T+h} - \hat{x}_{T+h|T}\)</span>, <span class="math inline">\(p_{t} = 100 e_{t}/x_{t}\)</span>. Se busca que cada uno sea lo menor posible. En nuestro caso todas ellas fallan a favor del método donde se realizo la transformación de Box.</p>
+<p>donde <span class="math inline">\(e_{T+h} = x_{T+h} - \hat{x}_{T+h|T}\)</span>, <span class="math inline">\(p_{t} = 100 e_{t}/x_{t}\)</span>. Se busca que cada uno sea lo menor posible. En nuestro caso, todas ellas fallan a favor del método donde se realizó la transformación de Box.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 accuracy(estimacion$mean,casospar$casost[85:104])</code></pre>
@@ -2166,7 +2194,7 @@ accuracy(estimacion0$mean,casospar$casost[85:104])</code></pre>
 Test set 5252.801 6791.241 5252.801 4.893384 4.893384</code></pre>
 </div>
 <h1 id="conclusiones">Conclusiones</h1>
-<p>El ajuste <strong>ARIMA(<span class="math inline">\(p,d,q\)</span>)</strong> realizado a los casos confirmados de CoVID-2019 para México tiene una mejor confianza a corto plazo, podría tilizarse para complementar otros modelos pero me parece no los sustituye.</p>
+<p>El ajuste <strong>ARIMA(<span class="math inline">\(p,d,q\)</span>)</strong> realizado a los casos confirmados de CoVID-2019 para México tiene una mejor confianza a corto plazo, podría utilizarse para complementar otros modelos pero me parece que no los sustituye.</p>
 <div id="refs" class="references">
 <div id="ref-asa">
 <p>Holmes, E. E., Scheuerell M. D, and E. J. Ward. 2020. <em>Applied Time Series Analysis for Fisheries and Enviromental Data.</em> Northwet Fisheries Science Center, 2275, Montlake BlvdE., Seatle, WA 98112. <a href="https://nwfsc-timeseries.github.io/atsa-labs/">https://nwfsc-timeseries.github.io/atsa-labs/</a>.</p>

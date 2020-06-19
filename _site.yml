@@ -8,7 +8,7 @@ navbar:
   right:
     #- text: "Introducción"
      # href: index.html
-    - text: "Visualizacion"
+    - text: "Visualización"
       href: Visualizacion.html
     - text: "Series de Tiempo"
       href: SeriesTiempo.html
