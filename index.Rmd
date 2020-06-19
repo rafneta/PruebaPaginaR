@@ -1,8 +1,8 @@
 ---
-title: "Presentación"
+title: "Casos CoVID-2019 como serie de tiempo"
 description: |
-  Presentamos la visualización y análisis econométrico para los
-  datos del COVID-19, presentados como serie de tiempo con las siguientes supuestos.   
+  Presentamos la visualización y análisis como serie de tiempo para los
+  datos de casos confirmados de CoVID-19 México al 10 de junio.
 author:
   - name: "Rafael Martínez Martínez"
     url: https://github.com/rafneta
@@ -13,65 +13,101 @@ output:
   distill::distill_article:
     toc: true
     toc_depth: 3
+    code_folding: hide
 bibliography: bibliografia.bib
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)#con esto se depliegan los teoremas
 
-# Learn more about creating websites with Distill at:
-# https://rstudio.github.io/distill/website.html
 ```
 
+# Introducción
 
+Existen diferentes puntos de vista para estudiar la actual pandemia que tratan de responder a diferente preguntas, ¿Qué es este virus?, ¿De dónde viene el virus?, ¿Cómo se contagía?, ¿Cualés son los sintomas?, ¿Qué medidas de prevención existen?, ¿Cuáles son los mejores modelos para predecir contagios?, ¿Qué datos son importates para las proyecciones?, ¿Cuál es la mejor técnica para registrar datos?, ¿Cómo se pueden evitar contagios?, ¿Qué carácteristicas influyen para que un cierto tipo de individuos tenga más riesgo de contagio/muerte?, etc. 
+
+El presente documento estudia modelos de predicción para casos confirmados en México mediante la herramienta de series de tiempo, no necesariente es el mejor enfoque pero considero es una posible manera de modelar, pues los datos (número de contagios, muertes, etc) siguen un orden temporal y dado que los resultados no se conocen por anticipado pueden verse como variables aleatorias, precisando, los datos medidos representan una realización de un proceso estocástico en la variable reportada.
+
+No se prentenden agotar todas las preguntas que pueden surgir al analizar los datos como series de tiempo ni que los resultados se tomen como base para recomendaciones de salud pública, la información se presenta para fines educativos. 
+
+Existe bastante información sobre la pendemia que es actualizada día a día, así que tener en consideración todas las consecuencias de las actualizaciones es complicado, por tal motivo se especificará la información consultada y el punto de vista abordado a partir de dicha consulta. 
+
+Para una revisión de la información oficial por parte del gobierno de México, sobre la actual pandemia, se puede consultar la siguiente [página](https://coronavirus.gob.mx/), que considero completa tanto para información a la población como información técnica además de datos y visualizaciones. 
+
+
+# CoVID-2019
+
+Para tener un primer acercamiento en terminos generales a la actual pandemia sin necesidad de un conocimiento especializado recomiendo ver el documental de NETFLIX: Coronavorus, Explained. Comparto el trailer  (dicen que alguien lo colgo en la siguiente [dirección](https://gnula.se/capitulos/coronavirus-en-pocas-palabras/))
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/sgZ7RKyDrLg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 <aside>
-This content will appear in the gutter of the article.
+Existen bastantes fuentes de información que podrían utilizarse, esta me parece una forma amigable de cononocer un poco del tema
 </aside>
 
+A grandes rasgos:
 
-<div align="center">
-<iframe width="560" height="315" src="https://youtu.be/bdubU8iTLwg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-</div>
+> Tipo de virus: *Virus zoonótico* (salta de una animal a un humano)
 
+> Nombre del Virus: *SARS-CoV-2*
 
+> Enfermedad Causada: *CoVID-19* (CoronaVirus DIsease 2019)
 
+El prefijo _Corona_ es debido a su forma, no es el primer coronavirus conocido, en los últimos 20 años han existido varias familias como el MERS-CoV y el SARS-CoV. Al ser un nuevo virus zoonótico no existe vacuna, con lo conocido por otros virus se observa que de forma natural los individuos contagiados sobrevivientes desarrollan inmunidad, si la cantidad de individuos es _grande_ esto se conoce como inmunidad colectiva. Bajo la actual situación habría millones de muertos a nivel mundial antes de alacanzar la inmunidad colectiva, por lo que se ha recurrido a establecer cuarentenas para contener los niveles de contagio.
 
-Existen varias consideraciones sobre que y como modelar la pandemia, en la platica de Rafael Prieto Curiel [@flacsorafael], se expone a manera de divulgación el modelo SIR (Suseptibles-Infectados-Recuperados), y como el número de casos reportados esta relacionado con el número de priebas realizadas.
+Esta situación de pandemia, que no se habia presentado con otros coranavirus, es porque *SARS-CoV-2* preseta _regularidad_ entre la letalidad y el grado de contagio, ver Figura \@ref(fig:letalidad); es decir, no mata a los individuos de forma inmediata lo cual permite que la persona infectada contagie a más indivudos antes de siquiera saber que es portador. 
 
-Para la recopilación de los datos y visualisación, hay varios factores a considerar, por ejmplo la actualización de las bases de datos, resulta ser que los datos (numero de infectados, numñero de muertes, etc.) a la fecha, se siguen actuizando, lo que hace complicado tomar decisiones de pólitica pública, pues no se tienen toda la información, esto es comentado por Sebastian Garrido [@flacsosegasi], y reportado en FALTA DOCUMENTO.
-
-El modelo CENTINELA propone estimar los casos confirmados de acuerdo a ciertas mediciones elaboradas, algunos investigadores han tomado estos datos y ha elaborado sus propios proyecciones, una de estas proyecciones, debida a Arturo Erdely [@flacsoerdely], establece una preycción de casos maximos reportados para el 5 de junio  diarios aproximadamente 2500, pero al 30 de mayo la fecha oficial ya es de $2885$ 
-
-```{r}
-84627-87512
+```{r, "letalidad", echo=FALSE,fig.cap="Figura presentada en Coronavorus, Explained", out.extra="class=external", layout="l-body-outset"}
+knitr::include_graphics("imagenes/letalidadcontagio.png")
 ```
 
-La vigilancia epidemiologica no tiene rigor estadístico, 
-
-Para fines de vigilancia se considera
-
-- Caso confirmado. A la persona que cuente con un diagnóstico conformado
-
-En los estandares mudiales de vigilancia, no se tienen la intención de capturar todos los casos, se quiere describor tendencias a lo largo del tiempo.  
-
-- vigilancia rutunaria. Notificación de casos
-- vigilancia centinela. Complementaris, para obtener información nominal detallada, se debe realizar en lugares estratégicamente seleccionados (representativos de la población).
-
-En México se cuenta con 475 unidades centinela,[@flacsoricardo]
+> La información presentada es una breve introducción, para mayor infromación se puede consultar la [página](https://coronavirus.gob.mx/) del gobierno de México   
 
 
-Ahora evidentemente este es un problema de comunicación, y evdentemente cada la comunicación de las noticias sobre la pandemia deber de hacerse con responsabilidad [@flacsomaria] 
+# Datos, modelos y consideraciones 
 
-## Prpopuesta del trabajo
-La propuestadel trabajo es poryectar la serie de los datos confirmados un un valor de equilibrio y asi proyectar lo s casos confrmados por dñia mediate una serie de tiempo. 
+Existen varias consideraciones sobre que y como modelar la pandemia, en la platica de Rafael Prieto Curiel [@flacsorafael], se exponen los siguientes puntos:
+
+* México es uno de los principales países con casos confirmados, posiblemente por ser una de los paises más poblados es natural esta situación
+
+* México es el país con el menor número de pruebas en Latinomaerica.
+
+* Modelo SIR (Susceptibles-Infectados-Recuperados) es el modelo usual, donde a grandes rasgos habla que cantidad de individuos están dentro de cada clasificación y como como estos se mueven; es decir, un individuo susceptible pasa a ser infectado y un infectado pasa a recuperado. El modelo es hipersensible, lo cual implica que si se cambian _poco_ los parametros utilizados en el modelo, estos proyectarían cantidades _muy distintas_ de individuos en cada clasificación.
+
+* El número de casos confirmados es un reflejo del numero de pruebas realizadas, el numero de pruebas es un factor susceptible
+
+* Se recomendaría realizar las pruebas en forma aleatoria para proyectar el número de infectadso a la porblación. 
+
+El objetivo de presentar esta información es mostrar que las proyecciones que se puedan tener bajo cualquier modelo estan sujetas al número de pruebas realizadas.  
 
 
+Por otro lado, la recopilación de los datos presenta varios problemas, por ejemplo: la actualización de las bases de datos. Resulta que los datos (número de infectados, número de muertes, etc.) a la fecha, se siguen actualizando, lo que hace **complicado tomar decisiones de pólitica pública**, pues no se tiene toda la información, esto es comentado por Sebastian Garrido [@flacsosegasi]. 
+
+Los formatos de los datos y los propios datos han cambiado, por lo cual obtener la información y depurar los datos es una tarea ardua, se obtienen datos de fuentes oficiales de información, así como de distintos sitios que ofrecen la información parcialmente depurada, cuando ha sido necesario los datos se han depurado de la fuente oficial. Cuando se haga uso de una fuente en especifico se indicará la referencia correspondiente. 
 
 
+De acuerdo a los estandares mundiales de vigilancia no se tiene la intención de capturar todos los casos, se quiere describir tendencias a lo largo del tiempo, para ello la vigilancia centinela recopila información nominal detallada de casos confirmados, esta se debe realizar en lugares estratégicamente seleccionados (representativos de la población), México tiene 475 unidades centinela [@flacsoricardo].
+
+El modelo CENTINELA propone estimar los casos positivos de acuerdo a las mediciones elaboradas de casos confirmados. Algunos investigadores han tomado estos datos y han elaborado sus propias proyecciones, una de estas proyecciones, debida a Arturo Erdely [@flacsoerdely], establece una proyección de casos diarios máximos reportados para el 5 de junio de aproximadamente $2500$, pero al 30 de mayo la fecha oficial ya era de $2885$ en México. 
+
+Por último y de forma independiente a los objetivos del documento se debe tener en cuenta que la comunicación de las noticias sobre la pandemia debe de hacerse con responsabilidad [@flacsomaria], pues si bien es un problema de salud pública, esta de por medio la interpretación de la población.
+
+## Sobre los datos utilizados y las mediciones reportadas
+
+Para fines de visualiación se trabaja con los datos reportados al 10 de junio de 2020, es decir, si existieron correcciónes sobre los datos posteriores a esta fecha, estas no se tienen consideradas. 
+
+Para fines de predicción se toma la base de datos de la fecha comentada anteriormente de estos datos se toma el $80\%$ para estimación. 
+
+El  $60\%$ de las gráficas son interactivas, en el sentido que si se quiere conocer datos de estas basta con colocar el apuntador sobre las gráficas para que se muestren los datos, pueden ocultarse datos, mostrar otros, etc,. 
 
 
-## Acknowledgments {.appendix}
+# ¿Qué se desarrolla? 
 
-This is a place to recognize people and institutions. It may also be a good place
-to acknowledge and cite software that makes your work possible.
+
+En la pestaña de Visualización se encuentran gráficas interactivas sobre la actual situación de la pandemia en México se hacen algunas comentarios al respecto y se plantean algunas preguntas que podrían ser contestadas en un futuro. 
+
+En la pestaña de Series de Tiempo, se indican algunos conceptos de series de tiempo  y estos conceptos se aplican a los casos confirmados en México al 10 de junio, el uso de herramientas de series de tiempo es motivado por el siguiente [articulo](https://arxiv.org/pdf/2004.07859.pdf)
+
+Se estiman modelos **ARIMA** algunos son descartados por no satisfacer estacionariedad, otros son comparados para decidir sobre ellos con la prueba de  Diebold-Mariano y otras mediciones de _accuracy_.
+
+

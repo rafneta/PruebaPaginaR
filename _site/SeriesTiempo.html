@@ -19,34 +19,36 @@
  <!--/radix_placeholder_import_source-->
 
   <!--radix_placeholder_meta_tags-->
-  <title>Técnicas econométricas COVID-19: Series de Tiempo</title>
+  <title>Casos de CoVID-19 como serie de tiempo: Series de Tiempo</title>
   
-  <meta property="description" itemprop="description" content="Se presentan los conceptos básicos de series de tiempo, y las su estudñio econométrico"/>
+  <meta property="description" itemprop="description" content="Se presentan los conceptos básicos de series de tiempo y se realiza una estimación de modelos ARIMA"/>
   
   
-  <!--  https://schema.org/Article -->
-  <meta property="article:published" itemprop="datePublished" content="2020-05-31"/>
-  <meta property="article:created" itemprop="dateCreated" content="2020-05-31"/>
   <meta name="article:author" content="Rafael Martínez Martínez"/>
   
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="Técnicas econométricas COVID-19: Series de Tiempo"/>
+  <meta property="og:title" content="Casos de CoVID-19 como serie de tiempo: Series de Tiempo"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="Se presentan los conceptos básicos de series de tiempo, y las su estudñio econométrico"/>
+  <meta property="og:description" content="Se presentan los conceptos básicos de series de tiempo y se realiza una estimación de modelos ARIMA"/>
   <meta property="og:locale" content="en_US"/>
-  <meta property="og:site_name" content="Técnicas econométricas COVID-19"/>
+  <meta property="og:site_name" content="Casos de CoVID-19 como serie de tiempo"/>
   
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="Técnicas econométricas COVID-19: Series de Tiempo"/>
-  <meta property="twitter:description" content="Se presentan los conceptos básicos de series de tiempo, y las su estudñio econométrico"/>
+  <meta property="twitter:title" content="Casos de CoVID-19 como serie de tiempo: Series de Tiempo"/>
+  <meta property="twitter:description" content="Se presentan los conceptos básicos de series de tiempo y se realiza una estimación de modelos ARIMA"/>
   
   <!--/radix_placeholder_meta_tags-->
   
+  <meta name="citation_reference" content="citation_title=Forecasting: Principles and practice;citation_publication_date=2018;citation_publisher=OTexts;citation_author=Rob J Hyndman;citation_author=George Athanasopoulos"/>
+  <meta name="citation_reference" content="citation_title=Introducción a la econometría;citation_publication_date=2012;citation_publisher=PEARSON;citation_author=James H. Stock;citation_author=Mark M. Watson"/>
+  <meta name="citation_reference" content="citation_title=Introducción a la econometría;citation_publication_date=2010;citation_publisher=CENGAGE;citation_author=Jeffrey M. Wooldridge"/>
+  <meta name="citation_reference" content="citation_title=Applied time series analysis for fisheries and enviromental data.;citation_publication_date=2020;citation_author=E. E. Holmes;citation_author=Scheuerell M. D;citation_author=E. J. Ward"/>
+  <meta name="citation_reference" content="citation_title=Introducción a los procesos estocásticos;citation_publication_date=2016;citation_publisher=UNAM, Facultad de Ciencias;citation_author=Luis Rincón"/>
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","bibliography"]}},"value":[{"type":"character","attributes":{},"value":["Series de Tiempo"]},{"type":"character","attributes":{},"value":["Se presentan los conceptos básicos de series de tiempo, y las su estudñio econométrico\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Rafael Martínez Martínez"]},{"type":"character","attributes":{},"value":["https://github.com/rafneta"]},{"type":"character","attributes":{},"value":["CIDE-ME2019"]},{"type":"character","attributes":{},"value":["https://cide.edu/programas/me"]}]}]},{"type":"character","attributes":{},"value":["2020-05-31"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]}]}]},{"type":"character","attributes":{},"value":["bibliografia.bib"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","output","bibliography"]}},"value":[{"type":"character","attributes":{},"value":["Series de Tiempo"]},{"type":"character","attributes":{},"value":["Se presentan los conceptos básicos de series de tiempo y se realiza una estimación de modelos ARIMA\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Rafael Martínez Martínez"]},{"type":"character","attributes":{},"value":["https://github.com/rafneta"]},{"type":"character","attributes":{},"value":["CIDE-ME2019"]},{"type":"character","attributes":{},"value":["https://cide.edu/programas/me"]}]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["code_folding","toc","toc_depth"]}},"value":[{"type":"character","attributes":{},"value":["hide"]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]}]}]},{"type":"character","attributes":{},"value":["bibliografia.bib"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -1262,7 +1264,55 @@
   </script>
   
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="site_libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+  <script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
+  <script src="site_libs/proj4js-2.3.15/proj4.js"></script>
+  <link href="site_libs/highcharts-7.0.1/css/motion.css" rel="stylesheet" />
+  <link href="site_libs/highcharts-7.0.1/css/htmlwdgtgrid.css" rel="stylesheet" />
+  <script src="site_libs/highcharts-7.0.1/highcharts.js"></script>
+  <script src="site_libs/highcharts-7.0.1/highcharts-3d.js"></script>
+  <script src="site_libs/highcharts-7.0.1/highcharts-more.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/stock.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/map.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/annotations.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/boost.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/data.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/drag-panes.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/drilldown.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/item-series.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/offline-exporting.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/overlapping-datalabels.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/exporting.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/export-data.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/funnel.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/heatmap.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/treemap.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/sankey.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/solid-gauge.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/streamgraph.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/sunburst.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/vector.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/wordcloud.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/xrange.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/tilemap.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/venn.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/gantt.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/timeline.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/parallel-coordinates.js"></script>
+  <script src="site_libs/highcharts-7.0.1/plugins/grouped-categories.js"></script>
+  <script src="site_libs/highcharts-7.0.1/plugins/motion.js"></script>
+  <script src="site_libs/highcharts-7.0.1/plugins/multicolor_series.js"></script>
+  <script src="site_libs/highcharts-7.0.1/custom/reset.js"></script>
+  <script src="site_libs/highcharts-7.0.1/custom/symbols-extra.js"></script>
+  <script src="site_libs/highcharts-7.0.1/custom/text-symbols.js"></script>
+  <script src="site_libs/highchart-binding-0.7.0/highchart.js"></script>
+  <link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+  <script src="site_libs/datatables-binding-0.13/datatables.js"></script>
+  <link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+  <link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+  <script src="site_libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+  <link href="site_libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+  <script src="site_libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
   <script src="site_libs/bowser-1.9.3/bowser.min.js"></script>
   <script src="site_libs/webcomponents-2.0.0/webcomponents.js"></script>
   <script src="site_libs/distill-2.2.21/template.v2.js"></script>
@@ -1277,7 +1327,7 @@
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Series de Tiempo","description":"Se presentan los conceptos básicos de series de tiempo, y las su estudñio econométrico","authors":[{"author":"Rafael Martínez Martínez","authorURL":"https://github.com/rafneta","affiliation":"CIDE-ME2019","affiliationURL":"https://cide.edu/programas/me"}],"publishedDate":"2020-05-31T00:00:00.000-05:00","citationText":"Martínez, 2020"}
+{"title":"Series de Tiempo","description":"Se presentan los conceptos básicos de series de tiempo y se realiza una estimación de modelos ARIMA","authors":[{"author":"Rafael Martínez Martínez","authorURL":"https://github.com/rafneta","affiliation":"CIDE-ME2019","affiliationURL":"https://cide.edu/programas/me"}]}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1285,12 +1335,11 @@
 <header class="header header--fixed" role="banner">
 <nav class="distill-site-nav distill-site-header">
 <div class="nav-left">
-<a href="index.html" class="title">Técnicas econométricas COVID-19</a>
+<a href="index.html" class="title">Casos de CoVID-19 como serie de tiempo</a>
 </div>
 <div class="nav-right">
 <a href="Visualizacion.html">Visualizacion</a>
 <a href="SeriesTiempo.html">Series de Tiempo</a>
-<a href="about.html">Conclusiones</a>
 <a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
 </div>
 </nav>
@@ -1301,119 +1350,849 @@
 
 <div class="d-title">
 <h1>Series de Tiempo</h1>
-<p>Se presentan los conceptos básicos de series de tiempo, y las su estudñio econométrico</p>
+<p>Se presentan los conceptos básicos de series de tiempo y se realiza una estimación de modelos ARIMA</p>
 </div>
 
 <div class="d-byline">
   Rafael Martínez Martínez <a href="https://github.com/rafneta" class="uri">https://github.com/rafneta</a> (CIDE-ME2019)<a href="https://cide.edu/programas/me" class="uri">https://cide.edu/programas/me</a>
   
-<br/>2020-05-31
+
 </div>
 
 <div class="d-article">
 <h3 class="d-toc-header">Table of Contents</h3>
 <nav class="d-toc" id="TOC">
 <ul>
-<li><a href="#series-de-tiempo">Series de Tiempo</a><ul>
-<li><a href="#regresión-con-series-de-tiempo">Regresión con series de tiempo</a><ul>
-<li><a href="#modelo-ma1-moving-average">Modelo MA(1) (MOving average)</a></li>
-<li><a href="#trabajo">Trabajo</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#series-de-tiempo-1">Series de tiempo</a></li>
+<li><a href="#introducción-a-series-de-tiempo">Introducción a series de tiempo</a></li>
+<li><a href="#serie-de-tiempo-estacionaria">Serie de tiempo estacionaria</a></li>
+<li><a href="#autocorrelación-y-autocorrelación-parcial">Autocorrelación y autocorrelación parcial</a></li>
+<li><a href="#modelos-armapq">Modelos ARMA(<span class="math inline">\(p\)</span>,<span class="math inline">\(q\)</span>)</a></li>
+<li><a href="#seriede-tiempo-no-estacionarias">Seriede tiempo no estacionarias</a></li>
+<li><a href="#transformaciones-de-series-no-estacionarias">Transformaciones de series no estacionarias</a></li>
+<li><a href="#modelos-arimapdq">Modelos ARIMA(<span class="math inline">\(p,d,q\)</span>)</a></li>
+<li><a href="#estimación-del-modelo-de-un-serie-de-tiempo">Estimación del modelo de un serie de tiempo</a></li>
+<li><a href="#predicción-de-una-serie-de-tiempo">Predicción de una serie de tiempo</a></li>
+<li><a href="#conclusiones">Conclusiones</a></li>
 </ul>
 </nav>
 <hr class="d-toc-separator"/>
-<p>Distill is a publication format for scientific and technical writing, native to the web.</p>
-<p>Learn more about using Distill for R Markdown at <a href="https://rstudio.github.io/distill" class="uri">https://rstudio.github.io/distill</a>.</p>
-<h1 id="series-de-tiempo">Series de Tiempo</h1>
-<h2 id="regresión-con-series-de-tiempo">Regresión con series de tiempo</h2>
-<p>Colección de observaciones, igualmente espaciados.</p>
-<p><span class="math display">\[\{X_t\}_{t\in\mathbb{N}}\]</span></p>
-<p>donde <span class="math inline">\(X_t:\Omega\rightarrow\mathbb{R}\)</span> es una variable aleatoria, uan serie de tiempo es una realización de todas las posibles,</p>
-<p><span class="math display">\[\mathbb{E}(X_t)=\frac{1}{T}\sum_t X_t\]</span> Propiedad de ergodicidad.</p>
-<p>Propiedad de estacionariedad</p>
-<ul>
-<li>Fuerte: <span class="math display">\[(X_{i_1},X_{i_2},\ldots,X{i_n})=(X_{i_1+h},X_{i_2+h},\ldots,X{i_n+h})\]</span></li>
-</ul>
-<p>orden (1) <span class="math inline">\(\forall t,s\)</span> <span class="math inline">\(X_t=X_s\)</span></p>
-<p>orden (2) <span class="math inline">\(\forall t,s\)</span> <span class="math inline">\((X_t,X_s)=(X_{t+h},X_{s+h}\)</span></p>
-<p>Orden 1 media, varianza y predicción</p>
-<p>Estacinaonalidad (debil de segundo orden)</p>
-<ol type="1">
-<li><span class="math inline">\(\forall t\)</span> <span class="math inline">\(\mathbb{E}(X_t)=\mu\)</span></li>
-<li><span class="math inline">\(\forall t\)</span> <span class="math inline">\(\mathbb{V}(X_t)=\sigma^2\)</span> (se optienen de la tercera)</li>
-<li><span class="math inline">\(\gamma(s,t)=Cov(X_t,X_s)=\gamma(|t-s|)\)</span></li>
-<li>equivalente a 3) <span class="math inline">\(\gamma(h)=Cov(X_t,X_{t+h})=\gamma(|h|)\)</span> <span class="math inline">\(\gamma\)</span> <em>función de autocovarianzao (autocorrelacion)</em> como el presente y el pasado estan realcionados entre si, dependencia dinámica</li>
-</ol>
-<p>Esto determina el mejor predictor lineal.</p>
-<p>Función de autocorrelación</p>
-<p><span class="math display">\[\begin{equation}
-\rho(h)=\frac{\gamma(h)}{\gamma(0)}
-\end{equation}\]</span></p>
-<p>Solo pintamos el lado derecho</p>
-<p><span class="math display">\[\rho(0)=1\]</span></p>
-<p>La evalaución nos da un aidea del poder predictivo para diferentes intervalos de tiempo, si lo vemos hacia el futuro. Hacia el pasado le llamas memoria.</p>
-<h3 id="modelo-ma1-moving-average">Modelo MA(1) (MOving average)</h3>
-<p><span class="math inline">\(\{\epsilon_t\}\)</span> estacionario con <span class="math inline">\(\mathbb{E}(\epsilon_t)=0\)</span> <span class="math inline">\(\mathbb{V}ar(\epsilon_t)=\sigma^2\)</span></p>
-<p><span class="math display">\[
-\rho(h)=\begin{cases}
-1&amp;\text{ si } h=0\\
-0&amp;\text{otro caso}
-\end{cases}
-\]</span></p>
-<p>Sea <span class="math inline">\(\{\epsilon_t\}\)</span> <span class="math inline">\(RB(0,\sigma^2)\)</span>, y definimos</p>
-<p><span class="math display">\[X_t = \varepsilon_t + \theta\varepsilon_{t-1}\]</span></p>
-<p>entonces</p>
-<p><span class="math display">\[
-\rho(X_t,X_{t+h})=\begin{cases}
-\theta\sigma^2&amp;\text{ si } h=1\\
-0&amp;\text{otro caso}
-\end{cases}
-\]</span> Trabajo final, normalmente</p>
-<ol type="1">
-<li>Pregunta economica</li>
-<li>Recopilacion de datos</li>
-<li>Justifiación metodologiac que puedes hacer con esos datos</li>
-<li>Estimación</li>
-<li>Analisis de validez de essa estimación</li>
-<li>Conclusión</li>
-</ol>
-<h3 id="trabajo">Trabajo</h3>
-<p>Reflexionar sobre la técnica ecónometricas, discusión sobre como se estima o como se puede estimar, toda tecnica econometrica la matriz robusta, etc, EL INTERES DE COMO SE HIZO LA ECONOMETRIA Y PORQUE ASÍ ORIENTADO A LO TÉCNICO</p>
-<p><span class="math display" id="eq:binom1">\[\begin{equation}
-1 + c + c^2 + c^3 + \cdots = \frac{1}{1 -c } 
- \tag{1}
-\end{equation}\]</span></p>
-<p>To prove key formula <a href="#eq:binom1">(1)</a></p>
 <div class="layout-chunk" data-layout="l-body">
 
-<div class="theorem">
-<span id="thm:foo" class="theorem"><strong>Theorem 1  (Teorema de pitadoras)  </strong></span>Here is my theorem.
+</div>
+<aside>
+<div class="layout-chunk" data-layout="l-body">
+<input onclick="codefolder(&#39;d-code&#39;);" type="button" value="Hide Code" id="codefolder-button" style=""/>
+<script>
+  function codefolder(query) {
+
+    var x = document.querySelectorAll(query);
+    if (x.length === 0) return;
+
+    function toggle_vis(o) {
+      var d = o.style.display;
+      o.style.display = (d === 'block' || d === '') ? 'none':'block';
+    }
+
+    for (i = 0; i < x.length; i++) {
+      var y = x[i];
+      toggle_vis(y);
+    }
+
+    var elem = document.getElementById("codefolder-button");
+    if (elem.value === "Hide Code") elem.value = "Show Code";
+    else elem.value = "Hide Code";
+  }
+</script>
+</div>
+</aside>
+<h1 id="introducción-a-series-de-tiempo">Introducción a series de tiempo</h1>
+<p>Los conceptos necesarios para series de tiempo pueden desarrollarse bajo diferentes motivaciones depende de la literatura que se consulte, para los fines de este trabajo se combinan algunas definiciones formales y unas un poco <em>relajadas</em>, esto último con la intensión de hacer el documento sea más amigable.</p>
+<p>A continuación se definiran algunos conceptos</p>
+<hr />
+<div class="layout-chunk" data-layout="l-body">
+
+<div class="definition">
+<span id="def:ped" class="definition"><strong>Definition 1  (Proceso Estocástico Discreto (PED))  </strong></span>Es una colección de variables aleatorias <span class="math display">\[\left\{ X_t:t\in T\right\}\]</span> donde <span class="math inline">\(T\)</span> es un conjunto numerable, <span class="math inline">\(X_t\in S\)</span>, <span class="math inline">\(S\)</span> es llamado el espacio de estados.
 </div>
 </div>
-<p>el teorema <a href="#thm:foo">1</a></p>
-<h1 id="series-de-tiempo-1">Series de tiempo</h1>
+<hr />
+<p>Un PED <span class="math inline">\(\{X_t\}\)</span><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> puede considerarse como una función de dos variables <span class="math display">\[X:T\times \Omega\longrightarrow S\]</span></p>
+<p>Para cada <span class="math inline">\(\omega\in\Omega\)</span> fijo, la función <span class="math inline">\(t\rightarrow X_t(\Omega)\)</span> es llamada una realización del proceso <span class="citation" data-cites="rincon">(Rincón <a href="#ref-rincon">2016</a>)</span>.</p>
+<hr />
+<div class="layout-chunk" data-layout="l-body">
+
+<div class="definition">
+<p><span id="def:set" class="definition"><strong>Definition 2  (Serie de tiempo)  </strong></span>Es una realización de un Proceso Estocástico Discreto</p>
+<p><span class="math display">\[\left\{ X_t:t\in T\right\}\]</span></p>
+donde <span class="math inline">\(T\)</span> es un conjunto ordenado cronológicamente cuyos elementos son equidistantes
+</div>
+</div>
+<hr />
+<p>Se quiere estudiar el número de casos confirmados de CoVID-19 en México, esta variable se denotará como <span class="math inline">\(C_t\)</span> donde <span class="math inline">\(t\)</span> hace referencia a la fecha de observación de la variable, se tienen las siguientes observaciones</p>
 <ul>
 <li>Los datos presentan un orden temporal</li>
-<li>Dado que no concemos los resultado de estas variables no se conocen entonces pueden verse como variales aleatorias.
-<aside>
-This content will appear in the gutter of the article.
-</aside></li>
+<li>Dado que no concemos los resultado de estas variables, hay una falta de información, número de pruebas insuficiente, no hay distanciamiento social efectivo, etc.</li>
 <li>Tenemos un proceso estocastico indexado por el tiempo</li>
-<li>CUando observamos estos datos tenemos una realización.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</li>
+<li>Cuando observamos estos datos tenemos una realización, <span class="math inline">\(S=\mathbb{Z}_+\)</span></li>
 </ul>
+<p>con las observaciones anteriores se tiene un PED <span class="math inline">\(\{C_t\}\)</span>.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> Cabe aclarar que en términos prácticos tenemos una realización finita por la cantidad de datos disponible. La Figura <a href="#fig:casostotaless">1</a> superior muestra la gráfica de la serie. Se podría estar interesado en estudiar el cambio en los casos reportados <span class="math inline">\(\Delta C_t=C_t-C_{t-1}\)</span>, ver Figura <a href="#fig:casostotaless">1</a> inferior, a algún otro comportamento como <span class="math inline">\(\log(C_t)\)</span> o <span class="math inline">\(\Delta \log(C_t)\approx \frac{C_t-C_{t-1}}{C_{t-1}}\)</span>.</p>
 <div class="layout-chunk" data-layout="l-body-outset">
 <pre class="r"><code>
-library(ggplot2)
-ggplot(diamonds, aes(carat, price)) + geom_smooth() +
-  facet_grid(~ cut)</code></pre>
-<p><img src="SeriesTiempo_files/figure-html5/unnamed-chunk-1-1.png" width="576" /></p>
+highchart(type = &quot;stock&quot;) %&gt;%
+  hc_yAxis_multiples(
+    create_yaxis(2, height = c(2, 2))) %&gt;%
+  hc_add_series(name=&quot;Total&quot;,casostotales_xts[,1],yAxis=0)%&gt;%
+  hc_add_series(name=&quot;Diferencias&quot;,
+                diff(casostotales_xts[,1],2), yAxis=1)%&gt;%
+  hc_add_theme(hc_theme_ffx())%&gt;%
+  hc_title(text = &quot;Casos confirmados para México&quot;)%&gt;%
+           #margin = 20, align = &quot;left&quot;,
+           #style = list(color = &quot;#90ed7d&quot;, useHTML = TRUE)) %&gt;% 
+  hc_subtitle(text = &quot;Utilice la herramienta de zoom en la parte
+              inferior&quot;)%&gt;%
+  hc_tooltip(crosshairs = TRUE, backgroundColor = &quot;#FCFFC5&quot;,
+             shared = TRUE, borderWidth = 5) %&gt;% 
+  #hc_yAxis(title = list(text = &quot;Número de casos confirmados&quot;))%&gt;%
+    hc_exporting(enabled = TRUE,
+      filename = &quot;datos&quot;,
+      buttons = list(contextButton = list(menuItems = myMenuItems)))</code></pre>
+<div class="figure"><span id="fig:casostotaless"></span>
+<div id="htmlwidget-f133f9a4461e7c1eb1b1" style="width:100%;height:500px;" class="highchart html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f133f9a4461e7c1eb1b1">{"x":{"hc_opts":{"title":{"text":"Casos confirmados para México"},"yAxis":[{"height":"49.505%","top":"0%","offset":0,"opposite":false,"nid":1},{"height":"49.505%","top":"50.495%","offset":0,"opposite":true,"nid":2}],"credits":{"enabled":false},"exporting":{"enabled":true,"filename":"datos","buttons":{"contextButton":{"menuItems":["downloadPNG","downloadJPEG","downloadPDF","downloadCSV"]}}},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"series":[{"data":[[1579737600000,0],[1579824000000,0],[1579910400000,0],[1579996800000,0],[1580083200000,0],[1580169600000,0],[1580256000000,0],[1580342400000,0],[1580428800000,0],[1580515200000,0],[1580601600000,0],[1580688000000,0],[1580774400000,0],[1580860800000,0],[1580947200000,0],[1581033600000,0],[1581120000000,0],[1581206400000,0],[1581292800000,0],[1581379200000,0],[1581465600000,0],[1581552000000,0],[1581638400000,0],[1581724800000,0],[1581811200000,0],[1581897600000,0],[1581984000000,0],[1582070400000,0],[1582156800000,0],[1582243200000,0],[1582329600000,0],[1582416000000,0],[1582502400000,0],[1582588800000,0],[1582675200000,0],[1582761600000,0],[1582848000000,3],[1582934400000,4],[1583020800000,5],[1583107200000,5],[1583193600000,5],[1583280000000,5],[1583366400000,5],[1583452800000,6],[1583539200000,7],[1583625600000,7],[1583712000000,7],[1583798400000,7],[1583884800000,12],[1583971200000,15],[1584057600000,27],[1584144000000,41],[1584230400000,53],[1584316800000,82],[1584403200000,93],[1584489600000,118],[1584576000000,164],[1584662400000,203],[1584748800000,251],[1584835200000,316],[1584921600000,367],[1585008000000,405],[1585094400000,475],[1585180800000,585],[1585267200000,717],[1585353600000,848],[1585440000000,993],[1585526400000,1094],[1585612800000,1215],[1585699200000,1378],[1585785600000,1510],[1585872000000,1688],[1585958400000,1890],[1586044800000,2143],[1586131200000,2439],[1586217600000,2785],[1586304000000,3181],[1586390400000,3441],[1586476800000,3844],[1586563200000,4219],[1586649600000,4661],[1586736000000,5014],[1586822400000,5399],[1586908800000,5847],[1586995200000,6297],[1587081600000,6875],[1587168000000,7497],[1587254400000,8261],[1587340800000,8772],[1587427200000,9501],[1587513600000,10544],[1587600000000,11633],[1587686400000,12872],[1587772800000,13842],[1587859200000,14677],[1587945600000,15529],[1588032000000,16752],[1588118400000,17799],[1588204800000,19224],[1588291200000,20739],[1588377600000,22088],[1588464000000,23471],[1588550400000,24905],[1588636800000,26025],[1588723200000,27634],[1588809600000,29616],[1588896000000,31522],[1588982400000,33460],[1589068800000,35022],[1589155200000,36327],[1589241600000,38324],[1589328000000,40186],[1589414400000,42595],[1589500800000,45032],[1589587200000,47144],[1589673600000,49219],[1589760000000,51633],[1589846400000,54346],[1589932800000,56594],[1590019200000,59567],[1590105600000,62527],[1590192000000,65856],[1590278400000,68620],[1590364800000,71105],[1590451200000,74560],[1590537600000,78023],[1590624000000,81400],[1590710400000,84627],[1590796800000,87512],[1590883200000,90664],[1590969600000,93435],[1591056000000,97326],[1591142400000,101238],[1591228800000,105680],[1591315200000,110026],[1591401600000,113619],[1591488000000,117103],[1591574400000,120102],[1591660800000,124301],[1591747200000,129184]],"name":"Total","yAxis":0},{"data":[[1579737600000,null],[1579824000000,null],[1579910400000,0],[1579996800000,0],[1580083200000,0],[1580169600000,0],[1580256000000,0],[1580342400000,0],[1580428800000,0],[1580515200000,0],[1580601600000,0],[1580688000000,0],[1580774400000,0],[1580860800000,0],[1580947200000,0],[1581033600000,0],[1581120000000,0],[1581206400000,0],[1581292800000,0],[1581379200000,0],[1581465600000,0],[1581552000000,0],[1581638400000,0],[1581724800000,0],[1581811200000,0],[1581897600000,0],[1581984000000,0],[1582070400000,0],[1582156800000,0],[1582243200000,0],[1582329600000,0],[1582416000000,0],[1582502400000,0],[1582588800000,0],[1582675200000,0],[1582761600000,0],[1582848000000,3],[1582934400000,4],[1583020800000,2],[1583107200000,1],[1583193600000,0],[1583280000000,0],[1583366400000,0],[1583452800000,1],[1583539200000,2],[1583625600000,1],[1583712000000,0],[1583798400000,0],[1583884800000,5],[1583971200000,8],[1584057600000,15],[1584144000000,26],[1584230400000,26],[1584316800000,41],[1584403200000,40],[1584489600000,36],[1584576000000,71],[1584662400000,85],[1584748800000,87],[1584835200000,113],[1584921600000,116],[1585008000000,89],[1585094400000,108],[1585180800000,180],[1585267200000,242],[1585353600000,263],[1585440000000,276],[1585526400000,246],[1585612800000,222],[1585699200000,284],[1585785600000,295],[1585872000000,310],[1585958400000,380],[1586044800000,455],[1586131200000,549],[1586217600000,642],[1586304000000,742],[1586390400000,656],[1586476800000,663],[1586563200000,778],[1586649600000,817],[1586736000000,795],[1586822400000,738],[1586908800000,833],[1586995200000,898],[1587081600000,1028],[1587168000000,1200],[1587254400000,1386],[1587340800000,1275],[1587427200000,1240],[1587513600000,1772],[1587600000000,2132],[1587686400000,2328],[1587772800000,2209],[1587859200000,1805],[1587945600000,1687],[1588032000000,2075],[1588118400000,2270],[1588204800000,2472],[1588291200000,2940],[1588377600000,2864],[1588464000000,2732],[1588550400000,2817],[1588636800000,2554],[1588723200000,2729],[1588809600000,3591],[1588896000000,3888],[1588982400000,3844],[1589068800000,3500],[1589155200000,2867],[1589241600000,3302],[1589328000000,3859],[1589414400000,4271],[1589500800000,4846],[1589587200000,4549],[1589673600000,4187],[1589760000000,4489],[1589846400000,5127],[1589932800000,4961],[1590019200000,5221],[1590105600000,5933],[1590192000000,6289],[1590278400000,6093],[1590364800000,5249],[1590451200000,5940],[1590537600000,6918],[1590624000000,6840],[1590710400000,6604],[1590796800000,6112],[1590883200000,6037],[1590969600000,5923],[1591056000000,6662],[1591142400000,7803],[1591228800000,8354],[1591315200000,8788],[1591401600000,7939],[1591488000000,7077],[1591574400000,6483],[1591660800000,7198],[1591747200000,9082]],"name":"Diferencias","yAxis":1}],"subtitle":{"text":"Utilice la herramienta de zoom en la parte\n              inferior"},"tooltip":{"crosshairs":true,"backgroundColor":"#FCFFC5","shared":true,"borderWidth":5}},"theme":{"colors":["#00AACC","#FF4E00","#B90000","#5F9B0A","#CD6723"],"chart":{"backgroundColor":{"linearGradient":[0,0,0,150],"stops":[[0,"#CAE1F4"],[1,"#EEEEEE"]]},"style":{"fontFamily":"Open Sans"}},"title":{"align":"left"},"subtitle":{"align":"left"},"legend":{"align":"right","verticalAlign":"bottom"},"xAxis":{"gridLineWidth":1,"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"yAxis":{"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","drillUpText":"Back to {series.name}","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"thousandsSep":" ","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"stock","fonts":"Open+Sans","debug":false},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 1: Casos confirmados para México
+</p>
+</div>
+</div>
+<p>Una primera observación es que se trabajaran con los datos a partir donde se detectó el primer caso, no tiene sentido trabajar con observaciones nulas, pues la observación de la variable es cero desde <span class="math inline">\(-\infty\)</span> hasta el día anterior del primer caso, el primer caso confirmado en México fue el 28 de febrero, la Figura <a href="#fig:casospar">2</a> muestra esta ventana de datos para las variables, <span class="math inline">\(C_t\)</span>, <span class="math inline">\(\Delta C_t\)</span>, <span class="math inline">\(\log(C_t)\)</span>, <span class="math inline">\(\Delta \log(C_t)\)</span>.</p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+casospar&lt;-casos_m %&gt;% 
+  group_by(fecha)%&gt;%
+  summarise(casost=sum(casos))%&gt;%
+  filter(casost!=0)
+casospar_xts&lt;-xts(casospar$casost,
+                 order.by = as.Date(casospar$fecha))
+highchart(type = &quot;stock&quot;)%&gt;%
+   hc_yAxis_multiples(
+    create_yaxis(4, height = c(2,2,2,2))) %&gt;%
+  hc_add_series(name=&quot;Parcial&quot;,casospar_xts[,1], yAxis=0)%&gt;%
+  hc_add_series(name=&quot;Diferencias P&quot;,
+                diff(casospar_xts[,1]), yAxis=1)%&gt;%
+  hc_add_series(name=&quot;Logaritmo&quot;,
+                log10(casospar_xts[,1]), yAxis=2)%&gt;%
+  hc_add_series(name=&quot;Diferencias L&quot;,
+                diff(log10(casospar_xts[,1])), yAxis=3)%&gt;%
+  hc_add_theme(hc_theme_ffx())%&gt;%
+  hc_title(text = &quot;Casos confirmados para México
+           desde el primer caso&quot;)%&gt;%
+           #margin = 20, align = &quot;left&quot;,
+      #style = list(color = &quot;#90ed7d&quot;, useHTML = TRUE)) %&gt;% 
+  hc_subtitle(text = &quot;Utilice la herramienta de zoom en la
+              parte inferior&quot;)%&gt;%
+  hc_tooltip(crosshairs = TRUE, backgroundColor = &quot;#FCFFC5&quot;,
+             shared = TRUE, borderWidth = 5) %&gt;% 
+#hc_yAxis(title = list(text = &quot;Número de casos confirmados&quot;))%&gt;%
+    hc_exporting(enabled = TRUE,
+      filename = &quot;datos&quot;,
+      buttons = list(contextButton = list(menuItems = myMenuItems)))</code></pre>
+<div class="figure"><span id="fig:casospar"></span>
+<div id="htmlwidget-e9e40f0a88bcc80098b1" style="width:100%;height:500px;" class="highchart html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e9e40f0a88bcc80098b1">{"x":{"hc_opts":{"title":{"text":"Casos confirmados para México\n           desde el primer caso"},"yAxis":[{"height":"24.272%","top":"0%","offset":0,"opposite":false,"nid":1},{"height":"24.272%","top":"25.243%","offset":0,"opposite":true,"nid":2},{"height":"24.272%","top":"50.486%","offset":0,"opposite":false,"nid":3},{"height":"24.272%","top":"75.729%","offset":0,"opposite":true,"nid":4}],"credits":{"enabled":false},"exporting":{"enabled":true,"filename":"datos","buttons":{"contextButton":{"menuItems":["downloadPNG","downloadJPEG","downloadPDF","downloadCSV"]}}},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"series":[{"data":[[1582848000000,3],[1582934400000,4],[1583020800000,5],[1583107200000,5],[1583193600000,5],[1583280000000,5],[1583366400000,5],[1583452800000,6],[1583539200000,7],[1583625600000,7],[1583712000000,7],[1583798400000,7],[1583884800000,12],[1583971200000,15],[1584057600000,27],[1584144000000,41],[1584230400000,53],[1584316800000,82],[1584403200000,93],[1584489600000,118],[1584576000000,164],[1584662400000,203],[1584748800000,251],[1584835200000,316],[1584921600000,367],[1585008000000,405],[1585094400000,475],[1585180800000,585],[1585267200000,717],[1585353600000,848],[1585440000000,993],[1585526400000,1094],[1585612800000,1215],[1585699200000,1378],[1585785600000,1510],[1585872000000,1688],[1585958400000,1890],[1586044800000,2143],[1586131200000,2439],[1586217600000,2785],[1586304000000,3181],[1586390400000,3441],[1586476800000,3844],[1586563200000,4219],[1586649600000,4661],[1586736000000,5014],[1586822400000,5399],[1586908800000,5847],[1586995200000,6297],[1587081600000,6875],[1587168000000,7497],[1587254400000,8261],[1587340800000,8772],[1587427200000,9501],[1587513600000,10544],[1587600000000,11633],[1587686400000,12872],[1587772800000,13842],[1587859200000,14677],[1587945600000,15529],[1588032000000,16752],[1588118400000,17799],[1588204800000,19224],[1588291200000,20739],[1588377600000,22088],[1588464000000,23471],[1588550400000,24905],[1588636800000,26025],[1588723200000,27634],[1588809600000,29616],[1588896000000,31522],[1588982400000,33460],[1589068800000,35022],[1589155200000,36327],[1589241600000,38324],[1589328000000,40186],[1589414400000,42595],[1589500800000,45032],[1589587200000,47144],[1589673600000,49219],[1589760000000,51633],[1589846400000,54346],[1589932800000,56594],[1590019200000,59567],[1590105600000,62527],[1590192000000,65856],[1590278400000,68620],[1590364800000,71105],[1590451200000,74560],[1590537600000,78023],[1590624000000,81400],[1590710400000,84627],[1590796800000,87512],[1590883200000,90664],[1590969600000,93435],[1591056000000,97326],[1591142400000,101238],[1591228800000,105680],[1591315200000,110026],[1591401600000,113619],[1591488000000,117103],[1591574400000,120102],[1591660800000,124301],[1591747200000,129184]],"name":"Parcial","yAxis":0},{"data":[[1582848000000,null],[1582934400000,1],[1583020800000,1],[1583107200000,0],[1583193600000,0],[1583280000000,0],[1583366400000,0],[1583452800000,1],[1583539200000,1],[1583625600000,0],[1583712000000,0],[1583798400000,0],[1583884800000,5],[1583971200000,3],[1584057600000,12],[1584144000000,14],[1584230400000,12],[1584316800000,29],[1584403200000,11],[1584489600000,25],[1584576000000,46],[1584662400000,39],[1584748800000,48],[1584835200000,65],[1584921600000,51],[1585008000000,38],[1585094400000,70],[1585180800000,110],[1585267200000,132],[1585353600000,131],[1585440000000,145],[1585526400000,101],[1585612800000,121],[1585699200000,163],[1585785600000,132],[1585872000000,178],[1585958400000,202],[1586044800000,253],[1586131200000,296],[1586217600000,346],[1586304000000,396],[1586390400000,260],[1586476800000,403],[1586563200000,375],[1586649600000,442],[1586736000000,353],[1586822400000,385],[1586908800000,448],[1586995200000,450],[1587081600000,578],[1587168000000,622],[1587254400000,764],[1587340800000,511],[1587427200000,729],[1587513600000,1043],[1587600000000,1089],[1587686400000,1239],[1587772800000,970],[1587859200000,835],[1587945600000,852],[1588032000000,1223],[1588118400000,1047],[1588204800000,1425],[1588291200000,1515],[1588377600000,1349],[1588464000000,1383],[1588550400000,1434],[1588636800000,1120],[1588723200000,1609],[1588809600000,1982],[1588896000000,1906],[1588982400000,1938],[1589068800000,1562],[1589155200000,1305],[1589241600000,1997],[1589328000000,1862],[1589414400000,2409],[1589500800000,2437],[1589587200000,2112],[1589673600000,2075],[1589760000000,2414],[1589846400000,2713],[1589932800000,2248],[1590019200000,2973],[1590105600000,2960],[1590192000000,3329],[1590278400000,2764],[1590364800000,2485],[1590451200000,3455],[1590537600000,3463],[1590624000000,3377],[1590710400000,3227],[1590796800000,2885],[1590883200000,3152],[1590969600000,2771],[1591056000000,3891],[1591142400000,3912],[1591228800000,4442],[1591315200000,4346],[1591401600000,3593],[1591488000000,3484],[1591574400000,2999],[1591660800000,4199],[1591747200000,4883]],"name":"Diferencias P","yAxis":1},{"data":[[1582848000000,0.477121254719662],[1582934400000,0.602059991327962],[1583020800000,0.698970004336019],[1583107200000,0.698970004336019],[1583193600000,0.698970004336019],[1583280000000,0.698970004336019],[1583366400000,0.698970004336019],[1583452800000,0.778151250383644],[1583539200000,0.845098040014257],[1583625600000,0.845098040014257],[1583712000000,0.845098040014257],[1583798400000,0.845098040014257],[1583884800000,1.07918124604762],[1583971200000,1.17609125905568],[1584057600000,1.43136376415899],[1584144000000,1.61278385671974],[1584230400000,1.72427586960079],[1584316800000,1.91381385238372],[1584403200000,1.96848294855394],[1584489600000,2.07188200730613],[1584576000000,2.2148438480477],[1584662400000,2.30749603791321],[1584748800000,2.39967372148104],[1584835200000,2.4996870826184],[1584921600000,2.56466606425209],[1585008000000,2.60745502321467],[1585094400000,2.67669360962487],[1585180800000,2.76715586608218],[1585267200000,2.8555191556678],[1585353600000,2.92839585225671],[1585440000000,2.99694924849538],[1585526400000,3.03901732199741],[1585612800000,3.08457627793433],[1585699200000,3.13924921757161],[1585785600000,3.17897694729317],[1585872000000,3.22737244228964],[1585958400000,3.27646180417324],[1586044800000,3.33102217104183],[1586131200000,3.38721180031373],[1586217600000,3.44482519950975],[1586304000000,3.50256366910736],[1586390400000,3.53668467262093],[1586476800000,3.58478337899651],[1586563200000,3.62520952538188],[1586649600000,3.66847910293259],[1586736000000,3.7001843296222],[1586822400000,3.73231332747124],[1586908800000,3.76693309383728],[1586995200000,3.79913369330206],[1587081600000,3.8372727025023],[1587168000000,3.87488751084611],[1587254400000,3.91703262216239],[1587340800000,3.94309862300549],[1587427200000,3.97776931809157],[1587513600000,4.02300539724993],[1587600000000,4.06569172809327],[1587686400000,4.10964603109097],[1587772800000,4.14119884490474],[1587859200000,4.1666372942318],[1587945600000,4.1911434899549],[1588032000000,4.22406666433477],[1588118400000,4.25039560305712],[1588204800000,4.28384375779584],[1588291200000,4.3167878116021],[1588377600000,4.34415639363121],[1588464000000,4.37053159344308],[1588550400000,4.3962865460684],[1588636800000,4.41539073818257],[1588723200000,4.44144375325506],[1588809600000,4.47152640140883],[1588896000000,4.49861376469976],[1588982400000,4.52452593662638],[1589068800000,4.5443409436938],[1589155200000,4.5602295339144],[1589241600000,4.58347083149385],[1589328000000,4.60407477990735],[1589414400000,4.62935862258034],[1589500800000,4.65352123565215],[1589587200000,4.67342642808709],[1589673600000,4.69213278574034],[1589760000000,4.71292735932177],[1589846400000,4.73516758445072],[1589932800000,4.75277039046361],[1590019200000,4.77500572807847],[1590105600000,4.79606759204704],[1590192000000,4.81859534874632],[1590278400000,4.83645071372015],[1590364800000,4.85190014075874],[1590451200000,4.87250589934593],[1590537600000,4.89222264500676],[1590624000000,4.9106244048892],[1590710400000,4.92750894554785],[1590796800000,4.94206760932464],[1590883200000,4.95743487575957],[1590969600000,4.97050958992982],[1591056000000,4.98822887467893],[1591142400000,5.00534355689768],[1591228800000,5.02399280460647],[1591315200000,5.0414953244516],[1591401600000,5.05545096258256],[1591488000000,5.06856802117618],[1591574400000,5.07955023955721],[1591660800000,5.09447462254941],[1591747200000,5.11120872773022]],"name":"Logaritmo","yAxis":2},{"data":[[1582848000000,null],[1582934400000,0.1249387366083],[1583020800000,0.0969100130080565],[1583107200000,0],[1583193600000,0],[1583280000000,0],[1583366400000,0],[1583452800000,0.0791812460476248],[1583539200000,0.0669467896306132],[1583625600000,0],[1583712000000,0],[1583798400000,0],[1583884800000,0.234083206033368],[1583971200000,0.0969100130080565],[1584057600000,0.255272505103306],[1584144000000,0.181420092560748],[1584230400000,0.111492012881053],[1584316800000,0.189537982782928],[1584403200000,0.0546690961702183],[1584489600000,0.10339905875219],[1584576000000,0.142961840741572],[1584662400000,0.092652189865515],[1584748800000,0.092177683567825],[1584835200000,0.100013361137366],[1584921600000,0.0649789816336854],[1585008000000,0.0427889589625794],[1585094400000,0.0692385864101976],[1585180800000,0.0904622564573141],[1585267200000,0.0883632895856197],[1585353600000,0.0728766965889136],[1585440000000,0.0685533962386673],[1585526400000,0.0420680735020311],[1585612800000,0.0455589559369187],[1585699200000,0.054672939637276],[1585785600000,0.0397277297215624],[1585872000000,0.0483954949964671],[1585958400000,0.0490893618836079],[1586044800000,0.0545603668685843],[1586131200000,0.056189629271902],[1586217600000,0.057613399196017],[1586304000000,0.0577384695976155],[1586390400000,0.0341210035135671],[1586476800000,0.0480987063755776],[1586563200000,0.0404261463853732],[1586649600000,0.0432695775507046],[1586736000000,0.0317052266896121],[1586822400000,0.0321289978490449],[1586908800000,0.0346197663660415],[1586995200000,0.0322005994647787],[1587081600000,0.0381390092002376],[1587168000000,0.0376148083438119],[1587254400000,0.0421451113162812],[1587340800000,0.026066000843092],[1587427200000,0.0346706950860889],[1587513600000,0.0452360791583604],[1587600000000,0.0426863308433365],[1587686400000,0.0439543029977019],[1587772800000,0.0315528138137644],[1587859200000,0.0254384493270674],[1587945600000,0.0245061957230934],[1588032000000,0.032923174379869],[1588118400000,0.0263289387223491],[1588204800000,0.0334481547387275],[1588291200000,0.0329440538062515],[1588377600000,0.0273685820291112],[1588464000000,0.02637519981187],[1588550400000,0.0257549526253253],[1588636800000,0.0191041921141721],[1588723200000,0.0260530150724811],[1588809600000,0.0300826481537735],[1588896000000,0.0270873632909296],[1588982400000,0.0259121719266178],[1589068800000,0.019815007067427],[1589155200000,0.0158885902205945],[1589241600000,0.0232412975794531],[1589328000000,0.0206039484134957],[1589414400000,0.0252838426729944],[1589500800000,0.0241626130718045],[1589587200000,0.0199051924349476],[1589673600000,0.0187063576532438],[1589760000000,0.020794573581429],[1589846400000,0.0222402251289502],[1589932800000,0.0176028060128903],[1590019200000,0.022235337614859],[1590105600000,0.0210618639685727],[1590192000000,0.0225277566992821],[1590278400000,0.0178553649738342],[1590364800000,0.0154494270385905],[1590451200000,0.0206057585871804],[1590537600000,0.0197167456608307],[1590624000000,0.0184017598824457],[1590710400000,0.0168845406586522],[1590796800000,0.0145586637767821],[1590883200000,0.0153672664349385],[1590969600000,0.0130747141702479],[1591056000000,0.0177192847491083],[1591142400000,0.0171146822187493],[1591228800000,0.0186492477087912],[1591315200000,0.0175025198451291],[1591401600000,0.0139556381309607],[1591488000000,0.0131170585936164],[1591574400000,0.0109822183810309],[1591660800000,0.0149243829921994],[1591747200000,0.016734105180813]],"name":"Diferencias L","yAxis":3}],"subtitle":{"text":"Utilice la herramienta de zoom en la\n              parte inferior"},"tooltip":{"crosshairs":true,"backgroundColor":"#FCFFC5","shared":true,"borderWidth":5}},"theme":{"colors":["#00AACC","#FF4E00","#B90000","#5F9B0A","#CD6723"],"chart":{"backgroundColor":{"linearGradient":[0,0,0,150],"stops":[[0,"#CAE1F4"],[1,"#EEEEEE"]]},"style":{"fontFamily":"Open Sans"}},"title":{"align":"left"},"subtitle":{"align":"left"},"legend":{"align":"right","verticalAlign":"bottom"},"xAxis":{"gridLineWidth":1,"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"yAxis":{"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","drillUpText":"Back to {series.name}","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"thousandsSep":" ","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"stock","fonts":"Open+Sans","debug":false},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 2: Casos confirmados para México
+</p>
+</div>
+</div>
+<h1 id="serie-de-tiempo-estacionaria">Serie de tiempo estacionaria</h1>
+<p>Un PED <span class="math inline">\(\{X_t\}\)</span> es <strong>estrictamente estacionario</strong> si y sólo si para cualesquiera <span class="math inline">\(t_1 &lt; t_2 &lt; \dots &lt; t_n\)</span> <span class="math inline">\(n\geq1\)</span>, la distribución de probabilidad conjunta de <span class="math inline">\([X_{t_1},\dots,X_{t_n}]\)</span> coincide con la de <span class="math inline">\([X_{t_1+h},\dots,X_{t_n+h}]\)</span> para <span class="math inline">\(h\in\mathbb{Z}-\{0\}\)</span></p>
+<hr />
+<p>Un PED <span class="math inline">\(\{X_t\}\)</span> es <strong>estacionario en media</strong> o <strong>débilmente estacionario de primer orden</strong> si y solo si <span class="math inline">\(\mathbb{E}(X_t)&lt;\infty\)</span> es constante</p>
+<hr />
+<p>Un PED <span class="math inline">\(\{X_t\}\)</span> es <strong>estacionario en autocovarianza</strong> o <strong>débilmente estacionario de segundo orden</strong> si y solo si:</p>
+<ol type="1">
+<li><span class="math inline">\(\mathbb{E}(X_t)&lt;\infty\)</span> y <span class="math inline">\(\mathbb{V}ar(X_t)&lt;\infty\)</span> son constantes y finitas, es decir, no hay dependencia de <span class="math inline">\(t\)</span></li>
+<li><span class="math inline">\(\mathbb{C}ov(X_t,X_{t-k})\)</span> a lo sumo de pende de <span class="math inline">\(k\)</span> pero no depende de <span class="math inline">\(t\)</span></li>
+</ol>
+<hr />
+<p>para trabajar con series de tiempo se pide normalmente que se suponga que la serie es <strong>debilmente estacionaria de segundo orden</strong>. Por el momento no se realiza esta prueba a los datos de CoVID, en secciones posteriores regresamos a esta pregunta. Por el momento se supondrá <span class="math inline">\(\{C_t\}\)</span> es estacinaria.</p>
+<h1 id="autocorrelación-y-autocorrelación-parcial">Autocorrelación y autocorrelación parcial</h1>
+<p>¿Existe una relación entre <span class="math inline">\(C_t\)</span> y <span class="math inline">\(C_{t-1},C_{t-2},\dots,C_{t-k},\)</span>?, la <em>función de autorrelación</em> representa la duración y la intensidad de la memoria de un proceso, podría decirse que es una medida de que tanto afectan los valores pasados a los actuales.</p>
+<hr />
+<p>La <strong>autocovarianza de orden <span class="math inline">\(k\)</span></strong>, de un PED <span class="math inline">\(\{X_t\}\)</span> <em>estacionario</em> se define como</p>
+<p><span class="math display">\[\gamma_k=\mathbb{C}ov(X_t,X_{t+k})\]</span></p>
+<hr />
+<p>La <strong>autocorrelación simple de orden k</strong>, de un PED <span class="math inline">\(\{X_t\}\)</span> <em>estacionario</em> se define como</p>
+<p><span class="math display">\[\rho_k=\frac{\gamma_k}{\gamma_0};\;\; k=0,1\dots\]</span></p>
+<hr />
+<p>La función <span class="math inline">\(k\rightarrow\rho_k\)</span> es llamada la <em>función de autocorrelación (ACF)</em>, el dominio de la función se deduce a partir del supuesto de <em>estacionariedad</em>, esta función nos da la relación entre entre <span class="math inline">\(X_t\)</span> y <span class="math inline">\(X_{t-k}\)</span>.</p>
+<p>En la práctica se tienen que utilizar estimadores, el valor númerico para el estimador <span class="math inline">\(\hat\rho_k\)</span> es</p>
+<p><span class="math display">\[r_{k} = \frac{\sum\limits_{t=k+1}^T (x_{t}-\bar{x})(x_{t-k}-\bar{x})}
+ {\sum\limits_{t=1}^T (x_{t}-\bar{x})^2}\]</span></p>
+<p>donde <span class="math inline">\(x_t\)</span> es el valor observado de <span class="math inline">\(X_t\)</span>, <span class="math inline">\(T\)</span> denota el número de datos. Cada valor se considera individualmente significativo al <span class="math inline">\(5%\)</span> cuando <span class="math inline">\(r_k&gt;1.96/\sqrt{T}\)</span>. Si se quiere hacer una prueba conjunta de significancia de las <span class="math inline">\(K\)</span> primeras autocorrelaciones usualmente se calcula el <strong>estadístico de Ljuang-Box</strong> que aproximadamente sigue una distribución <span class="math inline">\(~\chi^2(K)\)</span></p>
+<p><span class="math display">\[Q_{LB}=T(T-2)\sum_{k=1}^{K}\frac{r_k^2}{T-k}\]</span></p>
+<p>la hipótesis nula es <span class="math inline">\(\rho_1=\ldots\rho_K=0\)</span>.</p>
+<p>Se aplica lo anterior a <span class="math inline">\(\{C_t\}\)</span>, la Figura <a href="#fig:acf">3</a> muestra el correlograma (la gráfica de <span class="math inline">\(r_k\)</span> vs <span class="math inline">\(k\)</span>) para <span class="math inline">\(k\in\{1,2,\ldots,20 \}\)</span>, de la definición <span class="math inline">\(r_0=1\)</span>, las lineas azules punteadas indican el intervalo de confianza al <span class="math inline">\(95\%\)</span>.</p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+capar&lt;-casospar$casost[1:84]
+acf(capar,lag.max=20, ylab=&quot;Autocorrelación r_k&quot;,
+    main=&quot;Función de autocorrelación&quot;, xlab=&quot;retraso k&quot;)</code></pre>
+<div class="figure"><span id="fig:acf"></span>
+<img src="SeriesTiempo_files/figure-html5/acf-1.png" alt="Función de autocorrelación" width="624" class=external />
+<p class="caption">
+Figure 3: Función de autocorrelación
+</p>
+</div>
+</div>
+<p>Observamos una dependencia entre <span class="math inline">\(C_t\)</span> y sus valores anteriores, esta dependencia va dismunuyendo conforme <span class="math inline">\(k\)</span> aumenta, una herramienta visual para corroborar esta situaciónes es gráficar <span class="math inline">\(C_t\)</span> vs <span class="math inline">\(C_{t-k}\)</span> para diferentes valores de <span class="math inline">\(k\)</span>, la Figura <a href="#fig:scatteracf">4</a> muestra dichas gráficas.</p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+gglagplot(capar) +
+  ggtitle(&quot;Grafias de C_t vs C_{t-k}&quot;)+
+  labs(y = &quot;C_t&quot;,x=&quot;C_{t-k}&quot;)</code></pre>
+<div class="figure"><span id="fig:scatteracf"></span>
+<img src="SeriesTiempo_files/figure-html5/scatteracf-1.png" alt="Grafias de C_t vs C_{t-k}" width="624" class=external />
+<p class="caption">
+Figure 4: Grafias de C_t vs C_{t-k}
+</p>
+</div>
+</div>
+<p>Existe una medida del grado de asociacion lineal entre dos componentes de <span class="math inline">\(\{X_t\}\)</span> que descarta que dicha asociación suceda por los componentes intermedios entre ellos, precisando:</p>
+<hr />
+<p>La <strong>autocorrelación parcial de orden <span class="math inline">\(k\)</span></strong> de un PED <span class="math inline">\(\{X_t\}\)</span> <em>estacionario</em> se define como el parámetro <span class="math inline">\(\phi_{kk}\)</span> de la regresión</p>
+<p><span class="math display" id="eq:pac">\[\begin{equation}
+\tilde{X}_t=\phi_{k1}\tilde{X}_{t-1}+\phi_{k2}\tilde{X}_{t-2}+\dots+\phi_{kk}\tilde{X}_{t-k}+ U_t
+\tag{1}
+\end{equation}\]</span></p>
+<p>con <span class="math inline">\(\tilde{X}_{t-i}=X_{t-i}-\mu_X\)</span>, <span class="math inline">\(i = 0,\dots,k\)</span>, <span class="math inline">\(U_t\)</span> independiente de <span class="math inline">\(Y_{t-i}\)</span> para todo <span class="math inline">\(i\geq 1\)</span>, la función <span class="math inline">\(k\rightarrow\phi_{kk}\)</span> suele llamarse <em>función de autocorrelación parcial (PACF)</em> del proceso.</p>
+<hr />
+<p>Existen por lo menos dos formas de estimar esta cantidad, solo se menciona una de ellas que es realizar la regresión que indica la ecuación <a href="#eq:pac">(1)</a>, cada estimación puede considerarse individualmente significativa al <span class="math inline">\(5\%\)</span> cuando <span class="math inline">\(\phi_{kk}&gt;1.96/\sqrt{T}\)</span>.</p>
+<p>Se aplica este concepto a <span class="math inline">\(\{C_t\}\)</span>, la Figura <a href="#fig:pacf">5</a> muestra la gráfica de <span class="math inline">\(\phi_{kk}\)</span> vs <span class="math inline">\(k\)</span> para <span class="math inline">\(k\in\{1,2,\ldots,20 \}\)</span>, las lineas azules punteadas indican el intervalo de confianza al <span class="math inline">\(95\%\)</span>.</p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+pacf(capar,lag.max=20, ylab=&quot;Autocorrelación parcial r_k&quot;,
+    main=&quot;Función de autocorrelación parcial&quot;, xlab=&quot;retraso k&quot;)</code></pre>
+<div class="figure"><span id="fig:pacf"></span>
+<img src="SeriesTiempo_files/figure-html5/pacf-1.png" alt="Función de autocorrelación parcial" width="624" class=external />
+<p class="caption">
+Figure 5: Función de autocorrelación parcial
+</p>
+</div>
+</div>
+<p>La ACF se puede calcular para series no estacionarias, cuando la serie no es estacionaria la ACF decrece <em>muy lento</em>. Hasta el momento se ha supuesto que <span class="math inline">\(\{C_t\}\)</span> es estacionaria, ¿qué tanto se puede sostener esta hipótesis al observar su correlograma?, todo depende de la interpretación de <em>muy lento</em>, se sigue sosteniendo la hipótesis de estacionariedad.</p>
+<h1 id="modelos-armapq">Modelos ARMA(<span class="math inline">\(p\)</span>,<span class="math inline">\(q\)</span>)</h1>
+<p>Un proceso estocástico <em>estacionario</em> <span class="math inline">\(\{X_t\}\)</span> sigue un <strong>modelo autorregresivo-media móvil</strong> de orden <span class="math inline">\((p,q)\)</span> o <strong>ARMA(<span class="math inline">\(p,q\)</span>)</strong>, si y sólo si</p>
+<p><span class="math display">\[X_t=\mu+\sum_{i=1}^p\phi_iX_{t-i}-\sum_{j=1}^q\theta_jA_{t-j}+A_t\]</span> para <span class="math inline">\(t\in\mathbb{Z}\)</span>, donde <span class="math inline">\(\{A_t\}\sim NIID(0,\sigma_A^2)\)</span>, <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\phi_i\)</span> y <span class="math inline">\(\theta_j\)</span> son parametros.</p>
+<hr />
+<p>para la <strong>condición de estacionariedad</strong> se tiene que las soluciones de la siguiente ecuación están fuera del circulo unitario</p>
+<p><span class="math display">\[1-\sum_{i=1}^p\phi_ix^i=0\]</span> se dice que el <strong>modelo es invertible</strong> si las soluciones de la siguente ecuación están fuera del círculo unitario</p>
+<p><span class="math display">\[1-\sum_{j=1}^q\theta_jx^j=0\]</span></p>
+<p>Cuando los parámetros <span class="math inline">\(\theta_j\)</span> son nulos se dice que el proceso sigue un modelo <strong>AR(<span class="math inline">\(p\)</span>)=ARMA(<span class="math inline">\(p,0\)</span>)</strong>, si los parámetros <span class="math inline">\(\phi_i\)</span> son nulos se dice que el proceso sigue un modelo <strong>MA(<span class="math inline">\(q\)</span>)=ARMA(<span class="math inline">\(0,q\)</span>)</strong></p>
+<p>Los procesos <em>estacionarios</em> <strong>ARMA(<span class="math inline">\(p,q\)</span>)</strong> se caracterizan por el comportamiento conjunto de su ACF y PACF, en la Figura <a href="#fig:tablaacf">6</a> se muestra el comportamiento, la tabla se se tomó del siguiente <a href="https://www.ucm.es/data/cont/docs/518-2013-11-11-JAM-IAST-Libro.pdf">enlace</a></p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<div class="figure"><span id="fig:tablaacf"></span>
+<img src="imagenes/tablaacf.png" alt="Tabla de ACF y PACF" width="601" class=external />
+<p class="caption">
+Figure 6: Tabla de ACF y PACF
+</p>
+</div>
+</div>
+<p>Si se revisan las grafias de ACF y PACF para <span class="math inline">\(\{C_t\}\)</span> entonces probablemente la variable <span class="math inline">\(C_t\)</span> se pueda escribir como un modelo autorregresivo de orden <span class="math inline">\(p\)</span>, <strong>AR(p)</strong>, es decir</p>
+<p><span class="math display">\[C_t=\beta_0+\beta_1 C_{t-1}+\beta_{t-2}C_{t-2}+\dots+\beta_{t-p}C_{t-p}+U_t\]</span> suponiendo <span class="math inline">\(\mathbb{E}(U_t|C_{t-1},C_{t-2},\dots)=0\)</span>. Con base en los resultados obtenidos de autocorrelación se realizan las regresiones para 1, 2 y 3 retardos.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+capar_AR1&lt;-lm(capar~lag(capar))
+capar_AR2&lt;-lm(capar~lag(capar)+lag(capar,2))
+capar_AR3&lt;-lm(capar~lag(capar)+lag(capar,2)+lag(capar,3))
+summary(capar_AR1)</code></pre>
+<pre><code>
+Call:
+lm(formula = capar ~ lag(capar))
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-589.18 -128.49  -31.71  110.55  526.15 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 1.343e+02  2.806e+01   4.786 7.55e-06 ***
+lag(capar)  1.050e+00  1.427e-03 735.383  &lt; 2e-16 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 205.1 on 81 degrees of freedom
+  (1 observation deleted due to missingness)
+Multiple R-squared:  0.9999,    Adjusted R-squared:  0.9998 
+F-statistic: 5.408e+05 on 1 and 81 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>
+summary(capar_AR2)</code></pre>
+<pre><code>
+Call:
+lm(formula = capar ~ lag(capar) + lag(capar, 2))
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-590.81  -68.44  -28.44   57.99  380.60 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   68.35218   27.59501   2.477   0.0154 *  
+lag(capar)     1.56567    0.09603  16.304  &lt; 2e-16 ***
+lag(capar, 2) -0.54174    0.10081  -5.374 7.58e-07 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 177.3 on 79 degrees of freedom
+  (2 observations deleted due to missingness)
+Multiple R-squared:  0.9999,    Adjusted R-squared:  0.9999 
+F-statistic: 3.596e+05 on 2 and 79 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>
+summary(capar_AR3)</code></pre>
+<pre><code>
+Call:
+lm(formula = capar ~ lag(capar) + lag(capar, 2) + lag(capar, 
+    3))
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-570.41  -66.10  -31.54   62.34  410.82 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   65.94304   28.91192   2.281   0.0253 *  
+lag(capar)     1.52140    0.11690  13.014   &lt;2e-16 ***
+lag(capar, 2) -0.41615    0.21745  -1.914   0.0594 .  
+lag(capar, 3) -0.08323    0.13019  -0.639   0.5245    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 178.9 on 77 degrees of freedom
+  (3 observations deleted due to missingness)
+Multiple R-squared:  0.9999,    Adjusted R-squared:  0.9999 
+F-statistic: 2.337e+05 on 3 and 77 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<p>Observamos que los 3 modelos tiene <span class="math inline">\(R^2\)</span> y <span class="math inline">\(R^2\)</span>-ajustada bastante alta, tenemos que los coeficientes en los dos primeros modelos por separado y conjuntamete son estadisticamente significativos, en el tercero dos de los coeficientes no son significativos, pero esto no interfiere en la predicción que pueda hacerse <span class="citation" data-cites="forecasting1">(Hyndman and Athanasopoulos <a href="#ref-forecasting1">2018</a>)</span>, entonces se aplica un criterio para elegir uno de estos modelos, se utiliza el criterio de información de Bayes<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> (BIC) <span class="citation" data-cites="stock">(Stock and Watson <a href="#ref-stock">2012</a>)</span>, el cual se define como:</p>
+<p><span class="math display">\[BIC(p)=\ln\left(\frac{SR(p)}{T}\right)+\frac{p+1}{T}\ln(T)\]</span> aquí <span class="math inline">\(SR(p)\)</span> es la suma de los cuadrados de los residuos del modelo <strong>AR(<span class="math inline">\(p\)</span>)</strong> estimado, se elige el modelo que presente menor BIC</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+a&lt;-log(sum(capar_AR1$residuals^2)/length(capar))+(2)*
+  log(length(capar))/length(capar)
+b&lt;-log(sum(capar_AR2$residuals^2)/length(capar))+(3)*
+  log(length(capar))/length(capar)
+c&lt;-log(sum(capar_AR3$residuals^2)/length(capar))+(4)*
+  log(length(capar))/length(capar)
+c(a,b,c)</code></pre>
+<pre><code>
+[1] 10.71623 10.45209 10.49764</code></pre>
+</div>
+<p>Se elige <strong>AR(<span class="math inline">\(2\)</span>)</strong>, así el modelo estimado es</p>
+<p><span class="math display">\[\hat{C}_t=68.35218+1.565 C_{t-1}-0.541C_{t-2}\]</span></p>
+<p>La Figura <a href="#fig:estimadosar">7</a> muestra los estimados con el modolo AR(2) y la Figura <a href="#fig:estimadosarlog">8</a> muestra la misma información pero en escala logaritmica.</p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+autoplot(ts(capar), series=&quot;Casos observados&quot;) +
+  autolayer(ts(fitted(capar_AR2)),series=&quot;Casos ajustados AR(2)&quot;) +
+  xlab(&quot;días&quot;) + ylab(&quot;&quot;) +
+  ggtitle(&quot;Casos observados y casos estimados AR(2)&quot;)</code></pre>
+<div class="figure"><span id="fig:estimadosar"></span>
+<img src="SeriesTiempo_files/figure-html5/estimadosar-1.png" alt="Casos observados y casos estimados AR" width="624" class=external />
+<p class="caption">
+Figure 7: Casos observados y casos estimados AR
+</p>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+autoplot(ts(log10(capar)), series=&quot;Casos observados&quot;) +
+  autolayer(ts(log10(fitted(capar_AR2))),series=&quot;Casos ajustados AR(2)&quot;) +
+  xlab(&quot;días&quot;) + ylab(&quot;&quot;) +
+  ggtitle(&quot;Casos observados y casos estimados AR(2)&quot;)</code></pre>
+<div class="figure"><span id="fig:estimadosarlog"></span>
+<img src="SeriesTiempo_files/figure-html5/estimadosarlog-1.png" alt="Casos observados y casos estimado AR logaritmo" width="624" class=external />
+<p class="caption">
+Figure 8: Casos observados y casos estimado AR logaritmo
+</p>
+</div>
+</div>
+<p>Si se realiza una prueba de ruido blanco a los residuales:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+Box.test(residuals(capar_AR2), type=&quot;Ljung-Box&quot;)</code></pre>
+<pre><code>
+    Box-Ljung test
+
+data:  residuals(capar_AR2)
+X-squared = 0.11569, df = 1, p-value = 0.7338</code></pre>
+</div>
+<p>No se rechaza que los residuos se distribuyan como ruido blanco. Hasta este momento todo parece indicar que se encontro un modelo que puede ser usado para predecir el número de casos confirmados, el problema que se presenta es que se ha supuesto que la serie es <strong>estacinaria</strong>, se aplicara un test para ver si esto es correcto.</p>
+<h1 id="seriede-tiempo-no-estacionarias">Seriede tiempo no estacionarias</h1>
+<p>Si la serie presenta una <strong>raíz unitaria</strong> (y con esto <strong>no estacionaria</strong>), es decir, <span class="math inline">\(z=1\)</span> es una solución de la ecuación</p>
+<p><span class="math display">\[1-\beta_1z-\beta_2z^2-\dots+\beta_pz^p=0\]</span> entonces la serie presenta una tendencia estocastica lo cual implica que los coeficientes y los estadisticos <span class="math inline">\(t\)</span> de las regresiones previamente realizados no tienen <em>buenas caracteristicas</em> (los coeficientes son sesgados y el estadistico no se distribuye de forma normal). Para revisar si es el caso, se realiza el contraste de <strong>Dickey-Fuller aumentado</strong> <span class="citation" data-cites="stock">(Stock and Watson <a href="#ref-stock">2012</a>)</span>, para ello se estima el siguiente modelo<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
+<p><span class="math display" id="eq:adf">\[\begin{equation}
+\Delta C_t=\beta_0+\delta C_{t-1} + \gamma_1\Delta C_{t-1}+\gamma_2 C _{t-2}+\dots+\gamma_p \Delta C_{t-p+1}+u_t
+\tag{2}
+\end{equation}\]</span></p>
+<p>donde <span class="math display">\[H_0:\delta=0\;\;\text{vs}\;\;H_1:\delta&lt;0 \]</span></p>
+<p>bajo la hipotesis nula <span class="math inline">\(C_t\)</span> tiene tendencia estocástica, bajo la hipotesis alternatica <span class="math inline">\(C_t\)</span> es <strong>estacionaria</strong>. Para calcular esta regresión se tiene que proponer un orden <span class="math inline">\(p\)</span>,<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> la instrucción <code>urca::ur.df</code> nos proporciona un criterio de selección y nos permite configurar la regresión como en la ecuación <a href="#eq:adf">(2)</a></p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+a&lt;-ur.df(capar, selectlags = &quot;BIC&quot;, type=&quot;drift&quot;)
+summary(a)</code></pre>
+<pre><code>
+############################################### 
+# Augmented Dickey-Fuller Test Unit Root Test # 
+############################################### 
+
+Test regression drift 
+
+
+Call:
+lm(formula = z.diff ~ z.lag.1 + 1 + z.diff.lag)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-590.81  -68.44  -28.44   57.99  380.60 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 68.352185  27.595014   2.477   0.0154 *  
+z.lag.1      0.023934   0.004944   4.841 6.30e-06 ***
+z.diff.lag   0.541739   0.100811   5.374 7.58e-07 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 177.3 on 79 degrees of freedom
+Multiple R-squared:  0.954, Adjusted R-squared:  0.9528 
+F-statistic: 819.2 on 2 and 79 DF,  p-value: &lt; 2.2e-16
+
+
+Value of test-statistic is: 4.8407 12.2256 
+
+Critical values for test statistics: 
+      1pct  5pct 10pct
+tau2 -3.51 -2.89 -2.58
+phi1  6.70  4.71  3.86</code></pre>
+</div>
+<p>se tiene que no se puede rechazar la hipótesis nula, pues el estadístico <span class="math inline">\(t\)</span> para el coeficiente <code>z.lag.1</code> (que juega el papel de <span class="math inline">\(\delta\)</span>) es positivo, la linea tau2 indica los valores criticos y los porcentajes de significancia. Se Repite el calculo pero sin utilizar las herramientas preconstruidas y se obtiene el mismo resultado, en este caso el estadistico de interes es el asociado a la variable <code>lag(capar)[-1]</code> (que juega el papel de <span class="math inline">\(\delta\)</span>).</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+capar_adf&lt;-lm(diff(capar)~lag(capar)[-1]+diff(lag(capar)))
+summary(capar_adf)</code></pre>
+<pre><code>
+Call:
+lm(formula = diff(capar) ~ lag(capar)[-1] + diff(lag(capar)))
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-590.81  -68.44  -28.44   57.99  380.60 
+
+Coefficients:
+                  Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)      68.352185  27.595014   2.477   0.0154 *  
+lag(capar)[-1]    0.023934   0.004944   4.841 6.30e-06 ***
+diff(lag(capar))  0.541739   0.100811   5.374 7.58e-07 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 177.3 on 79 degrees of freedom
+  (1 observation deleted due to missingness)
+Multiple R-squared:  0.954, Adjusted R-squared:  0.9528 
+F-statistic: 819.2 on 2 and 79 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<p>Si en la prueba anterior se modifica la hipotesis alternativa: <span class="math inline">\(C_t\)</span> es estacionaria en torno a una tendencia temporal lineal determinística, entonces la regresión de Dickey-Fuller se escribe como</p>
+<p><span class="math display" id="eq:adft">\[\begin{equation}
+\Delta C_t=\beta_0+\alpha t+\delta C_{t-1} + \gamma_1\Delta C_{t-1}+\gamma_2 C _{t-2}+\dots+\gamma_p \Delta C_{t-p+1}+u_t
+\tag{3}
+\end{equation}\]</span></p>
+<p>Se calcula la regresión de la ecuación <a href="#eq:adft">(3)</a>, para comprabar que los resultados sean correctos se utiliza la instrucción <code>tseries::adf.test</code> que tiene por defecto la estimación temporal.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+capar_adft&lt;-lm(diff(capar)~lag(capar)[-1]+diff(lag(capar))+c(1:(length(capar)-1)))
+summary(capar_adft)</code></pre>
+<pre><code>
+Call:
+lm(formula = diff(capar) ~ lag(capar)[-1] + diff(lag(capar)) + 
+    c(1:(length(capar) - 1)))
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-511.54  -61.04   -3.99   56.53  380.73 
+
+Coefficients:
+                           Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)              -1.023e+02  4.957e+01  -2.063 0.042432 *  
+lag(capar)[-1]            2.680e-02  4.588e-03   5.840 1.14e-07 ***
+diff(lag(capar))          2.747e-01  1.140e-01   2.410 0.018304 *  
+c(1:(length(capar) - 1))  7.551e+00  1.887e+00   4.002 0.000142 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 162.5 on 78 degrees of freedom
+  (1 observation deleted due to missingness)
+Multiple R-squared:  0.9618,    Adjusted R-squared:  0.9604 
+F-statistic: 655.2 on 3 and 78 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>
+adf.test(capar, k=1)</code></pre>
+<pre><code>
+    Augmented Dickey-Fuller Test
+
+data:  capar
+Dickey-Fuller = 5.8402, Lag order = 1, p-value = 0.99
+alternative hypothesis: stationary</code></pre>
+</div>
+<p>Dado el valor estadistico (<span class="math inline">\(5.84\)</span>) no se puede rechazar en favor de una <span class="math inline">\(C_t\)</span> estacionaria con tendencia temporal lineal determinística.</p>
+<p>Así la hipótesis sobre la estacionariedad de <span class="math inline">\(\{C_t\}\)</span> debe de abandonarse, lo cual implica que los resultado obtenidos bajo la suposición de estacionariedad deben descartarse.</p>
+<h1 id="transformaciones-de-series-no-estacionarias">Transformaciones de series no estacionarias</h1>
+<p>Algunos series no estacionarias se pueden transformar para convertirlas en series estacionarias. Normalmente se tienen dos transformaciones</p>
+<ol type="1">
+<li>Transformación de Box-Cox para estabilizar la dispersión, es decir, obtener estacionariedad en la varianza</li>
+</ol>
+<p><span class="math display">\[w_t=\begin{cases}
+log(x_t)&amp;\lambda=0\\
+&amp;\\
+\frac{x_t^\lambda-1}{\lambda}&amp;\lambda\neq 0
+\end{cases}\]</span></p>
+<ol start="2" type="1">
+<li>Aplicar diferencias es los datos para estabilizar el nivel, es decir, obtener estacionariedad en media</li>
+</ol>
+<p>Se recomienda trabajar con las diferencias de <span class="math inline">\(C_t\)</span> <span class="citation" data-cites="stock">(Stock and Watson <a href="#ref-stock">2012</a>)</span>-<span class="citation" data-cites="wool">(Wooldridge <a href="#ref-wool">2010</a>)</span>-<span class="citation" data-cites="asa">(Holmes, M. D, and Ward <a href="#ref-asa">2020</a>)</span>, es decir, con <span class="math inline">\(\Delta C_t=C_t-C_{t-1}\)</span> o con las segundas diferencias <span class="math inline">\(\Delta^2 C_t=C_t-2C_{t-1}+C_{t-2}\)</span>, de tal forma que al aplicar la preba de Dickey-Fuller a la serie resultante se rechaze al hipotesis nula en favor de una serie estacionaria.</p>
+<p>Existen varias formas de abordar este problema, se ha elegido utilizar la instrucción <code>forecast::ndiffs</code> que calcula la cantidad de diferencias necesarias, una vez que se tiene este numero se aplica la prueba mencionada para verificar dicha situación.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+ndiffs(capar, test = &quot;adf&quot;)</code></pre>
+<pre><code>
+[1] 2</code></pre>
+<pre class="r"><code>
+a&lt;-ur.df(diff(diff(capar)), selectlags = &quot;BIC&quot;, type=&quot;drift&quot;)
+summary(a)</code></pre>
+<pre><code>
+############################################### 
+# Augmented Dickey-Fuller Test Unit Root Test # 
+############################################### 
+
+Test regression drift 
+
+
+Call:
+lm(formula = z.diff ~ z.lag.1 + 1 + z.diff.lag)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-436.93  -57.67  -37.99   32.10  577.43 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  53.5034    22.3501   2.394   0.0191 *  
+z.lag.1      -1.5425     0.1884  -8.187 4.44e-12 ***
+z.diff.lag    0.1900     0.1244   1.527   0.1308    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 192.9 on 77 degrees of freedom
+Multiple R-squared:  0.6285,    Adjusted R-squared:  0.6189 
+F-statistic: 65.14 on 2 and 77 DF,  p-value: &lt; 2.2e-16
+
+
+Value of test-statistic is: -8.1871 33.5467 
+
+Critical values for test statistics: 
+      1pct  5pct 10pct
+tau2 -3.51 -2.89 -2.58
+phi1  6.70  4.71  3.86</code></pre>
+</div>
+<p>En este caso se aplico la prueba sin el factor de tendencia, pues las primeras diferencias eliminan la tendencia lineal determinista <span class="citation" data-cites="stock">(Stock and Watson <a href="#ref-stock">2012</a>)</span>-<span class="citation" data-cites="wool">(Wooldridge <a href="#ref-wool">2010</a>)</span> se comprueba que <span class="math inline">\(\Delta^2 C_t=C_t-2C_{t-1}+C_{t-2}\)</span> es una serie estacionaria. La Figura <a href="#fig:acfdd2">9</a> muestra muestra el correlograma y la Figura <a href="#fig:pacfdd2">10</a></p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+capardd1&lt;-diff(capar)
+capardd2&lt;-diff(capar,differences = 2)
+acf(capardd2,lag.max=20, ylab=&quot;Autocorrelación r_k&quot;,
+    main=&quot;Función de autocorrelación&quot;, xlab=&quot;retraso k&quot;)</code></pre>
+<div class="figure"><span id="fig:acfdd2"></span>
+<img src="SeriesTiempo_files/figure-html5/acfdd2-1.png" alt="Función de autocorrelación" width="624" class=external />
+<p class="caption">
+Figure 9: Función de autocorrelación
+</p>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+capardd1&lt;-diff(capar)
+capardd2&lt;-diff(capar,differences = 2)
+pacf(capardd2,lag.max=20, ylab=&quot;Autocorrelación parcial r_k&quot;,
+    main=&quot;Función de autocorrelación&quot;, xlab=&quot;retraso k&quot;)</code></pre>
+<div class="figure"><span id="fig:pacfdd2"></span>
+<img src="SeriesTiempo_files/figure-html5/pacfdd2-1.png" alt="Función de autocorrelación parcial" width="624" class=external />
+<p class="caption">
+Figure 10: Función de autocorrelación parcial
+</p>
+</div>
+</div>
+<p>Puesto que <span class="math inline">\(\Delta^2 C_t\)</span> es estacionaria, al observar las graficas de ACF, PACF, y de acuerdo a la <a href="#fig:tablaacf">6</a> se obtiene que la estructura propuesta es un modelo <strong>ARMA(<span class="math inline">\(0,1\)</span>)</strong>. Es decir</p>
+<p><span class="math display">\[\Delta^2 C_t=-\theta_1A_{t-1}+A_t\]</span> en terminos del proceso <span class="math inline">\(\{C_t\}\)</span></p>
+<p><span class="math display" id="eq:arimam">\[\begin{equation}
+C_t=2C_{t-1}-C_{t-2}-\theta_1A_{t-1}+A_t
+\tag{4}
+\end{equation}\]</span></p>
+<p>Más adelante se llega a esta estructura con las herramientas preconstruidas en R.</p>
+<h1 id="modelos-arimapdq">Modelos ARIMA(<span class="math inline">\(p,d,q\)</span>)</h1>
+<p>Se definen algunos conceptos para escribir la definición del modelo</p>
+<p>EL <em>operador de retardo</em> se define como</p>
+<p><span class="math display">\[B^dX_t=X_{t-d};\;\;d\in\mathbb{N}\]</span></p>
+<hr />
+<p>El <em>operador diferencias</em> se define como</p>
+<p><span class="math display">\[\Delta^dX_t=(1-B)^dX_t;\;\;d\in\mathbb{N}\]</span></p>
+<hr />
+<p>Un proceso estocástico <span class="math inline">\(\{X_t\}\)</span> es <strong>integrado de orden <span class="math inline">\(d\)</span></strong>, <span class="math inline">\(d\in\mathbb{N}\)</span>, si y sólo si el proceso <span class="math inline">\(\{\Delta^d X_t\}\)</span> sigue un modelo <strong>ARMA(<span class="math inline">\(p,q\)</span>)</strong> estacionario e invertible.</p>
+<hr />
+<p>Un proceso estocástico <span class="math inline">\(\{X_t\}\)</span> es integrado de orden <span class="math inline">\(d\)</span> si y solo si <span class="math inline">\(\{X_t\}\)</span> sigue un <strong>modelo autorregresivo-integrado-media móvil</strong> de orden <span class="math inline">\((p,d,q)\)</span>, o <strong>ARIMA(<span class="math inline">\(p,d,q\)</span>)</strong> del tipo</p>
+<p><span class="math display">\[\phi(B)\Delta^dX_t=\mu+\theta(B)A_t\]</span></p>
+<p>donde <span class="math inline">\(\{A_t\}\sim NIID(0,\sigma_A^2)\)</span>, <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\phi_i\)</span> y <span class="math inline">\(\theta_j\)</span> son parametros y</p>
+<p><span class="math display">\[1-\sum_{i=1}^p\phi_ix^i=\phi(x)\]</span></p>
+<p><span class="math display">\[1-\sum_{j=1}^q\theta_jx^j=\theta(x)\]</span></p>
+<hr />
+<p>Siguiendo las definiciones se puede decir que un proceso <span class="math inline">\(\{X_t\}\)</span> que sigue un modelo <strong>ARIMA(<span class="math inline">\(p,d,q\)</span>)</strong> equivale a que el proceso estacionario <span class="math inline">\(\{\Delta^d X_t\}\)</span> siga un modelo <strong>ARMA(<span class="math inline">\(p,q\)</span>)</strong></p>
+<h1 id="estimación-del-modelo-de-un-serie-de-tiempo">Estimación del modelo de un serie de tiempo</h1>
+<p>Se estima el modelo <strong>ARIMA(<span class="math inline">\(p,d,q\)</span>)</strong> para <span class="math inline">\(\{C_t\}\)</span> se utilizan las herramientas prediseñadas en R en especifico <code>forecast::auto.arima</code>, que tiene las siguientes caracteristicas</p>
+<ul>
+<li>Se estima el modelo con la estructura <span class="math inline">\(\phi(B)(\Delta^dX_t-\mu_1)=(1+\sum_{j=1}^q\theta_jB^j)A_t\)</span></li>
+<li>Para elegir al mejor modelo se prefiere utilizar el criterio de información de Akaike corregido</li>
+<li>Se utiliza el método MLE (Maximum likelihood estimation) para encontrar los parámetros</li>
+</ul>
+<p>Teniendo esto en cuenta, se obtiene el modelo <strong>ARIMA(<span class="math inline">\(0,2,1\)</span>)</strong> que coincide con lo obtenido en la ecuación <a href="#eq:arimam">(4)</a></p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+fit1&lt;-auto.arima(capar, trace=TRUE)</code></pre>
+<pre><code>
+ ARIMA(2,2,2)                    : 1105.638
+ ARIMA(0,2,0)                    : 1105.071
+ ARIMA(1,2,0)                    : 1101.677
+ ARIMA(0,2,1)                    : 1100.356
+ ARIMA(1,2,1)                    : 1102.119
+ ARIMA(0,2,2)                    : 1102.133
+ ARIMA(1,2,2)                    : 1103.458
+
+ Best model: ARIMA(0,2,1)                    </code></pre>
+</div>
+<p>Con este modelo se tiene que los paramtros son</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+fit1</code></pre>
+<pre><code>
+Series: capar 
+ARIMA(0,2,1) 
+
+Coefficients:
+          ma1
+      -0.3403
+s.e.   0.1212
+
+sigma^2 estimated as 37844:  log likelihood=-548.1
+AIC=1100.2   AICc=1100.36   BIC=1105.02</code></pre>
+</div>
+<p>El modelo se puede escribir como</p>
+<p><span class="math display">\[
+C_t=2C_{t-1}-C_{t-2}-0.3403A_{t-1}+A_t
+\]</span></p>
+<p>donde <span class="math inline">\(A_t\)</span> es un ruido blanco con varianza <span class="math inline">\(37844\)</span>, el signo del parámetro se conserva por la propuesta de R del modelo antes comentada.</p>
+<p>Falta verificar la condiciones las codiciones de ruido blanco sobre los residuales de la estimación,</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+checkresiduals(fit1)</code></pre>
+<p><img src="SeriesTiempo_files/figure-html5/unnamed-chunk-11-1.png" width="624" /></p>
+<pre><code>
+    Ljung-Box test
+
+data:  Residuals from ARIMA(0,2,1)
+Q* = 34.03, df = 9, p-value = 8.823e-05
+
+Model df: 1.   Total lags used: 10</code></pre>
+</div>
+<p>Se rechaza la hipótesis nula y como puede comprobarse en las grafica anterior los residuales no presentan varianza constante.</p>
+<p>Así se tiene que regresar a los datos para estabilizar la varianza, para esto se utiliza la tranformación de Cox- Box</p>
+<p><span class="math display">\[w_t=\begin{cases}
+log(c_t)&amp;\lambda=0\\
+&amp;\\
+\frac{c_t^\lambda-1}{\lambda}&amp;\lambda\neq 0
+\end{cases}\]</span></p>
+<p>Se encuentra el valor de <span class="math inline">\(\lambda=0.2602152\)</span>, la Figura <a href="#fig:cox">11</a> muestra los datos transformados</p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+lam&lt;-BoxCox.lambda(capar)
+lam</code></pre>
+<pre><code>
+[1] 0.2602152</code></pre>
+<pre class="r"><code>
+plot(BoxCox(capar,lambda=lam), main=&quot;Datos transformados&quot;,
+     xlab=&quot;día&quot;, ylab=&quot;Transformacion&quot;)</code></pre>
+<div class="figure"><span id="fig:cox"></span>
+<img src="SeriesTiempo_files/figure-html5/cox-1.png" alt="Datos transformados por Cox Box" width="624" class=external />
+<p class="caption">
+Figure 11: Datos transformados por Cox Box
+</p>
+</div>
+</div>
+<p>Se estima nuevamente el modelo, pero transformando los datos, esto se logra con el argumento <code>lambda</code>, se observa nuevamente una estructura <strong>ARIMA(<span class="math inline">\(0,2,1\)</span>)</strong></p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+fit&lt;-auto.arima(capar, lambda=lam,trace=TRUE)</code></pre>
+<pre><code>
+ ARIMA(2,2,2)                    : 3.99394
+ ARIMA(0,2,0)                    : 18.86529
+ ARIMA(1,2,0)                    : 3.680341
+ ARIMA(0,2,1)                    : -0.8826731
+ ARIMA(1,2,1)                    : 0.9499297
+ ARIMA(0,2,2)                    : 1.069859
+ ARIMA(1,2,2)                    : 2.264461
+
+ Best model: ARIMA(0,2,1)                    </code></pre>
+<pre class="r"><code>
+fit</code></pre>
+<pre><code>
+Series: capar 
+ARIMA(0,2,1) 
+Box Cox transformation: lambda= 0.2602152 
+
+Coefficients:
+          ma1
+      -0.5860
+s.e.   0.1071
+
+sigma^2 estimated as 0.05546:  log likelihood=2.52
+AIC=-1.03   AICc=-0.88   BIC=3.78</code></pre>
+</div>
+<p>Los residuales de la estimación se comportan como ruido blanco la prueba estadistica y los apoyos gráficos lo confirman.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+checkresiduals(fit)</code></pre>
+<p><img src="SeriesTiempo_files/figure-html5/unnamed-chunk-13-1.png" width="624" /></p>
+<pre><code>
+    Ljung-Box test
+
+data:  Residuals from ARIMA(0,2,1)
+Q* = 16.006, df = 9, p-value = 0.06675
+
+Model df: 1.   Total lags used: 10</code></pre>
+</div>
+<p>Así el modelo ajustado es</p>
+<p><span class="math display" id="eq:modecox">\[\begin{align}
+W_t=2W_{t-1}-W_{t-2}-0.5860A_{t-1}+A_t \notag \\
+C_t=(\lambda W_t+1)^{1/\lambda}
+\tag{5}
+\end{align}\]</span></p>
+<p>donde <span class="math inline">\(A_t\)</span> es un ruido blanco con varianza <span class="math inline">\(0.05546\)</span> y <span class="math inline">\(\lambda=0.2602152\)</span>.</p>
+<h1 id="predicción-de-una-serie-de-tiempo">Predicción de una serie de tiempo</h1>
+<p>Para las predicciones se toma el modelo <a href="#eq:modecox">(5)</a> y se evalua en <span class="math inline">\(t+h|T\)</span>, es decir, se estimará <span class="math inline">\(\hat C_{t+h|T}\)</span> sujeto a que se conoce hasta el dato <span class="math inline">\(T\)</span>-ésimo, para cada valor entero de <span class="math inline">\(h\geq1\)</span> se obtendrá una predicción, la estimación debe ser en orden, pues si no se tiene el dato <span class="math inline">\(C_t\)</span> para un determinado tiempo este debe ser sustituido por su estimado previamente obtenido. Lo usual es remplazar <span class="math inline">\(A_t\)</span> pata <span class="math inline">\(t\geq T+1\)</span> con <span class="math inline">\(0\)</span>. El modelo de predicción queda como</p>
+<p><span class="math display" id="eq:modecoxs">\[\begin{align}
+\hat W_{t+h|T}=2W_{t+h-1|T}-W_{t+h-2|T}-0.5860A_{t+h-1|T}+A_{t+h|T} \notag \\
+\hat C_{t+h|T}=(\lambda W_{t+h|T}+1)^{1/\lambda}
+\tag{6}
+\end{align}\]</span></p>
+<p>Cada predicción tiene asociada un intervalo de confianza <span class="citation" data-cites="forecasting1">(Hyndman and Athanasopoulos <a href="#ref-forecasting1">2018</a>)</span>, en particular el intervalo de confianza para la primer estimación <span class="math inline">\(\hat W_{t+1|T}\)</span> es <span class="math inline">\(\hat W_{t+1|T}\pm 1.96\hat\sigma_A\)</span>. La Figura <a href="#fig:tablapre">12</a> muestra la predicción y dos intervalos con nivel diferente de confianza.</p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+estimacion&lt;-forecast(fit,20)
+datatable(as.data.table(estimacion))</code></pre>
+<div class="figure"><span id="fig:tablapre"></span>
+<div id="htmlwidget-9a3f3c9ba5a11becf8ca" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9a3f3c9ba5a11becf8ca">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"],[62402.3558704223,65336.3385236229,68371.1451742415,71508.9951602904,74752.129902147,78102.8128621002,81563.3295044367,85135.9872560535,88823.1154675846,92627.0653750281,96550.2100618639,100594.944421648,104763.685121077,109058.8705635,113482.960852891,118038.43775824,122727.804678382,127553.58660724,132518.33009947,137624.603236511],[61344.5831640841,63449.5616214539,65547.4534972699,67620.2856560336,69663.7612507122,71676.5356585382,73658.0526006644,75607.9487257161,77525.8704203079,79411.4198914854,81264.1453610992,83083.5463783135,84869.0836632036,86620.1895280827,88336.2774627536,90016.7504707421,91661.0081344654,93268.45252868,94838.4931402364,96370.5509498306],[63473.5615789191,67264.3043631743,71283.8316067794,75560.7193181765,80110.3592132912,84945.6933230679,90079.3884582745,95524.4422515169,101294.377013386,107403.304357776,113865.945756375,120697.638016136,127914.334266801,135532.604411848,143569.636456717,152043.239127269,160971.845800578,170374.519628742,180270.959697738,190681.508065658],[60790.0323356968,62467.2391991695,64088.0975948442,65626.2412506515,67076.3137785831,68437.5625109076,69710.5242710941,70896.1101371605,71995.3208401073,73009.1600197139,73938.6150707739,74784.6612184706,75548.2726171478,76230.4344155762,76832.1536182663,77354.4681049754,77798.4537697966,78165.2299585656,78455.9634433225,78671.8711696721],[64046.0988551836,68301.7783584897,72862.3528089043,77773.0486824018,83059.1772335958,88742.566755272,94844.9032341589,101388.672342782,108397.471122458,115896.122132994,123910.720334004,132468.65705724,141598.637273883,151330.69621203,161696.217493216,172727.953424338,184460.047482181,196928.058810471,210168.988489464,224221.307341025]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Point Forecast<\/th>\n      <th>Lo 80<\/th>\n      <th>Hi 80<\/th>\n      <th>Lo 95<\/th>\n      <th>Hi 95<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 12: Tabla de prediccion
+</p>
+</div>
+</div>
+<p>Desde el comienzo del analísis se trabajo con aproximadamente el <span class="math inline">\(80\%\)</span> de los datos disponibles, dejando un <span class="math inline">\(20\%\)</span> para probar la predicción, en particular el modelo estimado predice que al 10 de junio de 2020 abría un total de <span class="math inline">\(137624\)</span> y la medición dispoible a ese día fue de <span class="math inline">\(129184\)</span>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+autoplot(estimacion,series=&quot;Predicción&quot;)+
+  autolayer(ts(casospar$casost),series=&quot;Casos observados&quot;) +
+  xlab(&quot;días&quot;) + ylab(&quot;&quot;) +
+  ggtitle(&quot;Casos observados y predicción&quot;)</code></pre>
+<p><img src="SeriesTiempo_files/figure-html5/unnamed-chunk-14-1.png" width="624" /></p>
+</div>
+<p>Ahora se ilustrará porque es importante que se satisfagan las condiciones de ruido blanco en los residuales de la estimación. La siguiente figura muestra la predicción de un modelo <strong>ARIMA(<span class="math inline">\(0,2,1\)</span>)</strong> pero donde no se ha realizado la transformación de Box.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+estimacion0&lt;-forecast(fit1,20)
+autoplot(estimacion0,series=&quot;Predicción sin Box&quot;)+
+  autolayer(ts(casospar$casost),series=&quot;Casos observados&quot;) +
+  xlab(&quot;días&quot;) + ylab(&quot;&quot;) +
+  ggtitle(&quot;Casos observdos y predicción sin Box&quot;)</code></pre>
+<p><img src="SeriesTiempo_files/figure-html5/unnamed-chunk-15-1.png" width="624" /></p>
+</div>
+<p>Tenemos que el observado incluso esta más alla del intervalo de confianza. Se realizará la prueba de Diebold-Mariano cuya hipótesis nula establece que las dos metodos a probar tienen el misma nivel de exactitud ( <em>accuracy</em><a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a> ) y la alternativa es que estos niveles son distintos.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+dm.test(estimacion$residuals,estimacion0$residuals)</code></pre>
+<pre><code>
+    Diebold-Mariano Test
+
+data:  estimacion$residualsestimacion0$residuals
+DM = -4.4059, Forecast horizon = 1, Loss function power = 2,
+p-value = 3.124e-05
+alternative hypothesis: two.sided</code></pre>
+</div>
+<p>Los dos niveles son distintos, se puede hacer una modificación de la prueba de tal forma que la hipóteiss alternativa indique si la exactitud de un método es menor a otro</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+dm.test(estimacion$residuals,estimacion0$residuals, alternative=&quot;less&quot;)</code></pre>
+<pre><code>
+    Diebold-Mariano Test
+
+data:  estimacion$residualsestimacion0$residuals
+DM = -4.4059, Forecast horizon = 1, Loss function power = 2,
+p-value = 1.562e-05
+alternative hypothesis: less</code></pre>
+</div>
+<p>En este caso indica que el método donde no se realizo la transformación de Box tiene menos exactitud (el segundo argumento de la función dm.test).</p>
+<p>Existen otras medidas que se pueden realizar para decidir sobre las predicciones. Algunos son las siguientes:</p>
+<p><span class="math display">\[\begin{align*}
+  \text{Mean error: ME} &amp; = \text{mean}(e_{t}),\\
+  \text{Root mean squared error: RMSE} &amp; = \sqrt{\text{mean}(e_{t}^2)}\\
+  \text{Mean absolute error: MAE} &amp; = \text{mean}(|e_{t}|),\\
+  \text{Mean absolute percentage error: MAPE}&amp; = \text{mean}(|p_{t}|).
+\end{align*}\]</span></p>
+<p>donde <span class="math inline">\(e_{T+h} = x_{T+h} - \hat{x}_{T+h|T}\)</span>, <span class="math inline">\(p_{t} = 100 e_{t}/x_{t}\)</span>. Se busca que cada uno sea lo menor posible. En nuestro caso todas ellas fallan a favor del método donde se realizo la transformación de Box.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+accuracy(estimacion$mean,casospar$casost[85:104])</code></pre>
+<pre><code>
+                ME     RMSE      MAE      MPE     MAPE
+Test set -2731.435 3924.698 2820.751 -2.42996 2.565069</code></pre>
+<pre class="r"><code>
+accuracy(estimacion0$mean,casospar$casost[85:104])</code></pre>
+<pre><code>
+               ME     RMSE      MAE      MPE     MAPE
+Test set 5252.801 6791.241 5252.801 4.893384 4.893384</code></pre>
+</div>
+<h1 id="conclusiones">Conclusiones</h1>
+<p>El ajuste <strong>ARIMA(<span class="math inline">\(p,d,q\)</span>)</strong> realizado a los casos confirmados de CoVID-2019 para México tiene una mejor confianza a corto plazo, podría tilizarse para complementar otros modelos pero me parece no los sustituye.</p>
+<div id="refs" class="references">
+<div id="ref-asa">
+<p>Holmes, E. E., Scheuerell M. D, and E. J. Ward. 2020. <em>Applied Time Series Analysis for Fisheries and Enviromental Data.</em> Northwet Fisheries Science Center, 2275, Montlake BlvdE., Seatle, WA 98112. <a href="https://nwfsc-timeseries.github.io/atsa-labs/">https://nwfsc-timeseries.github.io/atsa-labs/</a>.</p>
+</div>
+<div id="ref-forecasting1">
+<p>Hyndman, Rob J, and George Athanasopoulos. 2018. <em>Forecasting: Principles and Practice</em>. 2nd ed. Melbourn, Australia: OTexts. <a href="https://otexts.com/fpp2/">https://otexts.com/fpp2/</a>.</p>
+</div>
+<div id="ref-rincon">
+<p>Rincón, Luis. 2016. <em>Introducción a Los Procesos Estocásticos</em>. 1st ed. México: UNAM, Facultad de Ciencias.</p>
+</div>
+<div id="ref-stock">
+<p>Stock, James H., and Mark M. Watson. 2012. <em>Introducción a La Econometría</em>. 3rd ed. Melbourn, Australia: PEARSON.</p>
+</div>
+<div id="ref-wool">
+<p>Wooldridge, Jeffrey M. 2010. <em>Introducción a La Econometría</em>. 4th ed. México: CENGAGE.</p>
+</div>
 </div>
 <section class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>This will become a hover-able footnote<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn1"><p>para no saturar la notación se estará utilizando <span class="math inline">\(\{X_t\}\)</span> para referirse aun proceso estocástico discreto<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>la actualización de los datos podria verse como una realización distinta y podría trabajarse sobre eso<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>cabe mencionar qeu existen otros criterios, como el criterio de información de Akaike<a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p>segun <span class="citation" data-cites="stock">(Stock and Watson <a href="#ref-stock">2012</a>)</span> hay un subindice de más pero segun esta <a href="https://www.youtube.com/watch?v=4TBZnrUDrog">prueba</a> que parece correcta hay un subindice de menos<a href="#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn5"><p>normalmente se elige de tal forma que los residuales de la regresión sean ruido blanco<a href="#fnref5" class="footnote-back">↩</a></p></li>
+<li id="fn6"><p>la proximidad de las observaciones a los valores observados<a href="#fnref6" class="footnote-back">↩</a></p></li>
 </ol>
 </section>
 <!--radix_placeholder_article_footer-->
@@ -1483,6 +2262,84 @@ booktitle = {Ciclo de conferencias: El COVID-19 en México},
 publisher = {Flacso México},
 url = {https://youtu.be/IcA0j7zIuas},
 year ={consulta 31 de mayo de 2019}
+}
+
+
+
+@inproceedings{kagglehigh,
+author = {ammrs},
+title = {Beginners guide to Highchart Visual in R},
+publisher = {kaggle},
+url = {https://www.kaggle.com/nulldata/beginners-guide-to-highchart-visual-in-r},
+}
+
+
+@inproceedings{jkunst,
+author = {Joshua Kunst},
+title = {HIGHCHARTER},
+url = {http://jkunst.com/highcharter/index.html},
+}
+
+@inproceedings{singh,
+author = {Nishant Singh},
+title = {Data Visualization with Highcharter in R},
+url = {https://www.datacamp.com/community/tutorials/data-visualization-highcharter-r},
+}
+
+
+@inproceedings{jkunstm,
+author = {Joshua Kunst},
+title = {Package "highcharter"},
+url = {https://cran.r-project.org/web/packages/highcharter/highcharter.pdf},
+}
+
+@book{forecasting1,
+author = {Rob J Hyndman and George Athanasopoulos},
+title = {Forecasting: Principles and Practice},
+address   = {Melbourn, Australia},
+edition = {2},
+publisher = {OTexts},
+url = {https://otexts.com/fpp2/},
+year ={2018}
+}
+
+
+
+
+@book{stock,
+author = {James H. Stock and Mark M. Watson},
+title = {Introducción a la Econometría},
+address   = {Melbourn, Australia},
+edition = {3},
+publisher = {PEARSON},
+year ={2012}
+}
+
+@book{wool,
+author = {Jeffrey M. Wooldridge},
+title = {Introducción a la Econometría},
+address   = {México},
+edition = {4},
+publisher = {CENGAGE},
+year ={2010}
+}
+
+@book{asa,
+author = {E. E. Holmes and M. D, Scheuerell and E. J. Ward},
+title = {Applied time series analysis for fisheries and enviromental data.},
+address   = {Northwet Fisheries Science Center, 2275, Montlake BlvdE., Seatle, WA 98112},
+url = {https://nwfsc-timeseries.github.io/atsa-labs/},
+year ={2020}
+}
+
+
+@book{rincon,
+author = {Luis Rincón},
+title = {Introducción a los procesos estocásticos},
+address   = {México},
+edition = {1},
+publisher = {UNAM, Facultad de Ciencias},
+year ={2016}
 }
 </script>
 <!--/radix_placeholder_appendices-->

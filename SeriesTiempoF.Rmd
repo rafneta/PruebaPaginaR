@@ -1,0 +1,452 @@
+---
+title: "Series de Tiempo"
+description: |
+  Se presentan los conceptos básicos de series de tiempo, y las su estudñio econométrico
+author:
+  - name: Rafael Martínez Martínez
+    url: https://github.com/rafneta
+    affiliation: CIDE-ME2019
+    affiliation_url: https://cide.edu/programas/me
+date: "`r Sys.Date()`"
+output: 
+  distill::distill_article:
+    code_folding: hide
+    toc: true
+    toc_depth: 3
+bibliography: bibliografia.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, warning=FALSE,message=FALSE, echo=FALSE}
+library(covidMex)
+library(urca)
+library(tseries)
+library(dplyr)
+library(ggplot2)
+library(highcharter)
+library(tidyverse)
+library(lubridate)
+library(openxlsx)
+library(DT)
+library(data.table)
+library(xts)
+library(forecast)
+myMenuItems <- c("downloadPNG", "downloadJPEG", "downloadPDF", "downloadCSV" )
+casos_mx_st <- read_csv("Datos10deJunioSeries.csv")  %>%
+select(-X1)
+casos_m<-casos_mx_st   %>%
+pivot_longer(-Estado, names_to = "fecha_corte", 
+               values_to = "casos") 
+casos_m$fecha <- format(as.Date(casos_m$fecha_corte,
+                                format = "%d-%m-%Y"), "%Y-%m-%d")
+casostotales<-casos_m %>% 
+  group_by(fecha)%>%
+  summarise(casost=sum(casos))
+casostotales_xts<-xts(casostotales$casost,
+                 order.by = as.Date(casostotales$fecha))
+
+```
+<aside>
+```{r codefolder, echo=FALSE, results='asis'}
+codefolder::distill(init = "show")
+```
+</aside>
+
+Observamos el comportamiento de los casos totales $C_t$, ver Figura \@ref(fig:casostotaless) superior, se podría estar interesado en estudiar el cambio en los casos reportados $\Delta C_t=C_t-C_{t-1}$, ver Figura   \@ref(fig:casostotaless) inferior, a algún otro comportamento como $\log(C_t)$ o 
+$\Delta \log(C_t)\approx \frac{C_t-C_{t-1}}{C_{t-1}}$. 
+
+```{r,"casostotaless", fig.cap="Casos confirmados para México ",  out.extra="class=external", layout="l-body-outset"}
+highchart(type = "stock") %>%
+  hc_yAxis_multiples(
+    create_yaxis(2, height = c(2, 2))) %>%
+  hc_add_series(name="Total",casostotales_xts[,1],yAxis=0)%>%
+  hc_add_series(name="Diferencias",
+                diff(casostotales_xts[,1],2), yAxis=1)%>%
+  hc_add_theme(hc_theme_ffx())%>%
+  hc_title(text = "Casos confirmados para México")%>%
+           #margin = 20, align = "left",
+           #style = list(color = "#90ed7d", useHTML = TRUE)) %>% 
+  hc_subtitle(text = "Utilice la herramienta de zoom en la parte
+              inferior")%>%
+  hc_tooltip(crosshairs = TRUE, backgroundColor = "#FCFFC5",
+             shared = TRUE, borderWidth = 5) %>% 
+  #hc_yAxis(title = list(text = "Número de casos confirmados"))%>%
+    hc_exporting(enabled = TRUE,
+      filename = "datos",
+      buttons = list(contextButton = list(menuItems = myMenuItems)))
+```
+
+Una primera observación es que se trabajaran con los datos a partir donde se detectó el primer caso, no tiene sentido trabajar con observaciones nulas, en el sentido que la observación de la variable es cero desde $-\infty$ hasta el día anterior del primer caso, el primer caso confirmado en México fue el 28 de febrero, la Figura \@ref(fig:casospar) muestra esta ventana de datos para las variables, $C_t$, $\Delta C_t$, $\log(C_t)$, $\Delta \log(C_t)$. 
+
+```{r,"casospar", fig.cap="Casos confirmados para México ",  out.extra="class=external", layout="l-body-outset"}
+casospar<-casos_m %>% 
+  group_by(fecha)%>%
+  summarise(casost=sum(casos))%>%
+  filter(casost!=0)
+casospar_xts<-xts(casospar$casost,
+                 order.by = as.Date(casospar$fecha))
+highchart(type = "stock")%>%
+   hc_yAxis_multiples(
+    create_yaxis(4, height = c(2,2,2,2))) %>%
+  hc_add_series(name="Parcial",casospar_xts[,1], yAxis=0)%>%
+  hc_add_series(name="Diferencias P",
+                diff(casospar_xts[,1]), yAxis=1)%>%
+  hc_add_series(name="Logaritmo",
+                log10(casospar_xts[,1]), yAxis=2)%>%
+  hc_add_series(name="Diferencias L",
+                diff(log10(casospar_xts[,1])), yAxis=3)%>%
+  hc_add_theme(hc_theme_ffx())%>%
+  hc_title(text = "Casos confirmados para México
+           desde el primer caso")%>%
+           #margin = 20, align = "left",
+      #style = list(color = "#90ed7d", useHTML = TRUE)) %>% 
+  hc_subtitle(text = "Utilice la herramienta de zoom en la
+              parte inferior")%>%
+  hc_tooltip(crosshairs = TRUE, backgroundColor = "#FCFFC5",
+             shared = TRUE, borderWidth = 5) %>% 
+#hc_yAxis(title = list(text = "Número de casos confirmados"))%>%
+    hc_exporting(enabled = TRUE,
+      filename = "datos",
+      buttons = list(contextButton = list(menuItems = myMenuItems)))
+
+```
+
+Se trabajará con la variable $C_t$, pero un procedimiento similar puede aplicarse a las demás variables en caso que se desee. 
+
+Lo primero que se quisiera responder, es si existe una relación entre $C_t$ y $C_{t-1},C_{t-2},\dots,C_{t-k},$. Para ello calculamos la fución de autocorrelación, donde $r_k$ mide la relacion entre $C_t$ y $C_{t-k}$
+
+$$r_{k} = \frac{\sum\limits_{t=k+1}^T (C_{t}-\bar{C})(C_{t-k}-\bar{C})}
+ {\sum\limits_{t=1}^T (C_{t}-\bar{C})^2},$$
+
+aquí $T$ denota el número de datos, la Figura \@ref(fig:acf) muestra la gráfica de $r_k$ vs $k$ para $k\in\{1,2,\ldots,20 \}$, claramente $r_0=1$
+
+
+```{r,"acf", fig.cap="Función de autocorrelación",  out.extra="class=external", layout="l-body-outset"}
+capar<-casospar$casost
+ggAcf(capar) +
+  ggtitle("Función de autocorrelación C_t")+
+  labs(y = "r_k",x="k (retrasos)")
+```
+
+Observamos una dependencia entre $C_t$ y sus valores anteriores, esta dependencia va dismunuyendo conforme $k$ aumenta, una herramienta visual para corroborar esta situaciónes es gráficar $C_t$ vs $C_{t-k}$ para diferentes valores de $k$, la Figura \@ref(fig:scatteracf) muestra dichas gráficas.
+
+```{r,"scatteracf", fig.cap="Grafias de C_t vs C_{t-k}",out.extra="class=external", layout="l-body-outset"}
+gglagplot(capar) +
+  ggtitle("Grafias de C_t vs C_{t-k}")+
+  labs(y = "C_t",x="C_{t-k}")
+```
+
+Entonces probablemente la variable $C_t$ se pueda escribir como un modelo autorregresivo de orden $p$, **AR(p)**, es decir 
+
+$$C_t=\beta_0+\beta_1 C_{t-1}+\beta_{t-2}C_{t-2}+\dots+\beta_{t-p}C_{t-p}+\varepsilon_t$$
+suponiendo $\mathbb{E}(\varepsilon_t|C_{t-1},C_{t-2},\dots)=0$. Con base en los resultados obtenidos de autocorrelación se realizan las regresiones para 1, 2 y 3 retardos.
+
+```{r}
+capar_AR1<-lm(capar~lag(capar))
+capar_AR2<-lm(capar~lag(capar)+lag(capar,2))
+capar_AR3<-lm(capar~lag(capar)+lag(capar,2)+lag(capar,3))
+summary(capar_AR1)
+summary(capar_AR2)
+summary(capar_AR3)
+```
+
+Observamos que los 3 modelos tiene $R^2$ y $R^2$-ajustada
+bastante alta, tenemos que los coeficientes en los dos primeros modelos por separado y conjuntamete son estadisticamente significativos, en el tercero uno de los coeficientes no es significativo, pero esto no interfiere en la predicción  que pueda hacerse [@forecasting1], entonces se aplica un criterio para elegir uno de estos modelos, se utiliza el criterio de información de Bayes ^[cabe mencionar qeu existen otros criterios, como el criterio de información de Akaike] (BIC) [@stock], el cual se define como: 
+
+$$BIC(p)=\ln\left(\frac{SR(p)}{T}\right)+\frac{p+1}{T}\ln(T)$$
+aquí $SR(p)$ es la suma de los cuadrados de los residuos del modelo AR(p) estimado, se elige el modelo que presente menor BIC 
+
+```{r}
+a<-log(sum(capar_AR1$residuals^2)/length(capar))+(2)*
+  log(length(capar))/length(capar)
+b<-log(sum(capar_AR2$residuals^2)/length(capar))+(3)*
+  log(length(capar))/length(capar)
+c<-log(sum(capar_AR3$residuals^2)/length(capar))+(4)*
+  log(length(capar))/length(capar)
+c(a,b,c)
+```
+
+Se elege AR(2), así el modelo estimado es
+
+$$\hat{C}_t=95.949+1.698 C_{t-1}-0.685C_{t-2}$$
+
+La Figura \@ref(fig:estimadosar) muestra los estimados con el modolo AR(2) y la Figura \@ref(fig:estmadosarlog) muestra la misma información pero en escala logaritmica.
+
+```{r,"estimadosar", fig.cap="Casos observados y casos estimados AR",out.extra="class=external", layout="l-body-outset"}
+autoplot(ts(capar), series="Casos observados") +
+  autolayer(ts(fitted(capar_AR2)),series="Casos ajustados AR(2)") +
+  xlab("días") + ylab("") +
+  ggtitle("Casos observados y casos estimados AR(2)")
+```
+
+
+```{r,"estimadosarlog", fig.cap="Casos observados y casos estimado AR logaritmo",out.extra="class=external", layout="l-body-outset"}
+autoplot(ts(log10(capar)), series="Casos observados") +
+  autolayer(ts(log10(fitted(capar_AR2))),series="Casos ajustados AR(2)") +
+  xlab("días") + ylab("") +
+  ggtitle("Casos observados y casos estimados AR(2)")
+```
+
+Si la serie presenta una **raíz unitaria**, es decir, $z=1$ es una solución de la ecuación
+
+$$1-\beta_1z-\beta_2z^2-\dots+\beta_pz^p=0$$
+entonces se presenta una tendencia estocastica lo cual implica que los coeficientes y los estadisticos $t$ de la regresiones previamente realizados no tienen _buenas caracteristicas_ (los coeficientes son sesgados y el estadistico no se distribuye de forma normal). Para revisar si es esta en este caso, se realiza el contraste de de Dickey-Fuller aumentado para raíz aumentada autoregresiva [@stock], para ello se estima el siguiente modelo ^[segun [@stock] hay un subindice de más pero segun esta  [prueba](https://www.youtube.com/watch?v=4TBZnrUDrog) que parece correcta hay un subindice de menos]
+
+\begin{equation}
+\Delta C_t=\beta_0+\delta C_{t-1} + \gamma_1\Delta C_{t-1}+\gamma_2 C _{t-2}+\dots+\gamma_p \Delta C_{t-p+1}+u_t
+(\#eq:adf)
+\end{equation}
+
+donde $$H_0:\delta=0\;\;\text{vs}\;\;H_1:\delta<0 $$
+
+bajo la hipotesis nula $C_t$ tiene tendencia estocástica, bajo la hipotesis alternatica $C_t$ es estacionaria. Para calcular esta regresión se tiene que porponer un orden $p$, la instrucción urca::ur.df nos proporciona un criterio de selección y nos permite configurar la regresión como en la ecuación \@ref(eq:adf) 
+
+```{r}
+a<-ur.df(capar, selectlags = "BIC", type="drift")
+summary(a)
+```
+así se tiene que no se puede rechazar a favor que la serie sea estacionaria pues el es estadístico $t$ para $\delta$, que el coeficiente de  z.lag.1, es positivo y a la linea tau2 indica los valores criticos y los porcentajes de significacncial. Repetimos el calculo con una regresión a mano y observamos que es lo mismo, en este caso el estadistico que nos interesa es el asociado a la variable lag(capar)[-1]. 
+
+```{r}
+capar_adf<-lm(diff(capar)~lag(capar)[-1]+diff(lag(capar)))
+summary(capar_adf)
+```
+
+Si la hipotesis alternativa es que $C_t$ es estacionaria en torno a una tendencia temporal lineal determinística, entonces la regresión de Dickey-Fuller se escribe como
+
+\begin{equation}
+\Delta C_t=\beta_0+\alpha t+\delta C_{t-1} + \gamma_1\Delta C_{t-1}+\gamma_2 C _{t-2}+\dots+\gamma_p \Delta C_{t-p+1}+u_t
+(\#eq:adft)
+\end{equation}
+
+Calculamos la regresión de la ecuación  \@ref(eq:adft),  además para comprabar  se utiliza la instrucción tseries::adf.test que tiene por defecto la estimación temporal. 
+
+```{r}
+capar_adft<-lm(diff(capar)~lag(capar)[-1]+diff(lag(capar))+c(1:(length(capar)-1)))
+summary(capar_adft)
+adf.test(capar, k=1)
+```
+
+El estadistico es $5.1284$ no se puede rechazar en favor de una $C_t$ estacionaria con tendencia temporal lineal determinística. Ahora no se puede asegurar que exista raíz unitaria, pero se tiene un $r_1$ parecido a la unidad, entonces se recomienda trabajar con las diferencias de $C_t$ [@stock]-[@wool]-[@asa], es decir, con $\Delta C_t=C_t-C_{t-1}$ o con las segundas diferencias $$\Delta^2 C_t=C_t-2C_{t-1}+C_{t-2}$, de tal forma que al aplicar la preba de Dickey-Fuller la a la serie resultante se rechaze al hipotesis nula a favor de una serie estacionaria. Existen varias formas de abordar este problema, se ha elegido utilizar la instrucción forecast::ndiffs que calcula la cantidad de diferencias necesarias, una vez que se tiene este numero se aplica la prueba mencionada para verificar dicha situación. 
+
+```{r}
+ndiffs(capar, test = "adf")
+a<-ur.df(diff(diff(capar)), selectlags = "BIC", type="drift")
+summary(a)
+```
+
+En este caso se aplico la prueba sin el factor de tendencia, pues las primeras diferencias eliminan la tendencia lineal determinista [@stook]-[@wool] y se comprueba el resultado,
+
+```{r,"acfdd2", fig.cap="Función de autocorrelación",  out.extra="class=external", layout="l-body-outset"}
+capardd1<-diff(capar)
+capardd2<-diff(diff(capar))
+ggAcf(capardd2) +
+  ggtitle("Función de autocorrelación C_t")+
+  labs(y = "r_k",x="k (retrasos)")
+```
+
+```{r}
+fit<-auto.arima(capar)
+residuals(fit)
+fitted(fit)
+checkresiduals(fit)
+checkresiduals(fit,plot=FALSE)
+```
+
+```{r}
+z<-BoxCox(capar,0.2706504)
+autoplot(ts(z))
+a<-ur.df(diff(z), selectlags = "BIC", type="drift")
+summary(a)
+plot.ts(diff(z))
+```
+
+
+
+
+
+
+
+
+
+
+```{r}
+ndiffs(capar,test="pp",max.d=5)
+a<-auto.arima(casospar_xts)
+forecast(a,10)
+hchart(forecast(a,10))
+gglagplot(casospar_xts)
+```
+
+```{r}
+#y <- ts(casospar)
+#fit <- tslm(y~lag(y))
+#plot(forecast(fit, h=20))
+
+
+f <- tslm(ts(capar) ~ trend )
+fcast <- forecast(f)
+autoplot(fcast) +
+  ggtitle("Forecasts of beer production using regression") +
+  xlab("Year") + ylab("megalitres")
+
+
+```
+
+
+
+
+```{r}
+arima1<-auto.arima(ts(capar))
+forecast1<-forecast(arima1,level = c(95), h = 50)
+autoplot(forecast1)
+```
+
+```{r}
+fit <- auto.arima(diff(casospar_xts,1), seasonal=FALSE)
+fit
+
+fit %>% forecast(h=10) %>% autoplot(include=80)
+```
+
+
+
+
+```{r}
+x <- forecast(ets(diff(casostotales$casost)), h = 30, level = 95)
+hchart(x)
+model <- HoltWinters(diff(casostotales$casost,2), gamma=FALSE)
+predict(model, 9, prediction.interval = TRUE, level= 0.99) 
+```
+
+
+
+
+Se definiran los conceptos de series tiempo y se aplicaran a las mediciones de Casos Confirmados Acumulalados, tomamos el conjunto de cada uno de estos valores como $$\left\{C_t: t=1,\dots 140\right\}$$
+
+
+
+
+
+
+# Series de Tiempo {#prueba}
+
+```{definition, name="Proceso Estástico Discreto", label='pe'}
+Es una colección de variables aleatorias 
+ $$\left\{ X_t:t\in G\right\}$$
+donde $T$ es un conjunto numerable,  y $X_t\in S$, $S$ es llamado el espacio de estados.  
+```
+
+
+## Regresión con series de tiempo
+
+Colección de observaciones, igualmente espaciados.
+
+
+
+$$\{X_t\}_{t\in\mathbb{N}}$$
+
+
+donde $X_t:\Omega\rightarrow\mathbb{R}$ es una variable aleatoria, uan serie de tiempoes una realización de todas las posibles, 
+
+$$\mathbb{E}(X_t)=\frac{1}{T}\sum_t X_t$$
+ Propiedad de ergodicidad.
+ 
+ Propiedad de estacionariedad
+ 
+ - Fuerte: 
+ $$(X_{i_1},X_{i_2},\ldots,X{i_n})=(X_{i_1+h},X_{i_2+h},\ldots,X{i_n+h})$$
+ 
+ orden (1) $\forall t,s$ $X_t=X_s$
+ 
+ orden (2) $\forall t,s$ $(X_t,X_s)=(X_{t+h},X_{s+h}$
+ 
+ Orden 1  media, varianza y predicción
+ 
+ Estacinaonalidad  (debil de segundo orden)
+ 
+1) $\forall t$ $\mathbb{E}(X_t)=\mu$
+2)  $\forall t$ $\mathbb{V}(X_t)=\sigma^2$ (se optienen de la tercera)
+3) $\gamma(s,t)=Cov(X_t,X_s)=\gamma(|t-s|)$
+4) equivalente a 3) $\gamma(h)=Cov(X_t,X_{t+h})=\gamma(|h|)$
+$\gamma$ *función de autocovarianzao (autocorrelacion)* como el presente y el pasado estan realcionados entre si, dependencia dinámica
+
+Esto determina el mejor predictor lineal. 
+
+Función de autocorrelación
+
+\begin{equation}
+\rho(h)=\frac{\gamma(h)}{\gamma(0)}
+\end{equation}
+
+Solo pintamos el lado derecho 
+
+$$\rho(0)=1$$
+
+La evalaución nos da un aidea del poder predictivo para diferentes intervalos de tiempo, si lo vemos hacia el futuro. Hacia el pasado le llamas memoria. 
+
+### Modelo MA(1) (MOving average)
+
+$\{\epsilon_t\}$ estacionario con $\mathbb{E}(\epsilon_t)=0$ $\mathbb{V}ar(\epsilon_t)=\sigma^2$
+
+
+$$
+\rho(h)=\begin{cases}
+1&\text{ si } h=0\\
+0&\text{otro caso}
+\end{cases}
+$$
+
+
+
+Sea $\{\epsilon_t\}$ $RB(0,\sigma^2)$, y definimos
+
+$$X_t = \varepsilon_t + \theta\varepsilon_{t-1}$$
+
+entonces 
+
+
+\rho(X_t,X_{t+h})=\begin{cases}
+\theta\sigma^2&\text{ si } h=1\\
+0&\text{otro caso}
+\end{cases}
+
+Trabajo final, normalmente
+
+1. Pregunta economica
+2. Recopilacion de datos
+3. Justifiación metodologiac que puedes hacer con esos datos
+4. Estimación 
+5. Analisis de validez de essa estimación 
+6. Conclusión
+
+
+### Trabajo 
+Reflexionar sobre la técnica ecónometricas, discusión sobre como se estima o como se puede estimar, toda tecnica econometrica la matriz robusta, etc, 
+EL INTERES DE COMO SE HIZO LA ECONOMETRIA Y PORQUE ASÍ ORIENTADO A LO TÉCNICO
+
+\begin{equation}
+1 + c + c^2 + c^3 + \cdots = \frac{1}{1 -c } 
+ (\#eq:binom1)
+\end{equation}
+
+
+To prove key formula \@ref(eq:binom1)
+
+```{theorem, name="Teorema de pitadoras", label='foo'}
+Here is my theorem.
+```
+
+el teorema \@ref(thm:foo)
+
+# Series de tiempo
+
+* Los datos presentan un orden temporal
+* Dado que no concemos los resultado de estas variables no se conocen entonces pueden verse como variales aleatorias. <aside>
+This content will appear in the gutter of the article.
+</aside>
+* Tenemos un proceso estocastico indexado por el tiempo
+* CUando observamos estos datos tenemos una realización ^[This will become a hover-able footnote]. 

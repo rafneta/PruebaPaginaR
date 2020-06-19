@@ -1,0 +1,2274 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+  <!--radix_placeholder_meta_tags-->
+  <title>Casos de CoVID-19 como serie de tiempo: Series de Tiempo</title>
+  
+  <meta property="description" itemprop="description" content="Se presentan los conceptos básicos de series de tiempo, y las su estudñio econométrico"/>
+  
+  
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2020-06-19"/>
+  <meta property="article:created" itemprop="dateCreated" content="2020-06-19"/>
+  <meta name="article:author" content="Rafael Martínez Martínez"/>
+  
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="Casos de CoVID-19 como serie de tiempo: Series de Tiempo"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="Se presentan los conceptos básicos de series de tiempo, y las su estudñio econométrico"/>
+  <meta property="og:locale" content="en_US"/>
+  <meta property="og:site_name" content="Casos de CoVID-19 como serie de tiempo"/>
+  
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="Casos de CoVID-19 como serie de tiempo: Series de Tiempo"/>
+  <meta property="twitter:description" content="Se presentan los conceptos básicos de series de tiempo, y las su estudñio econométrico"/>
+  
+  <!--/radix_placeholder_meta_tags-->
+  
+  <meta name="citation_reference" content="citation_title=Forecasting: Principles and practice;citation_publication_date=2018;citation_publisher=OTexts;citation_author=Rob J Hyndman;citation_author=George Athanasopoulos"/>
+  <meta name="citation_reference" content="citation_title=Introducción a la econometría;citation_publication_date=2012;citation_publisher=PEARSON;citation_author=James H. Stock;citation_author=Mark M. Watson"/>
+  <meta name="citation_reference" content="citation_title=Introducción a la econometría;citation_publication_date=2010;citation_publisher=CENGAGE;citation_author=Jeffrey M. Wooldridge"/>
+  <meta name="citation_reference" content="citation_title=Applied time series analysis for fisheries and enviromental data.;citation_publication_date=2020;citation_author=E. E. Holmes;citation_author=Scheuerell M. D;citation_author=E. J. Ward"/>
+  <!--radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","bibliography"]}},"value":[{"type":"character","attributes":{},"value":["Series de Tiempo"]},{"type":"character","attributes":{},"value":["Se presentan los conceptos básicos de series de tiempo, y las su estudñio econométrico\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Rafael Martínez Martínez"]},{"type":"character","attributes":{},"value":["https://github.com/rafneta"]},{"type":"character","attributes":{},"value":["CIDE-ME2019"]},{"type":"character","attributes":{},"value":["https://cide.edu/programas/me"]}]}]},{"type":"character","attributes":{},"value":["2020-06-19"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["code_folding","toc","toc_depth"]}},"value":[{"type":"character","attributes":{},"value":["hide"]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]}]}]},{"type":"character","attributes":{},"value":["bibliografia.bib"]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  <!--radix_placeholder_navigation_in_header-->
+  
+  <script type="application/javascript">
+  
+    window.headroom_prevent_pin = false;
+  
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+  
+      // initialize headroom for banner
+      var header = $('header').get(0);
+      var headerHeight = header.offsetHeight;
+      var headroom = new Headroom(header, {
+        onPin : function() {
+          if (window.headroom_prevent_pin) {
+            window.headroom_prevent_pin = false;
+            headroom.unpin();
+          }
+        }
+      });
+      headroom.init();
+      if(window.location.hash)
+        headroom.unpin();
+      $(header).addClass('headroom--transition');
+  
+      // offset scroll location for banner on hash change
+      // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+      window.addEventListener("hashchange", function(event) {
+        window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+      });
+  
+      // responsive menu
+      $('.distill-site-header').each(function(i, val) {
+        var topnav = $(this);
+        var toggle = topnav.find('.nav-toggle');
+        toggle.on('click', function() {
+          topnav.toggleClass('responsive');
+        });
+      });
+  
+      // nav dropdowns
+      $('.nav-dropbtn').click(function(e) {
+        $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+        $(this).parent().siblings('.nav-dropdown')
+           .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+      });
+      $("body").click(function(e){
+        $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+      });
+      $(".nav-dropdown").click(function(e){
+        e.stopPropagation();
+      });
+    });
+  </script>
+  
+  <style type="text/css">
+  
+  /* Theme (user-documented overrideables for nav appearance) */
+  
+  .distill-site-nav {
+    color: rgba(255, 255, 255, 0.8);
+    background-color: #455a64;
+    font-size: 15px;
+    font-weight: 300;
+  }
+  
+  .distill-site-nav a {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  .distill-site-nav a:hover {
+    color: white;
+  }
+  
+  @media print {
+    .distill-site-nav {
+      display: none;
+    }
+  }
+  
+  .distill-site-header {
+  
+  }
+  
+  .distill-site-footer {
+  
+  }
+  
+  
+  /* Site Header */
+  
+  .distill-site-header {
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 3;
+  }
+  
+  .distill-site-header .nav-left {
+    display: inline-block;
+    margin-left: 8px;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .distill-site-header .nav-left {
+      margin-left: 0;
+    }
+  }
+  
+  
+  .distill-site-header .nav-right {
+    float: right;
+    margin-right: 8px;
+  }
+  
+  .distill-site-header a,
+  .distill-site-header .title {
+    display: inline-block;
+    text-align: center;
+    padding: 14px 10px 14px 10px;
+  }
+  
+  .distill-site-header .title {
+    font-size: 18px;
+  }
+  
+  .distill-site-header .logo {
+    padding: 0;
+  }
+  
+  .distill-site-header .logo img {
+    display: none;
+    max-height: 20px;
+    width: auto;
+    margin-bottom: -4px;
+  }
+  
+  .distill-site-header .nav-image img {
+    max-height: 18px;
+    width: auto;
+    display: inline-block;
+    margin-bottom: -3px;
+  }
+  
+  
+  
+  @media screen and (min-width: 1000px) {
+    .distill-site-header .logo img {
+      display: inline-block;
+    }
+    .distill-site-header .nav-left {
+      margin-left: 20px;
+    }
+    .distill-site-header .nav-right {
+      margin-right: 20px;
+    }
+    .distill-site-header .title {
+      padding-left: 12px;
+    }
+  }
+  
+  
+  .distill-site-header .nav-toggle {
+    display: none;
+  }
+  
+  .nav-dropdown {
+    display: inline-block;
+    position: relative;
+  }
+  
+  .nav-dropdown .nav-dropbtn {
+    border: none;
+    outline: none;
+    color: rgba(255, 255, 255, 0.8);
+    padding: 16px 10px;
+    background-color: transparent;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    margin: 0;
+    margin-top: 1px;
+    z-index: 2;
+  }
+  
+  .nav-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 200px;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 4px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+    z-index: 1;
+    margin-top: 2px;
+    white-space: nowrap;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  
+  .nav-dropdown-content hr {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .nav-dropdown-active {
+    display: block;
+  }
+  
+  .nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+    color: black;
+    padding: 6px 24px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+  }
+  
+  .nav-dropdown-content .nav-dropdown-header {
+    display: block;
+    padding: 5px 24px;
+    padding-bottom: 0;
+    text-transform: uppercase;
+    font-size: 14px;
+    color: #999999;
+    white-space: nowrap;
+  }
+  
+  .nav-dropdown:hover .nav-dropbtn {
+    color: white;
+  }
+  
+  .nav-dropdown-content a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+  
+  .nav-right .nav-dropdown-content {
+    margin-left: -45%;
+    right: 0;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+    .distill-site-header a.nav-toggle {
+      float: right;
+      display: block;
+    }
+    .distill-site-header .title {
+      margin-left: 0;
+    }
+    .distill-site-header .nav-right {
+      margin-right: 0;
+    }
+    .distill-site-header {
+      overflow: hidden;
+    }
+    .nav-right .nav-dropdown-content {
+      margin-left: 0;
+    }
+  }
+  
+  
+  @media screen and (max-width: 768px) {
+    .distill-site-header.responsive {position: relative;}
+    .distill-site-header.responsive a.nav-toggle {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+    .distill-site-header.responsive a,
+    .distill-site-header.responsive .nav-dropdown {
+      display: block;
+      text-align: left;
+    }
+    .distill-site-header.responsive .nav-left,
+    .distill-site-header.responsive .nav-right {
+      width: 100%;
+    }
+    .distill-site-header.responsive .nav-dropdown {float: none;}
+    .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+    .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+      display: block;
+      width: 100%;
+      text-align: left;
+    }
+  }
+  
+  /* Site Footer */
+  
+  .distill-site-footer {
+    width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    z-index: 3;
+    margin-top: 30px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    text-align: center;
+  }
+  
+  /* Headroom */
+  
+  d-title {
+    padding-top: 6rem;
+  }
+  
+  @media print {
+    d-title {
+      padding-top: 4rem;
+    }
+  }
+  
+  .headroom {
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  .headroom--transition {
+    transition: all .4s ease-in-out;
+  }
+  
+  .headroom--unpinned {
+    top: -100px;
+  }
+  
+  .headroom--pinned {
+    top: 0;
+  }
+  
+  </style>
+  
+  <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+  <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+  <script src="site_libs/headroom-0.9.4/headroom.min.js"></script>
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+  
+  <style type="text/css">
+  
+  body {
+    background-color: white;
+  }
+  
+  .pandoc-table {
+    width: 100%;
+  }
+  
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+  
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+  
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+  
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+  
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+  
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+  
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .shaded .shaded-content {
+    background: white;
+  }
+  
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+  
+  .hidden {
+    display: none !important;
+  }
+  
+  d-article {
+    padding-bottom: 30px;
+  }
+  
+  d-appendix {
+    padding-top: 30px;
+  }
+  
+  d-article>p>img {
+    width: 100%;
+  }
+  
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+  
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+  
+  /* CSS for table of contents */
+  
+  .d-toc {
+    color: rgba(0,0,0,0.8);
+    font-size: 0.8em;
+    line-height: 1em;
+  }
+  
+  .d-toc-header {
+    font-size: 0.6rem;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 1.3em;
+  }
+  
+  .d-toc a {
+    border-bottom: none;
+  }
+  
+  .d-toc ul {
+    padding-left: 0;
+  }
+  
+  .d-toc li>ul {
+    padding-top: 0.8em;
+    padding-left: 16px;
+    margin-bottom: 0.6em;
+  }
+  
+  .d-toc ul,
+  .d-toc li {
+    list-style-type: none;
+  }
+  
+  .d-toc li {
+    margin-bottom: 0.9em;
+  }
+  
+  .d-toc-separator {
+    margin-top: 20px;
+    margin-bottom: 2em;
+  }
+  
+  .d-article-with-toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  
+  
+  
+  /* Tweak code blocks (note that this CSS is repeated above in an injection
+     into the d-code shadow dom) */
+  
+  d-code {
+    overflow-x: auto !important;
+  }
+  
+  pre.d-code code.d-code {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+  
+  pre.text-output {
+  
+    font-size: 12px;
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+  
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+  
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+  
+  @media(min-width: 768px) {
+  
+  d-code {
+    overflow-x: visible !important;
+  }
+  
+  pre.d-code code.d-code  {
+      padding-left: 18px;
+      font-size: 14px;
+  }
+  pre.text-output {
+    font-size: 14px;
+  }
+  }
+  
+  /* Figure */
+  
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+  
+  .figure img {
+    width: 100%;
+  }
+  
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+  
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+  
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+  
+  
+  
+  /* Tweak 1000px media break to show more text */
+  
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+  
+    .grid {
+      grid-column-gap: 16px;
+    }
+  
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+  
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+  
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+  
+  
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+  
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  
+  
+  /* Social footer */
+  
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+  
+  .disqus-comments {
+    margin-right: 30px;
+  }
+  
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+  
+  #disqus_thread {
+    margin-top: 30px;
+  }
+  
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+  
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+  
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+  
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+  
+  
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+  
+  
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+  
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+  
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+  
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+  
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+  
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+  
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+  
+  
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+  
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+  
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+  
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+  
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+  
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+  
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+  
+  </style>
+  
+  <script type="application/javascript">
+  
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+  
+  // show body when load is complete
+  function on_load_complete() {
+  
+    // set body to visible
+    document.body.style.visibility = 'visible';
+  
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+  
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+  
+  function init_distill() {
+  
+    init_common();
+  
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+  
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+  
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+  
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+  
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+  
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+  
+    // create d-bibliography
+    var bibliography = $('<d-bibliography></d-bibliography>');
+    $('#distill-bibliography').wrap(bibliography);
+  
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+  
+    // replace citations with <d-cite>
+    $('.citation').each(function(i, val) {
+      appendix = true;
+      var cites = $(this).attr('data-cites').split(" ");
+      var dt_cite = $('<d-cite></d-cite>');
+      dt_cite.attr('key', cites.join());
+      $(this).replaceWith(dt_cite);
+    });
+    // remove refs
+    $('#refs').remove();
+  
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+  
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-toc a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+  
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+  
+    // replace code blocks with d-code
+    $('pre>code').each(function(i, val) {
+      var code = $(this);
+      var pre = code.parent();
+      var clz = "";
+      var language = pre.attr('class');
+      if (language) {
+        // map unknown languages to "clike" (without this they just dissapear)
+        if ($.inArray(language, ["bash", "clike", "css", "go", "html",
+                                 "javascript", "js", "julia", "lua", "markdown",
+                                 "markup", "mathml", "python", "svg", "xml"]) == -1)
+          language = "clike";
+        language = ' language="' + language + '"';
+        var dt_code = $('<d-code block' + language + clz + '></d-code>');
+        dt_code.text(code.text());
+        pre.replaceWith(dt_code);
+      } else {
+        code.addClass('text-output').unwrap().changeElementType('pre');
+      }
+    });
+  
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+  
+      // capture layout
+      var layout = $(this).attr('data-layout');
+  
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('d-code, pre.text-output, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+  
+  
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+  
+    // load distill framework
+    load_distill_framework();
+  
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+  
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+  
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+  
+      // table of contents
+      if (have_authors) // adjust border if we are in authors
+        $('.d-toc').parent().addClass('d-article-with-toc');
+  
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+  
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+  
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+  
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+  
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+  
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+  
+      // inject pre code styles (can't do this with a global stylesheet b/c a shadow root is used)
+      $('d-code').each(function(i, val) {
+        var style = document.createElement('style');
+        style.innerHTML = 'pre code { padding-left: 10px; font-size: 12px; border-left: 2px solid rgba(0,0,0,0.1); } ' +
+                          '@media(min-width: 768px) { pre code { padding-left: 18px; font-size: 14px; } }';
+        if (this.shadowRoot)
+          this.shadowRoot.appendChild(style);
+      });
+  
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+  
+      // clear polling timer
+      clearInterval(tid);
+  
+      // show body now that everything is ready
+      on_load_complete();
+    }
+  
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+  
+  }
+  
+  function init_downlevel() {
+  
+    init_common();
+  
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+  
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+  
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+  
+    // remove toc
+    $('.d-toc-header').remove();
+    $('.d-toc').remove();
+    $('.d-toc-separator').remove();
+  
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+  
+  
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+  
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+  
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+  
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+  
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+  
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+  
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+  
+    $('body').addClass('downlevel');
+  
+    on_load_complete();
+  }
+  
+  
+  function init_common() {
+  
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+  
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+  
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+  
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+  
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+  
+      }
+    });
+  
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+  
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.distill-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+      });
+    }
+  
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+  
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+  
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+  
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+  
+  </script>
+  
+  <!--/radix_placeholder_distill-->
+  <script src="site_libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+  <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="site_libs/proj4js-2.3.15/proj4.js"></script>
+  <link href="site_libs/highcharts-7.0.1/css/motion.css" rel="stylesheet" />
+  <link href="site_libs/highcharts-7.0.1/css/htmlwdgtgrid.css" rel="stylesheet" />
+  <script src="site_libs/highcharts-7.0.1/highcharts.js"></script>
+  <script src="site_libs/highcharts-7.0.1/highcharts-3d.js"></script>
+  <script src="site_libs/highcharts-7.0.1/highcharts-more.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/stock.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/map.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/annotations.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/boost.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/data.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/drag-panes.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/drilldown.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/item-series.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/offline-exporting.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/overlapping-datalabels.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/exporting.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/export-data.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/funnel.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/heatmap.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/treemap.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/sankey.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/solid-gauge.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/streamgraph.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/sunburst.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/vector.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/wordcloud.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/xrange.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/tilemap.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/venn.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/gantt.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/timeline.js"></script>
+  <script src="site_libs/highcharts-7.0.1/modules/parallel-coordinates.js"></script>
+  <script src="site_libs/highcharts-7.0.1/plugins/grouped-categories.js"></script>
+  <script src="site_libs/highcharts-7.0.1/plugins/motion.js"></script>
+  <script src="site_libs/highcharts-7.0.1/plugins/multicolor_series.js"></script>
+  <script src="site_libs/highcharts-7.0.1/custom/reset.js"></script>
+  <script src="site_libs/highcharts-7.0.1/custom/symbols-extra.js"></script>
+  <script src="site_libs/highcharts-7.0.1/custom/text-symbols.js"></script>
+  <script src="site_libs/highchart-binding-0.7.0/highchart.js"></script>
+  <script src="site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Series de Tiempo","description":"Se presentan los conceptos básicos de series de tiempo, y las su estudñio econométrico","authors":[{"author":"Rafael Martínez Martínez","authorURL":"https://github.com/rafneta","affiliation":"CIDE-ME2019","affiliationURL":"https://cide.edu/programas/me"}],"publishedDate":"2020-06-19T00:00:00.000-05:00","citationText":"Martínez, 2020"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a href="index.html" class="title">Casos de CoVID-19 como serie de tiempo</a>
+</div>
+<div class="nav-right">
+<a href="Visualizacion.html">Visualizacion</a>
+<a href="SeriesTiempo.html">Series de Tiempo</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Series de Tiempo</h1>
+<p>Se presentan los conceptos básicos de series de tiempo, y las su estudñio econométrico</p>
+</div>
+
+<div class="d-byline">
+  Rafael Martínez Martínez <a href="https://github.com/rafneta" class="uri">https://github.com/rafneta</a> (CIDE-ME2019)<a href="https://cide.edu/programas/me" class="uri">https://cide.edu/programas/me</a>
+  
+<br/>2020-06-19
+</div>
+
+<div class="d-article">
+<h3 class="d-toc-header">Table of Contents</h3>
+<nav class="d-toc" id="TOC">
+<ul>
+<li><a href="#prueba">Series de Tiempo</a><ul>
+<li><a href="#regresión-con-series-de-tiempo">Regresión con series de tiempo</a><ul>
+<li><a href="#modelo-ma1-moving-average">Modelo MA(1) (MOving average)</a></li>
+<li><a href="#trabajo">Trabajo</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#series-de-tiempo">Series de tiempo</a></li>
+</ul>
+</nav>
+<hr class="d-toc-separator"/>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<aside>
+<div class="layout-chunk" data-layout="l-body">
+<input onclick="codefolder(&#39;d-code&#39;);" type="button" value="Hide Code" id="codefolder-button" style=""/>
+<script>
+  function codefolder(query) {
+
+    var x = document.querySelectorAll(query);
+    if (x.length === 0) return;
+
+    function toggle_vis(o) {
+      var d = o.style.display;
+      o.style.display = (d === 'block' || d === '') ? 'none':'block';
+    }
+
+    for (i = 0; i < x.length; i++) {
+      var y = x[i];
+      toggle_vis(y);
+    }
+
+    var elem = document.getElementById("codefolder-button");
+    if (elem.value === "Hide Code") elem.value = "Show Code";
+    else elem.value = "Hide Code";
+  }
+</script>
+</div>
+</aside>
+<p>Observamos el comportamiento de los casos totales <span class="math inline">\(C_t\)</span>, ver Figura <a href="#fig:casostotaless">1</a> superior, se podría estar interesado en estudiar el cambio en los casos reportados <span class="math inline">\(\Delta C_t=C_t-C_{t-1}\)</span>, ver Figura <a href="#fig:casostotaless">1</a> inferior, a algún otro comportamento como <span class="math inline">\(\log(C_t)\)</span> o <span class="math inline">\(\Delta \log(C_t)\approx \frac{C_t-C_{t-1}}{C_{t-1}}\)</span>.</p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+highchart(type = &quot;stock&quot;) %&gt;%
+  hc_yAxis_multiples(
+    create_yaxis(2, height = c(2, 2))) %&gt;%
+  hc_add_series(name=&quot;Total&quot;,casostotales_xts[,1],yAxis=0)%&gt;%
+  hc_add_series(name=&quot;Diferencias&quot;,
+                diff(casostotales_xts[,1],2), yAxis=1)%&gt;%
+  hc_add_theme(hc_theme_ffx())%&gt;%
+  hc_title(text = &quot;Casos confirmados para México&quot;)%&gt;%
+           #margin = 20, align = &quot;left&quot;,
+           #style = list(color = &quot;#90ed7d&quot;, useHTML = TRUE)) %&gt;% 
+  hc_subtitle(text = &quot;Utilice la herramienta de zoom en la parte
+              inferior&quot;)%&gt;%
+  hc_tooltip(crosshairs = TRUE, backgroundColor = &quot;#FCFFC5&quot;,
+             shared = TRUE, borderWidth = 5) %&gt;% 
+  #hc_yAxis(title = list(text = &quot;Número de casos confirmados&quot;))%&gt;%
+    hc_exporting(enabled = TRUE,
+      filename = &quot;datos&quot;,
+      buttons = list(contextButton = list(menuItems = myMenuItems)))</code></pre>
+<div class="figure"><span id="fig:casostotaless"></span>
+<div id="htmlwidget-84b8d77302849cc7822d" style="width:100%;height:500px;" class="highchart html-widget"></div>
+<script type="application/json" data-for="htmlwidget-84b8d77302849cc7822d">{"x":{"hc_opts":{"title":{"text":"Casos confirmados para México"},"yAxis":[{"height":"49.505%","top":"0%","offset":0,"opposite":false,"nid":1},{"height":"49.505%","top":"50.495%","offset":0,"opposite":true,"nid":2}],"credits":{"enabled":false},"exporting":{"enabled":true,"filename":"datos","buttons":{"contextButton":{"menuItems":["downloadPNG","downloadJPEG","downloadPDF","downloadCSV"]}}},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"series":[{"data":[[1579737600000,0],[1579824000000,0],[1579910400000,0],[1579996800000,0],[1580083200000,0],[1580169600000,0],[1580256000000,0],[1580342400000,0],[1580428800000,0],[1580515200000,0],[1580601600000,0],[1580688000000,0],[1580774400000,0],[1580860800000,0],[1580947200000,0],[1581033600000,0],[1581120000000,0],[1581206400000,0],[1581292800000,0],[1581379200000,0],[1581465600000,0],[1581552000000,0],[1581638400000,0],[1581724800000,0],[1581811200000,0],[1581897600000,0],[1581984000000,0],[1582070400000,0],[1582156800000,0],[1582243200000,0],[1582329600000,0],[1582416000000,0],[1582502400000,0],[1582588800000,0],[1582675200000,0],[1582761600000,0],[1582848000000,3],[1582934400000,4],[1583020800000,5],[1583107200000,5],[1583193600000,5],[1583280000000,5],[1583366400000,5],[1583452800000,6],[1583539200000,7],[1583625600000,7],[1583712000000,7],[1583798400000,7],[1583884800000,12],[1583971200000,15],[1584057600000,27],[1584144000000,41],[1584230400000,53],[1584316800000,82],[1584403200000,93],[1584489600000,118],[1584576000000,164],[1584662400000,203],[1584748800000,251],[1584835200000,316],[1584921600000,367],[1585008000000,405],[1585094400000,475],[1585180800000,585],[1585267200000,717],[1585353600000,848],[1585440000000,993],[1585526400000,1094],[1585612800000,1215],[1585699200000,1378],[1585785600000,1510],[1585872000000,1688],[1585958400000,1890],[1586044800000,2143],[1586131200000,2439],[1586217600000,2785],[1586304000000,3181],[1586390400000,3441],[1586476800000,3844],[1586563200000,4219],[1586649600000,4661],[1586736000000,5014],[1586822400000,5399],[1586908800000,5847],[1586995200000,6297],[1587081600000,6875],[1587168000000,7497],[1587254400000,8261],[1587340800000,8772],[1587427200000,9501],[1587513600000,10544],[1587600000000,11633],[1587686400000,12872],[1587772800000,13842],[1587859200000,14677],[1587945600000,15529],[1588032000000,16752],[1588118400000,17799],[1588204800000,19224],[1588291200000,20739],[1588377600000,22088],[1588464000000,23471],[1588550400000,24905],[1588636800000,26025],[1588723200000,27634],[1588809600000,29616],[1588896000000,31522],[1588982400000,33460],[1589068800000,35022],[1589155200000,36327],[1589241600000,38324],[1589328000000,40186],[1589414400000,42595],[1589500800000,45032],[1589587200000,47144],[1589673600000,49219],[1589760000000,51633],[1589846400000,54346],[1589932800000,56594],[1590019200000,59567],[1590105600000,62527],[1590192000000,65856],[1590278400000,68620],[1590364800000,71105],[1590451200000,74560],[1590537600000,78023],[1590624000000,81400],[1590710400000,84627],[1590796800000,87512],[1590883200000,90664],[1590969600000,93435],[1591056000000,97326],[1591142400000,101238],[1591228800000,105680],[1591315200000,110026],[1591401600000,113619],[1591488000000,117103],[1591574400000,120102],[1591660800000,124301],[1591747200000,129184]],"name":"Total","yAxis":0},{"data":[[1579737600000,null],[1579824000000,null],[1579910400000,0],[1579996800000,0],[1580083200000,0],[1580169600000,0],[1580256000000,0],[1580342400000,0],[1580428800000,0],[1580515200000,0],[1580601600000,0],[1580688000000,0],[1580774400000,0],[1580860800000,0],[1580947200000,0],[1581033600000,0],[1581120000000,0],[1581206400000,0],[1581292800000,0],[1581379200000,0],[1581465600000,0],[1581552000000,0],[1581638400000,0],[1581724800000,0],[1581811200000,0],[1581897600000,0],[1581984000000,0],[1582070400000,0],[1582156800000,0],[1582243200000,0],[1582329600000,0],[1582416000000,0],[1582502400000,0],[1582588800000,0],[1582675200000,0],[1582761600000,0],[1582848000000,3],[1582934400000,4],[1583020800000,2],[1583107200000,1],[1583193600000,0],[1583280000000,0],[1583366400000,0],[1583452800000,1],[1583539200000,2],[1583625600000,1],[1583712000000,0],[1583798400000,0],[1583884800000,5],[1583971200000,8],[1584057600000,15],[1584144000000,26],[1584230400000,26],[1584316800000,41],[1584403200000,40],[1584489600000,36],[1584576000000,71],[1584662400000,85],[1584748800000,87],[1584835200000,113],[1584921600000,116],[1585008000000,89],[1585094400000,108],[1585180800000,180],[1585267200000,242],[1585353600000,263],[1585440000000,276],[1585526400000,246],[1585612800000,222],[1585699200000,284],[1585785600000,295],[1585872000000,310],[1585958400000,380],[1586044800000,455],[1586131200000,549],[1586217600000,642],[1586304000000,742],[1586390400000,656],[1586476800000,663],[1586563200000,778],[1586649600000,817],[1586736000000,795],[1586822400000,738],[1586908800000,833],[1586995200000,898],[1587081600000,1028],[1587168000000,1200],[1587254400000,1386],[1587340800000,1275],[1587427200000,1240],[1587513600000,1772],[1587600000000,2132],[1587686400000,2328],[1587772800000,2209],[1587859200000,1805],[1587945600000,1687],[1588032000000,2075],[1588118400000,2270],[1588204800000,2472],[1588291200000,2940],[1588377600000,2864],[1588464000000,2732],[1588550400000,2817],[1588636800000,2554],[1588723200000,2729],[1588809600000,3591],[1588896000000,3888],[1588982400000,3844],[1589068800000,3500],[1589155200000,2867],[1589241600000,3302],[1589328000000,3859],[1589414400000,4271],[1589500800000,4846],[1589587200000,4549],[1589673600000,4187],[1589760000000,4489],[1589846400000,5127],[1589932800000,4961],[1590019200000,5221],[1590105600000,5933],[1590192000000,6289],[1590278400000,6093],[1590364800000,5249],[1590451200000,5940],[1590537600000,6918],[1590624000000,6840],[1590710400000,6604],[1590796800000,6112],[1590883200000,6037],[1590969600000,5923],[1591056000000,6662],[1591142400000,7803],[1591228800000,8354],[1591315200000,8788],[1591401600000,7939],[1591488000000,7077],[1591574400000,6483],[1591660800000,7198],[1591747200000,9082]],"name":"Diferencias","yAxis":1}],"subtitle":{"text":"Utilice la herramienta de zoom en la parte\n              inferior"},"tooltip":{"crosshairs":true,"backgroundColor":"#FCFFC5","shared":true,"borderWidth":5}},"theme":{"colors":["#00AACC","#FF4E00","#B90000","#5F9B0A","#CD6723"],"chart":{"backgroundColor":{"linearGradient":[0,0,0,150],"stops":[[0,"#CAE1F4"],[1,"#EEEEEE"]]},"style":{"fontFamily":"Open Sans"}},"title":{"align":"left"},"subtitle":{"align":"left"},"legend":{"align":"right","verticalAlign":"bottom"},"xAxis":{"gridLineWidth":1,"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"yAxis":{"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","drillUpText":"Back to {series.name}","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"thousandsSep":" ","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"stock","fonts":"Open+Sans","debug":false},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 1: Casos confirmados para México
+</p>
+</div>
+</div>
+<p>Una primera observación es que se trabajaran con los datos a partir donde se detectó el primer caso, no tiene sentido trabajar con observaciones nulas, en el sentido que la observación de la variable es cero desde <span class="math inline">\(-\infty\)</span> hasta el día anterior del primer caso, el primer caso confirmado en México fue el 28 de febrero, la Figura <a href="#fig:casospar">2</a> muestra esta ventana de datos para las variables, <span class="math inline">\(C_t\)</span>, <span class="math inline">\(\Delta C_t\)</span>, <span class="math inline">\(\log(C_t)\)</span>, <span class="math inline">\(\Delta \log(C_t)\)</span>.</p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+casospar&lt;-casos_m %&gt;% 
+  group_by(fecha)%&gt;%
+  summarise(casost=sum(casos))%&gt;%
+  filter(casost!=0)
+casospar_xts&lt;-xts(casospar$casost,
+                 order.by = as.Date(casospar$fecha))
+highchart(type = &quot;stock&quot;)%&gt;%
+   hc_yAxis_multiples(
+    create_yaxis(4, height = c(2,2,2,2))) %&gt;%
+  hc_add_series(name=&quot;Parcial&quot;,casospar_xts[,1], yAxis=0)%&gt;%
+  hc_add_series(name=&quot;Diferencias P&quot;,
+                diff(casospar_xts[,1]), yAxis=1)%&gt;%
+  hc_add_series(name=&quot;Logaritmo&quot;,
+                log10(casospar_xts[,1]), yAxis=2)%&gt;%
+  hc_add_series(name=&quot;Diferencias L&quot;,
+                diff(log10(casospar_xts[,1])), yAxis=3)%&gt;%
+  hc_add_theme(hc_theme_ffx())%&gt;%
+  hc_title(text = &quot;Casos confirmados para México
+           desde el primer caso&quot;)%&gt;%
+           #margin = 20, align = &quot;left&quot;,
+      #style = list(color = &quot;#90ed7d&quot;, useHTML = TRUE)) %&gt;% 
+  hc_subtitle(text = &quot;Utilice la herramienta de zoom en la
+              parte inferior&quot;)%&gt;%
+  hc_tooltip(crosshairs = TRUE, backgroundColor = &quot;#FCFFC5&quot;,
+             shared = TRUE, borderWidth = 5) %&gt;% 
+#hc_yAxis(title = list(text = &quot;Número de casos confirmados&quot;))%&gt;%
+    hc_exporting(enabled = TRUE,
+      filename = &quot;datos&quot;,
+      buttons = list(contextButton = list(menuItems = myMenuItems)))</code></pre>
+<div class="figure"><span id="fig:casospar"></span>
+<div id="htmlwidget-3d0dcecef0c2517ae44c" style="width:100%;height:500px;" class="highchart html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3d0dcecef0c2517ae44c">{"x":{"hc_opts":{"title":{"text":"Casos confirmados para México\n           desde el primer caso"},"yAxis":[{"height":"24.272%","top":"0%","offset":0,"opposite":false,"nid":1},{"height":"24.272%","top":"25.243%","offset":0,"opposite":true,"nid":2},{"height":"24.272%","top":"50.486%","offset":0,"opposite":false,"nid":3},{"height":"24.272%","top":"75.729%","offset":0,"opposite":true,"nid":4}],"credits":{"enabled":false},"exporting":{"enabled":true,"filename":"datos","buttons":{"contextButton":{"menuItems":["downloadPNG","downloadJPEG","downloadPDF","downloadCSV"]}}},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"series":[{"data":[[1582848000000,3],[1582934400000,4],[1583020800000,5],[1583107200000,5],[1583193600000,5],[1583280000000,5],[1583366400000,5],[1583452800000,6],[1583539200000,7],[1583625600000,7],[1583712000000,7],[1583798400000,7],[1583884800000,12],[1583971200000,15],[1584057600000,27],[1584144000000,41],[1584230400000,53],[1584316800000,82],[1584403200000,93],[1584489600000,118],[1584576000000,164],[1584662400000,203],[1584748800000,251],[1584835200000,316],[1584921600000,367],[1585008000000,405],[1585094400000,475],[1585180800000,585],[1585267200000,717],[1585353600000,848],[1585440000000,993],[1585526400000,1094],[1585612800000,1215],[1585699200000,1378],[1585785600000,1510],[1585872000000,1688],[1585958400000,1890],[1586044800000,2143],[1586131200000,2439],[1586217600000,2785],[1586304000000,3181],[1586390400000,3441],[1586476800000,3844],[1586563200000,4219],[1586649600000,4661],[1586736000000,5014],[1586822400000,5399],[1586908800000,5847],[1586995200000,6297],[1587081600000,6875],[1587168000000,7497],[1587254400000,8261],[1587340800000,8772],[1587427200000,9501],[1587513600000,10544],[1587600000000,11633],[1587686400000,12872],[1587772800000,13842],[1587859200000,14677],[1587945600000,15529],[1588032000000,16752],[1588118400000,17799],[1588204800000,19224],[1588291200000,20739],[1588377600000,22088],[1588464000000,23471],[1588550400000,24905],[1588636800000,26025],[1588723200000,27634],[1588809600000,29616],[1588896000000,31522],[1588982400000,33460],[1589068800000,35022],[1589155200000,36327],[1589241600000,38324],[1589328000000,40186],[1589414400000,42595],[1589500800000,45032],[1589587200000,47144],[1589673600000,49219],[1589760000000,51633],[1589846400000,54346],[1589932800000,56594],[1590019200000,59567],[1590105600000,62527],[1590192000000,65856],[1590278400000,68620],[1590364800000,71105],[1590451200000,74560],[1590537600000,78023],[1590624000000,81400],[1590710400000,84627],[1590796800000,87512],[1590883200000,90664],[1590969600000,93435],[1591056000000,97326],[1591142400000,101238],[1591228800000,105680],[1591315200000,110026],[1591401600000,113619],[1591488000000,117103],[1591574400000,120102],[1591660800000,124301],[1591747200000,129184]],"name":"Parcial","yAxis":0},{"data":[[1582848000000,null],[1582934400000,1],[1583020800000,1],[1583107200000,0],[1583193600000,0],[1583280000000,0],[1583366400000,0],[1583452800000,1],[1583539200000,1],[1583625600000,0],[1583712000000,0],[1583798400000,0],[1583884800000,5],[1583971200000,3],[1584057600000,12],[1584144000000,14],[1584230400000,12],[1584316800000,29],[1584403200000,11],[1584489600000,25],[1584576000000,46],[1584662400000,39],[1584748800000,48],[1584835200000,65],[1584921600000,51],[1585008000000,38],[1585094400000,70],[1585180800000,110],[1585267200000,132],[1585353600000,131],[1585440000000,145],[1585526400000,101],[1585612800000,121],[1585699200000,163],[1585785600000,132],[1585872000000,178],[1585958400000,202],[1586044800000,253],[1586131200000,296],[1586217600000,346],[1586304000000,396],[1586390400000,260],[1586476800000,403],[1586563200000,375],[1586649600000,442],[1586736000000,353],[1586822400000,385],[1586908800000,448],[1586995200000,450],[1587081600000,578],[1587168000000,622],[1587254400000,764],[1587340800000,511],[1587427200000,729],[1587513600000,1043],[1587600000000,1089],[1587686400000,1239],[1587772800000,970],[1587859200000,835],[1587945600000,852],[1588032000000,1223],[1588118400000,1047],[1588204800000,1425],[1588291200000,1515],[1588377600000,1349],[1588464000000,1383],[1588550400000,1434],[1588636800000,1120],[1588723200000,1609],[1588809600000,1982],[1588896000000,1906],[1588982400000,1938],[1589068800000,1562],[1589155200000,1305],[1589241600000,1997],[1589328000000,1862],[1589414400000,2409],[1589500800000,2437],[1589587200000,2112],[1589673600000,2075],[1589760000000,2414],[1589846400000,2713],[1589932800000,2248],[1590019200000,2973],[1590105600000,2960],[1590192000000,3329],[1590278400000,2764],[1590364800000,2485],[1590451200000,3455],[1590537600000,3463],[1590624000000,3377],[1590710400000,3227],[1590796800000,2885],[1590883200000,3152],[1590969600000,2771],[1591056000000,3891],[1591142400000,3912],[1591228800000,4442],[1591315200000,4346],[1591401600000,3593],[1591488000000,3484],[1591574400000,2999],[1591660800000,4199],[1591747200000,4883]],"name":"Diferencias P","yAxis":1},{"data":[[1582848000000,0.477121254719662],[1582934400000,0.602059991327962],[1583020800000,0.698970004336019],[1583107200000,0.698970004336019],[1583193600000,0.698970004336019],[1583280000000,0.698970004336019],[1583366400000,0.698970004336019],[1583452800000,0.778151250383644],[1583539200000,0.845098040014257],[1583625600000,0.845098040014257],[1583712000000,0.845098040014257],[1583798400000,0.845098040014257],[1583884800000,1.07918124604762],[1583971200000,1.17609125905568],[1584057600000,1.43136376415899],[1584144000000,1.61278385671974],[1584230400000,1.72427586960079],[1584316800000,1.91381385238372],[1584403200000,1.96848294855394],[1584489600000,2.07188200730613],[1584576000000,2.2148438480477],[1584662400000,2.30749603791321],[1584748800000,2.39967372148104],[1584835200000,2.4996870826184],[1584921600000,2.56466606425209],[1585008000000,2.60745502321467],[1585094400000,2.67669360962487],[1585180800000,2.76715586608218],[1585267200000,2.8555191556678],[1585353600000,2.92839585225671],[1585440000000,2.99694924849538],[1585526400000,3.03901732199741],[1585612800000,3.08457627793433],[1585699200000,3.13924921757161],[1585785600000,3.17897694729317],[1585872000000,3.22737244228964],[1585958400000,3.27646180417324],[1586044800000,3.33102217104183],[1586131200000,3.38721180031373],[1586217600000,3.44482519950975],[1586304000000,3.50256366910736],[1586390400000,3.53668467262093],[1586476800000,3.58478337899651],[1586563200000,3.62520952538188],[1586649600000,3.66847910293259],[1586736000000,3.7001843296222],[1586822400000,3.73231332747124],[1586908800000,3.76693309383728],[1586995200000,3.79913369330206],[1587081600000,3.8372727025023],[1587168000000,3.87488751084611],[1587254400000,3.91703262216239],[1587340800000,3.94309862300549],[1587427200000,3.97776931809157],[1587513600000,4.02300539724993],[1587600000000,4.06569172809327],[1587686400000,4.10964603109097],[1587772800000,4.14119884490474],[1587859200000,4.1666372942318],[1587945600000,4.1911434899549],[1588032000000,4.22406666433477],[1588118400000,4.25039560305712],[1588204800000,4.28384375779584],[1588291200000,4.3167878116021],[1588377600000,4.34415639363121],[1588464000000,4.37053159344308],[1588550400000,4.3962865460684],[1588636800000,4.41539073818257],[1588723200000,4.44144375325506],[1588809600000,4.47152640140883],[1588896000000,4.49861376469976],[1588982400000,4.52452593662638],[1589068800000,4.5443409436938],[1589155200000,4.5602295339144],[1589241600000,4.58347083149385],[1589328000000,4.60407477990735],[1589414400000,4.62935862258034],[1589500800000,4.65352123565215],[1589587200000,4.67342642808709],[1589673600000,4.69213278574034],[1589760000000,4.71292735932177],[1589846400000,4.73516758445072],[1589932800000,4.75277039046361],[1590019200000,4.77500572807847],[1590105600000,4.79606759204704],[1590192000000,4.81859534874632],[1590278400000,4.83645071372015],[1590364800000,4.85190014075874],[1590451200000,4.87250589934593],[1590537600000,4.89222264500676],[1590624000000,4.9106244048892],[1590710400000,4.92750894554785],[1590796800000,4.94206760932464],[1590883200000,4.95743487575957],[1590969600000,4.97050958992982],[1591056000000,4.98822887467893],[1591142400000,5.00534355689768],[1591228800000,5.02399280460647],[1591315200000,5.0414953244516],[1591401600000,5.05545096258256],[1591488000000,5.06856802117618],[1591574400000,5.07955023955721],[1591660800000,5.09447462254941],[1591747200000,5.11120872773022]],"name":"Logaritmo","yAxis":2},{"data":[[1582848000000,null],[1582934400000,0.1249387366083],[1583020800000,0.0969100130080565],[1583107200000,0],[1583193600000,0],[1583280000000,0],[1583366400000,0],[1583452800000,0.0791812460476248],[1583539200000,0.0669467896306132],[1583625600000,0],[1583712000000,0],[1583798400000,0],[1583884800000,0.234083206033368],[1583971200000,0.0969100130080565],[1584057600000,0.255272505103306],[1584144000000,0.181420092560748],[1584230400000,0.111492012881053],[1584316800000,0.189537982782928],[1584403200000,0.0546690961702183],[1584489600000,0.10339905875219],[1584576000000,0.142961840741572],[1584662400000,0.092652189865515],[1584748800000,0.092177683567825],[1584835200000,0.100013361137366],[1584921600000,0.0649789816336854],[1585008000000,0.0427889589625794],[1585094400000,0.0692385864101976],[1585180800000,0.0904622564573141],[1585267200000,0.0883632895856197],[1585353600000,0.0728766965889136],[1585440000000,0.0685533962386673],[1585526400000,0.0420680735020311],[1585612800000,0.0455589559369187],[1585699200000,0.054672939637276],[1585785600000,0.0397277297215624],[1585872000000,0.0483954949964671],[1585958400000,0.0490893618836079],[1586044800000,0.0545603668685843],[1586131200000,0.056189629271902],[1586217600000,0.057613399196017],[1586304000000,0.0577384695976155],[1586390400000,0.0341210035135671],[1586476800000,0.0480987063755776],[1586563200000,0.0404261463853732],[1586649600000,0.0432695775507046],[1586736000000,0.0317052266896121],[1586822400000,0.0321289978490449],[1586908800000,0.0346197663660415],[1586995200000,0.0322005994647787],[1587081600000,0.0381390092002376],[1587168000000,0.0376148083438119],[1587254400000,0.0421451113162812],[1587340800000,0.026066000843092],[1587427200000,0.0346706950860889],[1587513600000,0.0452360791583604],[1587600000000,0.0426863308433365],[1587686400000,0.0439543029977019],[1587772800000,0.0315528138137644],[1587859200000,0.0254384493270674],[1587945600000,0.0245061957230934],[1588032000000,0.032923174379869],[1588118400000,0.0263289387223491],[1588204800000,0.0334481547387275],[1588291200000,0.0329440538062515],[1588377600000,0.0273685820291112],[1588464000000,0.02637519981187],[1588550400000,0.0257549526253253],[1588636800000,0.0191041921141721],[1588723200000,0.0260530150724811],[1588809600000,0.0300826481537735],[1588896000000,0.0270873632909296],[1588982400000,0.0259121719266178],[1589068800000,0.019815007067427],[1589155200000,0.0158885902205945],[1589241600000,0.0232412975794531],[1589328000000,0.0206039484134957],[1589414400000,0.0252838426729944],[1589500800000,0.0241626130718045],[1589587200000,0.0199051924349476],[1589673600000,0.0187063576532438],[1589760000000,0.020794573581429],[1589846400000,0.0222402251289502],[1589932800000,0.0176028060128903],[1590019200000,0.022235337614859],[1590105600000,0.0210618639685727],[1590192000000,0.0225277566992821],[1590278400000,0.0178553649738342],[1590364800000,0.0154494270385905],[1590451200000,0.0206057585871804],[1590537600000,0.0197167456608307],[1590624000000,0.0184017598824457],[1590710400000,0.0168845406586522],[1590796800000,0.0145586637767821],[1590883200000,0.0153672664349385],[1590969600000,0.0130747141702479],[1591056000000,0.0177192847491083],[1591142400000,0.0171146822187493],[1591228800000,0.0186492477087912],[1591315200000,0.0175025198451291],[1591401600000,0.0139556381309607],[1591488000000,0.0131170585936164],[1591574400000,0.0109822183810309],[1591660800000,0.0149243829921994],[1591747200000,0.016734105180813]],"name":"Diferencias L","yAxis":3}],"subtitle":{"text":"Utilice la herramienta de zoom en la\n              parte inferior"},"tooltip":{"crosshairs":true,"backgroundColor":"#FCFFC5","shared":true,"borderWidth":5}},"theme":{"colors":["#00AACC","#FF4E00","#B90000","#5F9B0A","#CD6723"],"chart":{"backgroundColor":{"linearGradient":[0,0,0,150],"stops":[[0,"#CAE1F4"],[1,"#EEEEEE"]]},"style":{"fontFamily":"Open Sans"}},"title":{"align":"left"},"subtitle":{"align":"left"},"legend":{"align":"right","verticalAlign":"bottom"},"xAxis":{"gridLineWidth":1,"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"yAxis":{"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","drillUpText":"Back to {series.name}","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"thousandsSep":" ","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"stock","fonts":"Open+Sans","debug":false},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 2: Casos confirmados para México
+</p>
+</div>
+</div>
+<p>Se trabajará con la variable <span class="math inline">\(C_t\)</span>, pero un procedimiento similar puede aplicarse a las demás variables en caso que se desee.</p>
+<p>Lo primero que se quisiera responder, es si existe una relación entre <span class="math inline">\(C_t\)</span> y <span class="math inline">\(C_{t-1},C_{t-2},\dots,C_{t-k},\)</span>. Para ello calculamos la fución de autocorrelación, donde <span class="math inline">\(r_k\)</span> mide la relacion entre <span class="math inline">\(C_t\)</span> y <span class="math inline">\(C_{t-k}\)</span></p>
+<p><span class="math display">\[r_{k} = \frac{\sum\limits_{t=k+1}^T (C_{t}-\bar{C})(C_{t-k}-\bar{C})}
+ {\sum\limits_{t=1}^T (C_{t}-\bar{C})^2},\]</span></p>
+<p>aquí <span class="math inline">\(T\)</span> denota el número de datos, la Figura <a href="#fig:acf">3</a> muestra la gráfica de <span class="math inline">\(r_k\)</span> vs <span class="math inline">\(k\)</span> para <span class="math inline">\(k\in\{1,2,\ldots,20 \}\)</span>, claramente <span class="math inline">\(r_0=1\)</span></p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+capar&lt;-casospar$casost
+ggAcf(capar) +
+  ggtitle(&quot;Función de autocorrelación C_t&quot;)+
+  labs(y = &quot;r_k&quot;,x=&quot;k (retrasos)&quot;)</code></pre>
+<div class="figure"><span id="fig:acf"></span>
+<img src="SeriesTiempoF_files/figure-html5/acf-1.png" alt="Función de autocorrelación" width="624" class=external />
+<p class="caption">
+Figure 3: Función de autocorrelación
+</p>
+</div>
+</div>
+<p>Observamos una dependencia entre <span class="math inline">\(C_t\)</span> y sus valores anteriores, esta dependencia va dismunuyendo conforme <span class="math inline">\(k\)</span> aumenta, una herramienta visual para corroborar esta situaciónes es gráficar <span class="math inline">\(C_t\)</span> vs <span class="math inline">\(C_{t-k}\)</span> para diferentes valores de <span class="math inline">\(k\)</span>, la Figura <a href="#fig:scatteracf">4</a> muestra dichas gráficas.</p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+gglagplot(capar) +
+  ggtitle(&quot;Grafias de C_t vs C_{t-k}&quot;)+
+  labs(y = &quot;C_t&quot;,x=&quot;C_{t-k}&quot;)</code></pre>
+<div class="figure"><span id="fig:scatteracf"></span>
+<img src="SeriesTiempoF_files/figure-html5/scatteracf-1.png" alt="Grafias de C_t vs C_{t-k}" width="624" class=external />
+<p class="caption">
+Figure 4: Grafias de C_t vs C_{t-k}
+</p>
+</div>
+</div>
+<p>Entonces probablemente la variable <span class="math inline">\(C_t\)</span> se pueda escribir como un modelo autorregresivo de orden <span class="math inline">\(p\)</span>, <strong>AR(p)</strong>, es decir</p>
+<p><span class="math display">\[C_t=\beta_0+\beta_1 C_{t-1}+\beta_{t-2}C_{t-2}+\dots+\beta_{t-p}C_{t-p}+\varepsilon_t\]</span> suponiendo <span class="math inline">\(\mathbb{E}(\varepsilon_t|C_{t-1},C_{t-2},\dots)=0\)</span>. Con base en los resultados obtenidos de autocorrelación se realizan las regresiones para 1, 2 y 3 retardos.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+capar_AR1&lt;-lm(capar~lag(capar))
+capar_AR2&lt;-lm(capar~lag(capar)+lag(capar,2))
+capar_AR3&lt;-lm(capar~lag(capar)+lag(capar,2)+lag(capar,3))
+summary(capar_AR1)</code></pre>
+<pre><code>
+Call:
+lm(formula = capar ~ lag(capar))
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1549.61  -244.01   -49.42   227.57   775.81 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 2.671e+02  4.605e+01   5.799 7.66e-08 ***
+lag(capar)  1.037e+00  1.037e-03 999.693  &lt; 2e-16 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 371.1 on 101 degrees of freedom
+  (1 observation deleted due to missingness)
+Multiple R-squared:  0.9999,    Adjusted R-squared:  0.9999 
+F-statistic: 9.994e+05 on 1 and 101 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>
+summary(capar_AR2)</code></pre>
+<pre><code>
+Call:
+lm(formula = capar ~ lag(capar) + lag(capar, 2))
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-924.42  -96.03  -51.61   92.92  781.61 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   95.94929   40.24815   2.384    0.019 *  
+lag(capar)     1.69804    0.07505  22.627  &lt; 2e-16 ***
+lag(capar, 2) -0.68576    0.07779  -8.816 4.17e-14 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 279.8 on 99 degrees of freedom
+  (2 observations deleted due to missingness)
+Multiple R-squared:  0.9999,    Adjusted R-squared:  0.9999 
+F-statistic: 8.737e+05 on 2 and 99 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>
+summary(capar_AR3)</code></pre>
+<pre><code>
+Call:
+lm(formula = capar ~ lag(capar) + lag(capar, 2) + lag(capar, 
+    3))
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-924.29  -97.43  -52.71   94.57  778.95 
+
+Coefficients:
+               Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   97.344894  41.836000   2.327 0.022055 *  
+lag(capar)     1.690802   0.102541  16.489  &lt; 2e-16 ***
+lag(capar, 2) -0.670247   0.191431  -3.501 0.000702 ***
+lag(capar, 3) -0.008327   0.106918  -0.078 0.938084    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 282.5 on 97 degrees of freedom
+  (3 observations deleted due to missingness)
+Multiple R-squared:  0.9999,    Adjusted R-squared:  0.9999 
+F-statistic: 5.68e+05 on 3 and 97 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<p>Observamos que los 3 modelos tiene <span class="math inline">\(R^2\)</span> y <span class="math inline">\(R^2\)</span>-ajustada bastante alta, tenemos que los coeficientes en los dos primeros modelos por separado y conjuntamete son estadisticamente significativos, en el tercero uno de los coeficientes no es significativo, pero esto no interfiere en la predicción que pueda hacerse <span class="citation" data-cites="forecasting1">(Hyndman and Athanasopoulos <a href="#ref-forecasting1">2018</a>)</span>, entonces se aplica un criterio para elegir uno de estos modelos, se utiliza el criterio de información de Bayes<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> (BIC) <span class="citation" data-cites="stock">(Stock and Watson <a href="#ref-stock">2012</a>)</span>, el cual se define como:</p>
+<p><span class="math display">\[BIC(p)=\ln\left(\frac{SR(p)}{T}\right)+\frac{p+1}{T}\ln(T)\]</span> aquí <span class="math inline">\(SR(p)\)</span> es la suma de los cuadrados de los residuos del modelo AR(p) estimado, se elige el modelo que presente menor BIC</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+a&lt;-log(sum(capar_AR1$residuals^2)/length(capar))+(2)*
+  log(length(capar))/length(capar)
+b&lt;-log(sum(capar_AR2$residuals^2)/length(capar))+(3)*
+  log(length(capar))/length(capar)
+c&lt;-log(sum(capar_AR3$residuals^2)/length(capar))+(4)*
+  log(length(capar))/length(capar)
+c(a,b,c)</code></pre>
+<pre><code>
+[1] 11.89291 11.35296 11.39635</code></pre>
+</div>
+<p>Se elege AR(2), así el modelo estimado es</p>
+<p><span class="math display">\[\hat{C}_t=95.949+1.698 C_{t-1}-0.685C_{t-2}\]</span></p>
+<p>La Figura <a href="#fig:estimadosar">5</a> muestra los estimados con el modolo AR(2) y la Figura <a href="#fig:estmadosarlog"><strong>??</strong></a> muestra la misma información pero en escala logaritmica.</p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+autoplot(ts(capar), series=&quot;Casos observados&quot;) +
+  autolayer(ts(fitted(capar_AR2)),series=&quot;Casos ajustados AR(2)&quot;) +
+  xlab(&quot;días&quot;) + ylab(&quot;&quot;) +
+  ggtitle(&quot;Casos observados y casos estimados AR(2)&quot;)</code></pre>
+<div class="figure"><span id="fig:estimadosar"></span>
+<img src="SeriesTiempoF_files/figure-html5/estimadosar-1.png" alt="Casos observados y casos estimados AR" width="624" class=external />
+<p class="caption">
+Figure 5: Casos observados y casos estimados AR
+</p>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+autoplot(ts(log10(capar)), series=&quot;Casos observados&quot;) +
+  autolayer(ts(log10(fitted(capar_AR2))),series=&quot;Casos ajustados AR(2)&quot;) +
+  xlab(&quot;días&quot;) + ylab(&quot;&quot;) +
+  ggtitle(&quot;Casos observados y casos estimados AR(2)&quot;)</code></pre>
+<div class="figure"><span id="fig:estimadosarlog"></span>
+<img src="SeriesTiempoF_files/figure-html5/estimadosarlog-1.png" alt="Casos observados y casos estimado AR logaritmo" width="624" class=external />
+<p class="caption">
+Figure 6: Casos observados y casos estimado AR logaritmo
+</p>
+</div>
+</div>
+<p>Si la serie presenta una <strong>raíz unitaria</strong>, es decir, <span class="math inline">\(z=1\)</span> es una solución de la ecuación</p>
+<p><span class="math display">\[1-\beta_1z-\beta_2z^2-\dots+\beta_pz^p=0\]</span> entonces se presenta una tendencia estocastica lo cual implica que los coeficientes y los estadisticos <span class="math inline">\(t\)</span> de la regresiones previamente realizados no tienen <em>buenas caracteristicas</em> (los coeficientes son sesgados y el estadistico no se distribuye de forma normal). Para revisar si es esta en este caso, se realiza el contraste de de Dickey-Fuller aumentado para raíz aumentada autoregresiva <span class="citation" data-cites="stock">(Stock and Watson <a href="#ref-stock">2012</a>)</span>, para ello se estima el siguiente modelo<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<p><span class="math display" id="eq:adf">\[\begin{equation}
+\Delta C_t=\beta_0+\delta C_{t-1} + \gamma_1\Delta C_{t-1}+\gamma_2 C _{t-2}+\dots+\gamma_p \Delta C_{t-p+1}+u_t
+\tag{1}
+\end{equation}\]</span></p>
+<p>donde <span class="math display">\[H_0:\delta=0\;\;\text{vs}\;\;H_1:\delta&lt;0 \]</span></p>
+<p>bajo la hipotesis nula <span class="math inline">\(C_t\)</span> tiene tendencia estocástica, bajo la hipotesis alternatica <span class="math inline">\(C_t\)</span> es estacionaria. Para calcular esta regresión se tiene que porponer un orden <span class="math inline">\(p\)</span>, la instrucción urca::ur.df nos proporciona un criterio de selección y nos permite configurar la regresión como en la ecuación <a href="#eq:adf">(1)</a></p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+a&lt;-ur.df(capar, selectlags = &quot;BIC&quot;, type=&quot;drift&quot;)
+summary(a)</code></pre>
+<pre><code>
+############################################### 
+# Augmented Dickey-Fuller Test Unit Root Test # 
+############################################### 
+
+Test regression drift 
+
+
+Call:
+lm(formula = z.diff ~ z.lag.1 + 1 + z.diff.lag)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-924.42  -96.03  -51.61   92.92  781.61 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 95.949289  40.248151   2.384    0.019 *  
+z.lag.1      0.012282   0.002857   4.298 4.03e-05 ***
+z.diff.lag   0.685760   0.077789   8.816 4.17e-14 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 279.8 on 99 degrees of freedom
+Multiple R-squared:  0.9578,    Adjusted R-squared:  0.9569 
+F-statistic:  1123 on 2 and 99 DF,  p-value: &lt; 2.2e-16
+
+
+Value of test-statistic is: 4.2984 9.764 
+
+Critical values for test statistics: 
+      1pct  5pct 10pct
+tau2 -3.46 -2.88 -2.57
+phi1  6.52  4.63  3.81</code></pre>
+</div>
+<p>así se tiene que no se puede rechazar a favor que la serie sea estacionaria pues el es estadístico <span class="math inline">\(t\)</span> para <span class="math inline">\(\delta\)</span>, que el coeficiente de z.lag.1, es positivo y a la linea tau2 indica los valores criticos y los porcentajes de significacncial. Repetimos el calculo con una regresión a mano y observamos que es lo mismo, en este caso el estadistico que nos interesa es el asociado a la variable lag(capar)[-1].</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+capar_adf&lt;-lm(diff(capar)~lag(capar)[-1]+diff(lag(capar)))
+summary(capar_adf)</code></pre>
+<pre><code>
+Call:
+lm(formula = diff(capar) ~ lag(capar)[-1] + diff(lag(capar)))
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-924.42  -96.03  -51.61   92.92  781.61 
+
+Coefficients:
+                  Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)      95.949289  40.248151   2.384    0.019 *  
+lag(capar)[-1]    0.012282   0.002857   4.298 4.03e-05 ***
+diff(lag(capar))  0.685760   0.077789   8.816 4.17e-14 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 279.8 on 99 degrees of freedom
+  (1 observation deleted due to missingness)
+Multiple R-squared:  0.9578,    Adjusted R-squared:  0.9569 
+F-statistic:  1123 on 2 and 99 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<p>Si la hipotesis alternativa es que <span class="math inline">\(C_t\)</span> es estacionaria en torno a una tendencia temporal lineal determinística, entonces la regresión de Dickey-Fuller se escribe como</p>
+<p><span class="math display" id="eq:adft">\[\begin{equation}
+\Delta C_t=\beta_0+\alpha t+\delta C_{t-1} + \gamma_1\Delta C_{t-1}+\gamma_2 C _{t-2}+\dots+\gamma_p \Delta C_{t-p+1}+u_t
+\tag{2}
+\end{equation}\]</span></p>
+<p>Calculamos la regresión de la ecuación <a href="#eq:adft">(2)</a>, además para comprabar se utiliza la instrucción tseries::adf.test que tiene por defecto la estimación temporal.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+capar_adft&lt;-lm(diff(capar)~lag(capar)[-1]+diff(lag(capar))+c(1:(length(capar)-1)))
+summary(capar_adft)</code></pre>
+<pre><code>
+Call:
+lm(formula = diff(capar) ~ lag(capar)[-1] + diff(lag(capar)) + 
+    c(1:(length(capar) - 1)))
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-977.43 -114.94  -22.87  113.96  680.93 
+
+Coefficients:
+                           Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)              -1.548e+02  7.275e+01  -2.128 0.035828 *  
+lag(capar)[-1]            1.378e-02  2.687e-03   5.128 1.47e-06 ***
+diff(lag(capar))          4.441e-01  9.411e-02   4.720 7.87e-06 ***
+c(1:(length(capar) - 1))  9.608e+00  2.389e+00   4.022 0.000114 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 260.6 on 98 degrees of freedom
+  (1 observation deleted due to missingness)
+Multiple R-squared:  0.9638,    Adjusted R-squared:  0.9626 
+F-statistic: 868.5 on 3 and 98 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>
+adf.test(capar, k=1)</code></pre>
+<pre><code>
+    Augmented Dickey-Fuller Test
+
+data:  capar
+Dickey-Fuller = 5.1284, Lag order = 1, p-value = 0.99
+alternative hypothesis: stationary</code></pre>
+</div>
+<p>El estadistico es <span class="math inline">\(5.1284\)</span> no se puede rechazar en favor de una <span class="math inline">\(C_t\)</span> estacionaria con tendencia temporal lineal determinística. Ahora no se puede asegurar que exista raíz unitaria, pero se tiene un <span class="math inline">\(r_1\)</span> parecido a la unidad, entonces se recomienda trabajar con las diferencias de <span class="math inline">\(C_t\)</span> <span class="citation" data-cites="stock">(Stock and Watson <a href="#ref-stock">2012</a>)</span>-<span class="citation" data-cites="wool">(Wooldridge <a href="#ref-wool">2010</a>)</span>-<span class="citation" data-cites="asa">(Holmes, M. D, and Ward <a href="#ref-asa">2020</a>)</span>, es decir, con <span class="math inline">\(\Delta C_t=C_t-C_{t-1}\)</span> o con las segundas diferencias $<span class="math inline">\(\Delta^2 C_t=C_t-2C_{t-1}+C_{t-2}\)</span>, de tal forma que al aplicar la preba de Dickey-Fuller la a la serie resultante se rechaze al hipotesis nula a favor de una serie estacionaria. Existen varias formas de abordar este problema, se ha elegido utilizar la instrucción forecast::ndiffs que calcula la cantidad de diferencias necesarias, una vez que se tiene este numero se aplica la prueba mencionada para verificar dicha situación.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+ndiffs(capar, test = &quot;adf&quot;)</code></pre>
+<pre><code>
+[1] 2</code></pre>
+<pre class="r"><code>
+a&lt;-ur.df(diff(diff(capar)), selectlags = &quot;BIC&quot;, type=&quot;drift&quot;)
+summary(a)</code></pre>
+<pre><code>
+############################################### 
+# Augmented Dickey-Fuller Test Unit Root Test # 
+############################################### 
+
+Test regression drift 
+
+
+Call:
+lm(formula = z.diff ~ z.lag.1 + 1 + z.diff.lag)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-781.55  -76.03  -45.00   63.38 1039.75 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 59.44891   30.95677   1.920   0.0577 .  
+z.lag.1     -1.27930    0.17658  -7.245 1.04e-10 ***
+z.diff.lag   0.09218    0.11536   0.799   0.4262    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 303 on 97 degrees of freedom
+Multiple R-squared:  0.5736,    Adjusted R-squared:  0.5648 
+F-statistic: 65.24 on 2 and 97 DF,  p-value: &lt; 2.2e-16
+
+
+Value of test-statistic is: -7.2447 26.3483 
+
+Critical values for test statistics: 
+      1pct  5pct 10pct
+tau2 -3.46 -2.88 -2.57
+phi1  6.52  4.63  3.81</code></pre>
+</div>
+<p>En este caso se aplico la prueba sin el factor de tendencia, pues las primeras diferencias eliminan la tendencia lineal determinista <span class="citation" data-cites="stook">(<span class="citeproc-not-found" data-reference-id="stook"><strong>???</strong></span>)</span>-<span class="citation" data-cites="wool">(Wooldridge <a href="#ref-wool">2010</a>)</span> y se comprueba el resultado,</p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<pre class="r"><code>
+capardd1&lt;-diff(capar)
+capardd2&lt;-diff(diff(capar))
+ggAcf(capardd2) +
+  ggtitle(&quot;Función de autocorrelación C_t&quot;)+
+  labs(y = &quot;r_k&quot;,x=&quot;k (retrasos)&quot;)</code></pre>
+<div class="figure"><span id="fig:acfdd2"></span>
+<img src="SeriesTiempoF_files/figure-html5/acfdd2-1.png" alt="Función de autocorrelación" width="624" class=external />
+<p class="caption">
+Figure 7: Función de autocorrelación
+</p>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+fit&lt;-auto.arima(capar)
+residuals(fit)</code></pre>
+<pre><code>
+Time Series:
+Start = 1 
+End = 104 
+Frequency = 1 
+  [1]  1.341641e-03 -1.788850e-03 -9.254166e-07 -9.841584e-01
+  [5] -2.264694e-01 -1.517980e-01 -1.023262e-01  9.301660e-01
+  [9]  2.015970e-01 -8.633790e-01 -1.567594e-01 -1.061619e-01
+ [13]  4.928032e+00 -8.018568e-01  9.312699e+00  4.456235e+00
+ [17]  1.623575e-01  1.796577e+01 -1.310634e+01  1.282550e+01
+ [21]  2.369592e+01  6.302333e-02  1.203804e+01  2.130211e+01
+ [25] -6.846656e+00 -1.164649e+01  2.967471e+01  4.640544e+01
+ [29]  3.631378e+01  1.418110e+01  2.403267e+01 -3.371355e+01
+ [33]  1.599398e+01  4.427446e+01 -1.898533e+01  4.640650e+01
+ [37]  3.574705e+01  6.494145e+01  6.516111e+01  7.573314e+01
+ [41]  7.989815e+01 -1.032809e+02  1.312440e+02 -3.001410e-01
+ [45]  7.877812e+01 -6.431393e+01  2.652439e+01  6.727174e+01
+ [49]  2.060451e+01  1.410995e+02  8.479353e+01  1.806021e+02
+ [53] -1.914423e+02  1.965981e+02  3.538707e+02  1.513112e+02
+ [57]  2.327983e+02 -1.755135e+02 -1.387670e+02 -1.921839e+01
+ [61]  3.507091e+02 -9.722084e+01  3.874647e+02  1.906781e+02
+ [65] -7.536672e+01  5.398728e+01  7.301635e+01 -2.863698e+02
+ [69]  4.294067e+02  4.545874e+02  7.227938e+01  1.134753e+02
+ [73] -3.128370e+02 -3.079891e+02  5.933733e+02 -2.922434e+01
+ [77]  5.849741e+02  1.901335e+02 -2.082054e+02 -3.894612e+01
+ [81]  3.284546e+02  3.763994e+02 -3.380116e+02  6.950440e+02
+ [85]  1.475156e+02  4.744740e+02 -4.015399e+02 -3.091925e+02
+ [89]  8.799723e+02  1.889289e+02  3.853692e+01 -8.709918e+01
+ [93] -3.368056e+02  1.852283e+02 -3.697975e+02  1.032572e+03
+ [97]  2.410971e+02  6.843073e+02  1.406856e+02 -6.166355e+02
+[101] -2.044286e+02 -5.768162e+02  1.016862e+03  8.592243e+02</code></pre>
+<pre class="r"><code>
+fitted(fit)</code></pre>
+<pre><code>
+Time Series:
+Start = 1 
+End = 104 
+Frequency = 1 
+  [1] 2.998658e+00 4.001789e+00 5.000001e+00 5.984158e+00 5.226469e+00
+  [6] 5.151798e+00 5.102326e+00 5.069834e+00 6.798403e+00 7.863379e+00
+ [11] 7.156759e+00 7.106162e+00 7.071968e+00 1.580186e+01 1.768730e+01
+ [16] 3.654377e+01 5.283764e+01 6.403423e+01 1.061063e+02 1.051745e+02
+ [21] 1.403041e+02 2.029370e+02 2.389620e+02 2.946979e+02 3.738467e+02
+ [26] 4.166465e+02 4.453253e+02 5.385946e+02 6.806862e+02 8.338189e+02
+ [31] 9.689673e+02 1.127714e+03 1.199006e+03 1.333726e+03 1.528985e+03
+ [36] 1.641594e+03 1.854253e+03 2.078059e+03 2.373839e+03 2.709267e+03
+ [41] 3.101102e+03 3.544281e+03 3.712756e+03 4.219300e+03 4.582222e+03
+ [46] 5.078314e+03 5.372476e+03 5.779728e+03 6.276395e+03 6.733901e+03
+ [51] 7.412206e+03 8.080398e+03 8.963442e+03 9.304402e+03 1.019013e+04
+ [56] 1.148169e+04 1.263920e+04 1.401751e+04 1.481577e+04 1.554822e+04
+ [61] 1.640129e+04 1.789622e+04 1.883654e+04 2.054832e+04 2.216337e+04
+ [66] 2.341701e+04 2.483198e+04 2.631137e+04 2.720459e+04 2.916141e+04
+ [71] 3.144972e+04 3.334652e+04 3.533484e+04 3.663499e+04 3.773063e+04
+ [76] 4.021522e+04 4.201003e+04 4.484187e+04 4.735221e+04 4.925795e+04
+ [81] 5.130455e+04 5.396960e+04 5.693201e+04 5.887196e+04 6.237948e+04
+ [86] 6.538153e+04 6.902154e+04 7.141419e+04 7.368003e+04 7.783407e+04
+ [91] 8.136146e+04 8.471410e+04 8.784881e+04 9.047877e+04 9.380480e+04
+ [96] 9.629343e+04 1.009969e+05 1.049957e+05 1.098853e+05 1.142356e+05
+[101] 1.173074e+05 1.206788e+05 1.232841e+05 1.283248e+05</code></pre>
+<pre class="r"><code>
+checkresiduals(fit)</code></pre>
+<p><img src="SeriesTiempoF_files/figure-html5/unnamed-chunk-8-1.png" width="624" /></p>
+<pre><code>
+    Ljung-Box test
+
+data:  Residuals from ARIMA(1,2,1)
+Q* = 36.721, df = 8, p-value = 1.295e-05
+
+Model df: 2.   Total lags used: 10</code></pre>
+<pre class="r"><code>
+checkresiduals(fit,plot=FALSE)</code></pre>
+<pre><code>
+    Ljung-Box test
+
+data:  Residuals from ARIMA(1,2,1)
+Q* = 36.721, df = 8, p-value = 1.295e-05
+
+Model df: 2.   Total lags used: 10</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+z&lt;-BoxCox(capar,0.2706504)
+autoplot(ts(z))</code></pre>
+<p><img src="SeriesTiempoF_files/figure-html5/unnamed-chunk-9-1.png" width="624" /></p>
+<pre class="r"><code>
+a&lt;-ur.df(diff(z), selectlags = &quot;BIC&quot;, type=&quot;drift&quot;)
+summary(a)</code></pre>
+<pre><code>
+############################################### 
+# Augmented Dickey-Fuller Test Unit Root Test # 
+############################################### 
+
+Test regression drift 
+
+
+Call:
+lm(formula = z.diff ~ z.lag.1 + 1 + z.diff.lag)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.61329 -0.14817  0.01259  0.14095  0.74383 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  0.23877    0.07119   3.354 0.001133 ** 
+z.lag.1     -0.28195    0.08232  -3.425 0.000899 ***
+z.diff.lag  -0.28177    0.09554  -2.949 0.003985 ** 
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 0.2273 on 98 degrees of freedom
+Multiple R-squared:  0.2637,    Adjusted R-squared:  0.2487 
+F-statistic: 17.55 on 2 and 98 DF,  p-value: 3.058e-07
+
+
+Value of test-statistic is: -3.425 5.9216 
+
+Critical values for test statistics: 
+      1pct  5pct 10pct
+tau2 -3.46 -2.88 -2.57
+phi1  6.52  4.63  3.81</code></pre>
+<pre class="r"><code>
+plot.ts(diff(z))</code></pre>
+<p><img src="SeriesTiempoF_files/figure-html5/unnamed-chunk-9-2.png" width="624" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+ndiffs(capar,test=&quot;pp&quot;,max.d=5)</code></pre>
+<pre><code>
+[1] 2</code></pre>
+<pre class="r"><code>
+a&lt;-auto.arima(casospar_xts)
+forecast(a,10)</code></pre>
+<pre><code>
+    Point Forecast    Lo 80    Hi 80    Lo 95    Hi 95
+105       133777.7 133396.4 134159.1 133194.6 134360.9
+106       138247.7 137478.9 139016.5 137072.0 139423.4
+107       142664.7 141471.1 143858.3 140839.2 144490.2
+108       147059.0 145407.7 148710.4 144533.5 149584.6
+109       151443.7 149303.2 153584.2 148170.1 154717.3
+110       155824.2 153164.1 158484.2 151756.0 159892.4
+111       160202.9 156993.6 163412.2 155294.7 165111.1
+112       164580.8 160793.6 168368.1 158788.7 170373.0
+113       168958.5 164565.3 173351.6 162239.7 175677.2
+114       173336.0 168310.0 178361.9 165649.4 181022.5</code></pre>
+<pre class="r"><code>
+hchart(forecast(a,10))</code></pre>
+<div id="htmlwidget-812d7139e5450f00229f" style="width:100%;height:500px;" class="highchart html-widget"></div>
+<script type="application/json" data-for="htmlwidget-812d7139e5450f00229f">{"x":{"hc_opts":{"title":{"text":null},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"xAxis":{"type":"datetime"},"series":[{"data":[[-62135596800000,3],[-62104060800000,4],[-62072524800000,5],[-62040988800000,5],[-62009366400000,5],[-61977830400000,5],[-61946294400000,5],[-61914758400000,6],[-61883136000000,7],[-61851600000000,7],[-61820064000000,7],[-61788528000000,7],[-61756905600000,12],[-61725369600000,15],[-61693833600000,27],[-61662297600000,41],[-61630675200000,53],[-61599139200000,82],[-61567603200000,93],[-61536067200000,118],[-61504444800000,164],[-61472908800000,203],[-61441372800000,251],[-61409836800000,316],[-61378214400000,367],[-61346678400000,405],[-61315142400000,475],[-61283606400000,585],[-61251984000000,717],[-61220448000000,848],[-61188912000000,993],[-61157376000000,1094],[-61125753600000,1215],[-61094217600000,1378],[-61062681600000,1510],[-61031145600000,1688],[-60999523200000,1890],[-60967987200000,2143],[-60936451200000,2439],[-60904915200000,2785],[-60873292800000,3181],[-60841756800000,3441],[-60810220800000,3844],[-60778684800000,4219],[-60747062400000,4661],[-60715526400000,5014],[-60683990400000,5399],[-60652454400000,5847],[-60620832000000,6297],[-60589296000000,6875],[-60557760000000,7497],[-60526224000000,8261],[-60494601600000,8772],[-60463065600000,9501],[-60431529600000,10544],[-60399993600000,11633],[-60368371200000,12872],[-60336835200000,13842],[-60305299200000,14677],[-60273763200000,15529],[-60242140800000,16752],[-60210604800000,17799],[-60179068800000,19224],[-60147532800000,20739],[-60115910400000,22088],[-60084374400000,23471],[-60052838400000,24905],[-60021302400000,26025],[-59989680000000,27634],[-59958144000000,29616],[-59926608000000,31522],[-59895072000000,33460],[-59863449600000,35022],[-59831913600000,36327],[-59800377600000,38324],[-59768841600000,40186],[-59737219200000,42595],[-59705683200000,45032],[-59674147200000,47144],[-59642611200000,49219],[-59610988800000,51633],[-59579452800000,54346],[-59547916800000,56594],[-59516380800000,59567],[-59484758400000,62527],[-59453222400000,65856],[-59421686400000,68620],[-59390150400000,71105],[-59358528000000,74560],[-59326992000000,78023],[-59295456000000,81400],[-59263920000000,84627],[-59232297600000,87512],[-59200761600000,90664],[-59169225600000,93435],[-59137689600000,97326],[-59106067200000,101238],[-59074531200000,105680],[-59042995200000,110026],[-59011459200000,113619],[-58979923200000,117103],[-58948387200000,120102],[-58916851200000,124301],[-58885315200000,129184]],"name":"ARIMA(1,2,1)","zIndex":3},{"data":[[-58853692800000,133777.742096267],[-58822156800000,138247.708597423],[-58790620800000,142664.71060652],[-58759084800000,147059.048717969],[-58727462400000,151443.688780089],[-58695926400000,155824.178975217],[-58664390400000,160202.893411585],[-58632854400000,164580.847987653],[-58601232000000,168958.477413882],[-58569696000000,173335.967706091]],"name":"ARIMA(1,2,1)","zIndex":2,"id":"6uufa880oq"},{"data":[[-58853692800000,133396.425242824,134159.05894971],[-58822156800000,137478.936472458,139016.480722388],[-58790620800000,141471.100361791,143858.32085125],[-58759084800000,145407.681858625,148710.415577313],[-58727462400000,149303.208037992,153584.169522187],[-58695926400000,153164.11351771,158484.244432725],[-58664390400000,156993.598030346,163412.188792823],[-58632854400000,160793.552627956,168368.143347349],[-58601232000000,164565.32016112,173351.634666644],[-58569696000000,168309.993172668,178361.942239514]],"name":"ARIMA(1,2,1) level 80","type":"arearange","fillOpacity":0.1,"zIndex":1,"lineWidth":0,"linkedTo":"6uufa880oq"},{"data":[[-58853692800000,133194.56829387,134360.915898664],[-58822156800000,137071.973092305,139423.44410254],[-58790620800000,140839.241265961,144490.17994708],[-58759084800000,144533.501048569,149584.596387369],[-58727462400000,148170.105978659,154717.27158152],[-58695926400000,151755.959924649,159892.398025786],[-58664390400000,155294.699678229,165111.08714494],[-58632854400000,158788.679569781,170373.016405524],[-58601232000000,162239.723190227,175677.231637537],[-58569696000000,165649.402968808,181022.532443374]],"name":"ARIMA(1,2,1) level 95","type":"arearange","fillOpacity":0.1,"zIndex":1,"lineWidth":0,"linkedTo":"6uufa880oq"}]},"theme":{"chart":{"backgroundColor":"transparent"}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","drillUpText":"Back to {series.name}","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"thousandsSep":" ","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>
+gglagplot(casospar_xts)</code></pre>
+<p><img src="SeriesTiempoF_files/figure-html5/unnamed-chunk-10-2.png" width="624" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+#y &lt;- ts(casospar)
+#fit &lt;- tslm(y~lag(y))
+#plot(forecast(fit, h=20))
+
+
+f &lt;- tslm(ts(capar) ~ trend )
+fcast &lt;- forecast(f)
+autoplot(fcast) +
+  ggtitle(&quot;Forecasts of beer production using regression&quot;) +
+  xlab(&quot;Year&quot;) + ylab(&quot;megalitres&quot;)</code></pre>
+<p><img src="SeriesTiempoF_files/figure-html5/unnamed-chunk-11-1.png" width="624" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+arima1&lt;-auto.arima(ts(capar))
+forecast1&lt;-forecast(arima1,level = c(95), h = 50)
+autoplot(forecast1)</code></pre>
+<p><img src="SeriesTiempoF_files/figure-html5/unnamed-chunk-12-1.png" width="624" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+fit &lt;- auto.arima(diff(casospar_xts,1), seasonal=FALSE)
+fit</code></pre>
+<pre><code>
+Series: diff(casospar_xts, 1) 
+ARIMA(4,1,4) with drift 
+
+Coefficients:
+          ar1     ar2      ar3      ar4     ma1      ma2     ma3
+      -0.4688  0.2940  -0.3646  -0.8804  0.0995  -0.7426  0.0684
+s.e.   0.0891  0.1336   0.1058   0.0688  0.1344   0.1668  0.1150
+         ma4    drift
+      0.6034  41.7346
+s.e.  0.1048   9.3056
+
+sigma^2 estimated as 52557:  log likelihood=-696.66
+AIC=1413.33   AICc=1415.75   BIC=1439.58</code></pre>
+<pre class="r"><code>
+fit %&gt;% forecast(h=10) %&gt;% autoplot(include=80)</code></pre>
+<p><img src="SeriesTiempoF_files/figure-html5/unnamed-chunk-13-1.png" width="624" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+x &lt;- forecast(ets(diff(casostotales$casost)), h = 30, level = 95)
+hchart(x)</code></pre>
+<div id="htmlwidget-1cb67612b90b5143946d" style="width:100%;height:500px;" class="highchart html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1cb67612b90b5143946d">{"x":{"hc_opts":{"title":{"text":null},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"xAxis":{"type":"datetime"},"series":[{"data":[[-62135596800000,0],[-62104060800000,0],[-62072524800000,0],[-62040988800000,0],[-62009366400000,0],[-61977830400000,0],[-61946294400000,0],[-61914758400000,0],[-61883136000000,0],[-61851600000000,0],[-61820064000000,0],[-61788528000000,0],[-61756905600000,0],[-61725369600000,0],[-61693833600000,0],[-61662297600000,0],[-61630675200000,0],[-61599139200000,0],[-61567603200000,0],[-61536067200000,0],[-61504444800000,0],[-61472908800000,0],[-61441372800000,0],[-61409836800000,0],[-61378214400000,0],[-61346678400000,0],[-61315142400000,0],[-61283606400000,0],[-61251984000000,0],[-61220448000000,0],[-61188912000000,0],[-61157376000000,0],[-61125753600000,0],[-61094217600000,0],[-61062681600000,0],[-61031145600000,3],[-60999523200000,1],[-60967987200000,1],[-60936451200000,0],[-60904915200000,0],[-60873292800000,0],[-60841756800000,0],[-60810220800000,1],[-60778684800000,1],[-60747062400000,0],[-60715526400000,0],[-60683990400000,0],[-60652454400000,5],[-60620832000000,3],[-60589296000000,12],[-60557760000000,14],[-60526224000000,12],[-60494601600000,29],[-60463065600000,11],[-60431529600000,25],[-60399993600000,46],[-60368371200000,39],[-60336835200000,48],[-60305299200000,65],[-60273763200000,51],[-60242140800000,38],[-60210604800000,70],[-60179068800000,110],[-60147532800000,132],[-60115910400000,131],[-60084374400000,145],[-60052838400000,101],[-60021302400000,121],[-59989680000000,163],[-59958144000000,132],[-59926608000000,178],[-59895072000000,202],[-59863449600000,253],[-59831913600000,296],[-59800377600000,346],[-59768841600000,396],[-59737219200000,260],[-59705683200000,403],[-59674147200000,375],[-59642611200000,442],[-59610988800000,353],[-59579452800000,385],[-59547916800000,448],[-59516380800000,450],[-59484758400000,578],[-59453222400000,622],[-59421686400000,764],[-59390150400000,511],[-59358528000000,729],[-59326992000000,1043],[-59295456000000,1089],[-59263920000000,1239],[-59232297600000,970],[-59200761600000,835],[-59169225600000,852],[-59137689600000,1223],[-59106067200000,1047],[-59074531200000,1425],[-59042995200000,1515],[-59011459200000,1349],[-58979923200000,1383],[-58948387200000,1434],[-58916851200000,1120],[-58885315200000,1609],[-58853692800000,1982],[-58822156800000,1906],[-58790620800000,1938],[-58759084800000,1562],[-58727462400000,1305],[-58695926400000,1997],[-58664390400000,1862],[-58632854400000,2409],[-58601232000000,2437],[-58569696000000,2112],[-58538160000000,2075],[-58506624000000,2414],[-58475001600000,2713],[-58443465600000,2248],[-58411929600000,2973],[-58380393600000,2960],[-58348771200000,3329],[-58317235200000,2764],[-58285699200000,2485],[-58254163200000,3455],[-58222540800000,3463],[-58191004800000,3377],[-58159468800000,3227],[-58127932800000,2885],[-58096310400000,3152],[-58064774400000,2771],[-58033238400000,3891],[-58001702400000,3912],[-57970080000000,4442],[-57938544000000,4346],[-57907008000000,3593],[-57875472000000,3484],[-57843849600000,2999],[-57812313600000,4199],[-57780777600000,4883]],"name":"ETS(A,A,N)","zIndex":3},{"data":[[-57749241600000,4312.68724184542],[-57717619200000,4389.59058274075],[-57686083200000,4466.49392363608],[-57654547200000,4543.3972645314],[-57623011200000,4620.30060542673],[-57591388800000,4697.20394632205],[-57559852800000,4774.10728721738],[-57528316800000,4851.0106281127],[-57496780800000,4927.91396900803],[-57465158400000,5004.81730990335],[-57433622400000,5081.72065079868],[-57402086400000,5158.623991694],[-57370550400000,5235.52733258933],[-57338928000000,5312.43067348465],[-57307392000000,5389.33401437998],[-57275856000000,5466.2373552753],[-57244320000000,5543.14069617063],[-57212697600000,5620.04403706595],[-57181161600000,5696.94737796128],[-57149625600000,5773.8507188566],[-57118089600000,5850.75405975193],[-57086467200000,5927.65740064725],[-57054931200000,6004.56074154258],[-57023395200000,6081.4640824379],[-56991859200000,6158.36742333323],[-56960236800000,6235.27076422855],[-56928700800000,6312.17410512388],[-56897164800000,6389.07744601921],[-56865628800000,6465.98078691453],[-56834006400000,6542.88412780986]],"name":"ETS(A,A,N)","zIndex":2,"id":"rxra4n24s7"},{"data":[[-57749241600000,3854.3719771697,4771.00250652115],[-57717619200000,3931.01231607495,4848.16884940654],[-57686083200000,4007.32445347784,4925.66339379432],[-57654547200000,4083.17864134847,5003.61588771433],[-57623011200000,4158.44745198591,5082.15375886754],[-57591388800000,4233.00718063972,5161.40071200438],[-57559852800000,4306.73948859134,5241.47508584341],[-57528316800000,4379.53319132584,5322.48806489956],[-57496780800000,4451.28607203006,5404.541865986],[-57465158400000,4521.90658542501,5487.72803438169],[-57433622400000,4591.31531579222,5572.12598580514],[-57402086400000,4659.44606867908,5657.80191470892],[-57370550400000,4726.2465075308,5744.80815764786],[-57338928000000,4791.67829016676,5833.18305680255],[-57307392000000,4855.7167086351,5922.95132012486],[-57275856000000,4918.3498815749,6014.12482897571],[-57244320000000,4979.57758385625,6106.703808485],[-57212697600000,5039.40981963693,6200.67825449498],[-57181161600000,5097.8652510457,6296.02950487686],[-57149625600000,5154.96958740214,6392.73185031106],[-57118089600000,5210.75402304926,6490.7540964546],[-57086467200000,5265.25378999517,6590.06101129934],[-57054931200000,5318.5068687054,6690.61461437976],[-57023395200000,5370.55287957402,6792.37528530179],[-56991859200000,5421.43216059951,6895.30268606695],[-56960236800000,5471.18502425428,6999.35650420283],[-56928700800000,5519.85117830662,7104.49703194114],[-56897164800000,5567.46929079364,7210.68560124478],[-56865628800000,5614.07667761657,7317.88489621249],[-56834006400000,5659.70909149766,7426.05916412205]],"name":"ETS(A,A,N) level 95","type":"arearange","fillOpacity":0.1,"zIndex":1,"lineWidth":0,"linkedTo":"rxra4n24s7"}]},"theme":{"chart":{"backgroundColor":"transparent"}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","drillUpText":"Back to {series.name}","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"thousandsSep":" ","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>
+model &lt;- HoltWinters(diff(casostotales$casost,2), gamma=FALSE)
+predict(model, 9, prediction.interval = TRUE, level= 0.99) </code></pre>
+<pre><code>
+Time Series:
+Start = 139 
+End = 147 
+Frequency = 1 
+      fit      upr      lwr
+139 10966 11885.66 10046.34
+140 12850 14906.42 10793.58
+141 14734 18175.05 11292.95
+142 16618 21655.17 11580.83
+143 18502 25322.37 11681.63
+144 20386 29158.98 11613.02
+145 22270 33151.54 11388.46
+146 24154 37289.34 11018.66
+147 26038 41563.61 10512.39</code></pre>
+</div>
+<p>Se definiran los conceptos de series tiempo y se aplicaran a las mediciones de Casos Confirmados Acumulalados, tomamos el conjunto de cada uno de estos valores como <span class="math display">\[\left\{C_t: t=1,\dots 140\right\}\]</span></p>
+<h1 id="prueba">Series de Tiempo</h1>
+<div class="layout-chunk" data-layout="l-body">
+
+<div class="definition">
+<span id="def:pe" class="definition"><strong>Definition 1  (Proceso Estástico Discreto)  </strong></span>Es una colección de variables aleatorias <span class="math display">\[\left\{ X_t:t\in G\right\}\]</span> donde <span class="math inline">\(T\)</span> es un conjunto numerable, y <span class="math inline">\(X_t\in S\)</span>, <span class="math inline">\(S\)</span> es llamado el espacio de estados.
+</div>
+</div>
+<h2 id="regresión-con-series-de-tiempo">Regresión con series de tiempo</h2>
+<p>Colección de observaciones, igualmente espaciados.</p>
+<p><span class="math display">\[\{X_t\}_{t\in\mathbb{N}}\]</span></p>
+<p>donde <span class="math inline">\(X_t:\Omega\rightarrow\mathbb{R}\)</span> es una variable aleatoria, uan serie de tiempoes una realización de todas las posibles,</p>
+<p><span class="math display">\[\mathbb{E}(X_t)=\frac{1}{T}\sum_t X_t\]</span> Propiedad de ergodicidad.</p>
+<p>Propiedad de estacionariedad</p>
+<ul>
+<li>Fuerte: <span class="math display">\[(X_{i_1},X_{i_2},\ldots,X{i_n})=(X_{i_1+h},X_{i_2+h},\ldots,X{i_n+h})\]</span></li>
+</ul>
+<p>orden (1) <span class="math inline">\(\forall t,s\)</span> <span class="math inline">\(X_t=X_s\)</span></p>
+<p>orden (2) <span class="math inline">\(\forall t,s\)</span> <span class="math inline">\((X_t,X_s)=(X_{t+h},X_{s+h}\)</span></p>
+<p>Orden 1 media, varianza y predicción</p>
+<p>Estacinaonalidad (debil de segundo orden)</p>
+<ol type="1">
+<li><span class="math inline">\(\forall t\)</span> <span class="math inline">\(\mathbb{E}(X_t)=\mu\)</span></li>
+<li><span class="math inline">\(\forall t\)</span> <span class="math inline">\(\mathbb{V}(X_t)=\sigma^2\)</span> (se optienen de la tercera)</li>
+<li><span class="math inline">\(\gamma(s,t)=Cov(X_t,X_s)=\gamma(|t-s|)\)</span></li>
+<li>equivalente a 3) <span class="math inline">\(\gamma(h)=Cov(X_t,X_{t+h})=\gamma(|h|)\)</span> <span class="math inline">\(\gamma\)</span> <em>función de autocovarianzao (autocorrelacion)</em> como el presente y el pasado estan realcionados entre si, dependencia dinámica</li>
+</ol>
+<p>Esto determina el mejor predictor lineal.</p>
+<p>Función de autocorrelación</p>
+<p><span class="math display">\[\begin{equation}
+\rho(h)=\frac{\gamma(h)}{\gamma(0)}
+\end{equation}\]</span></p>
+<p>Solo pintamos el lado derecho</p>
+<p><span class="math display">\[\rho(0)=1\]</span></p>
+<p>La evalaución nos da un aidea del poder predictivo para diferentes intervalos de tiempo, si lo vemos hacia el futuro. Hacia el pasado le llamas memoria.</p>
+<h3 id="modelo-ma1-moving-average">Modelo MA(1) (MOving average)</h3>
+<p><span class="math inline">\(\{\epsilon_t\}\)</span> estacionario con <span class="math inline">\(\mathbb{E}(\epsilon_t)=0\)</span> <span class="math inline">\(\mathbb{V}ar(\epsilon_t)=\sigma^2\)</span></p>
+<p><span class="math display">\[
+\rho(h)=\begin{cases}
+1&amp;\text{ si } h=0\\
+0&amp;\text{otro caso}
+\end{cases}
+\]</span></p>
+<p>Sea <span class="math inline">\(\{\epsilon_t\}\)</span> <span class="math inline">\(RB(0,\sigma^2)\)</span>, y definimos</p>
+<p><span class="math display">\[X_t = \varepsilon_t + \theta\varepsilon_{t-1}\]</span></p>
+<p>entonces</p>
+(X_t,X_{t+h})=
+<span class="math display">\[\begin{cases}
+\theta\sigma^2&amp;\text{ si } h=1\\
+0&amp;\text{otro caso}
+\end{cases}\]</span>
+<p>Trabajo final, normalmente</p>
+<ol type="1">
+<li>Pregunta economica</li>
+<li>Recopilacion de datos</li>
+<li>Justifiación metodologiac que puedes hacer con esos datos</li>
+<li>Estimación</li>
+<li>Analisis de validez de essa estimación</li>
+<li>Conclusión</li>
+</ol>
+<h3 id="trabajo">Trabajo</h3>
+<p>Reflexionar sobre la técnica ecónometricas, discusión sobre como se estima o como se puede estimar, toda tecnica econometrica la matriz robusta, etc, EL INTERES DE COMO SE HIZO LA ECONOMETRIA Y PORQUE ASÍ ORIENTADO A LO TÉCNICO</p>
+<p><span class="math display" id="eq:binom1">\[\begin{equation}
+1 + c + c^2 + c^3 + \cdots = \frac{1}{1 -c } 
+ \tag{3}
+\end{equation}\]</span></p>
+<p>To prove key formula <a href="#eq:binom1">(3)</a></p>
+<div class="layout-chunk" data-layout="l-body">
+
+<div class="theorem">
+<span id="thm:foo" class="theorem"><strong>Theorem 1  (Teorema de pitadoras)  </strong></span>Here is my theorem.
+</div>
+</div>
+<p>el teorema <a href="#thm:foo">1</a></p>
+<h1 id="series-de-tiempo">Series de tiempo</h1>
+<ul>
+<li>Los datos presentan un orden temporal</li>
+<li>Dado que no concemos los resultado de estas variables no se conocen entonces pueden verse como variales aleatorias.
+<aside>
+This content will appear in the gutter of the article.
+</aside></li>
+<li>Tenemos un proceso estocastico indexado por el tiempo</li>
+<li>CUando observamos estos datos tenemos una realización.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></li>
+</ul>
+<div id="refs" class="references">
+<div id="ref-asa">
+<p>Holmes, E. E., Scheuerell M. D, and E. J. Ward. 2020. <em>Applied Time Series Analysis for Fisheries and Enviromental Data.</em> Northwet Fisheries Science Center, 2275, Montlake BlvdE., Seatle, WA 98112. <a href="https://nwfsc-timeseries.github.io/atsa-labs/">https://nwfsc-timeseries.github.io/atsa-labs/</a>.</p>
+</div>
+<div id="ref-forecasting1">
+<p>Hyndman, Rob J, and George Athanasopoulos. 2018. <em>Forecasting: Principles and Practice</em>. 2nd ed. Melbourn, Australia: OTexts. <a href="https://otexts.com/fpp2/">https://otexts.com/fpp2/</a>.</p>
+</div>
+<div id="ref-stock">
+<p>Stock, James H., and Mark M. Watson. 2012. <em>Introducción a La Econometría</em>. 3rd ed. Melbourn, Australia: PEARSON.</p>
+</div>
+<div id="ref-wool">
+<p>Wooldridge, Jeffrey M. 2010. <em>Introducción a La Econometría</em>. 4th ed. México: CENGAGE.</p>
+</div>
+</div>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>cabe mencionar qeu existen otros criterios, como el criterio de información de Akaike<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>segun <span class="citation" data-cites="stock">(Stock and Watson <a href="#ref-stock">2012</a>)</span> hay un subindice de más pero segun esta <a href="https://www.youtube.com/watch?v=4TBZnrUDrog">prueba</a> que parece correcta hay un subindice de menos<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>This will become a hover-able footnote<a href="#fnref3" class="footnote-back">↩</a></p></li>
+</ol>
+</section>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<script id="distill-bibliography" type="text/bibtex">
+
+
+@inproceedings{flacsosegasi,
+author = {Sebastián Garrido},
+title = {La visualización de la epidemia},
+booktitle = {Ciclo de conferencias: El COVID-19 en México},
+publisher = {Flacso México},
+url = {https://youtu.be/s6Kwl3X-t2c},
+year ={consulta 29 de mayo de 2019}
+}
+
+@inproceedings{flacsorafael,
+author = {Rafael Prieto},
+title = {Los datos, los modelos y las simulaciones de una pandemia},
+booktitle = {Ciclo de conferencias: El COVID-19 en México},
+publisher = {Flacso México},
+url = {https://youtu.be/9ODm8m3U4Xk},
+year ={consulta 31 de mayo de 2019}
+}
+
+@inproceedings{flacsoerdely,
+author = {Arturo Erdely},
+title = {Midiendo el pulso de la epidemia},
+booktitle = {Ciclo de conferencias: El COVID-19 en México},
+publisher = {Flacso México},
+url = {https://youtu.be/JvPvmQvPGAY},
+year ={consulta 31 de mayo de 2019}
+}
+
+@inproceedings{flacsoricardo,
+author = {Ricardo de la Peñal},
+title = {De los mitos a las datos},
+booktitle = {Ciclo de conferencias: El COVID-19 en México},
+publisher = {Flacso México},
+url = {https://youtu.be/JvPvmQvPGAY},
+year ={consulta 31 de mayo de 2019}
+}
+
+@inproceedings{flacsomaria,
+author = {María del Carmen Climént},
+title = {Riesgo en tiempos de pandemia: cómo se investiga y cómo comunicarlo},
+booktitle = {Ciclo de conferencias: El COVID-19 en México},
+publisher = {Flacso México},
+url = {https://youtu.be/IcA0j7zIuas},
+year ={consulta 31 de mayo de 2019}
+}
+
+
+
+@inproceedings{kagglehigh,
+author = {ammrs},
+title = {Beginners guide to Highchart Visual in R},
+publisher = {kaggle},
+url = {https://www.kaggle.com/nulldata/beginners-guide-to-highchart-visual-in-r},
+}
+
+
+@inproceedings{jkunst,
+author = {Joshua Kunst},
+title = {HIGHCHARTER},
+url = {http://jkunst.com/highcharter/index.html},
+}
+
+@inproceedings{singh,
+author = {Nishant Singh},
+title = {Data Visualization with Highcharter in R},
+url = {https://www.datacamp.com/community/tutorials/data-visualization-highcharter-r},
+}
+
+
+@inproceedings{jkunstm,
+author = {Joshua Kunst},
+title = {Package "highcharter"},
+url = {https://cran.r-project.org/web/packages/highcharter/highcharter.pdf},
+}
+
+@book{forecasting1,
+author = {Rob J Hyndman and George Athanasopoulos},
+title = {Forecasting: Principles and Practice},
+address   = {Melbourn, Australia},
+edition = {2},
+publisher = {OTexts},
+url = {https://otexts.com/fpp2/},
+year ={2018}
+}
+
+
+
+
+@book{stock,
+author = {James H. Stock and Mark M. Watson},
+title = {Introducción a la Econometría},
+address   = {Melbourn, Australia},
+edition = {3},
+publisher = {PEARSON},
+year ={2012}
+}
+
+@book{wool,
+author = {Jeffrey M. Wooldridge},
+title = {Introducción a la Econometría},
+address   = {México},
+edition = {4},
+publisher = {CENGAGE},
+year ={2010}
+}
+
+@book{asa,
+author = {E. E. Holmes and M. D, Scheuerell and E. J. Ward},
+title = {Applied time series analysis for fisheries and enviromental data.},
+address   = {Northwet Fisheries Science Center, 2275, Montlake BlvdE., Seatle, WA 98112},
+url = {https://nwfsc-timeseries.github.io/atsa-labs/},
+year ={2020}
+}
+
+
+@book{rincon,
+author = {Luis Rincón},
+title = {Introducción a los procesos estocásticos},
+address   = {México},
+edition = {1},
+publisher = {UNAM, Facultad de Ciencias},
+year ={2016}
+}
+</script>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+---
+title: "Series R"
+description: |
+  Visualizacion de los datos, despues de varias busquedas.
+author:
+  - name: Nora Jones 
+    url: https://example.com/norajones
+    affiliation: Spacely Sprockets
+    affiliation_url: https://example.com/spacelysprokets
+date: "`r Sys.Date()`"
+output: 
+  distill::distill_article:
+    code_folding: hide
+    toc: true
+    toc_depth: 3
+bibliography: bibliografia.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Series de tiempo
+
+xts eXtensible Time Series, es una extención de zoo que en el fondo son matrices con otras proiedades
+
+```{r}
+library(xts)
+library(dplyr)
+library(ggplot2)
+library(highcharter)
+```
+
+```{r}
+core <- matrix(c(1,2),nrow=3,ncol=2, byrow = TRUE)
+print(core)
+idx <- as.Date(c("2016-06-01","2016-06-02","2016-06-03"))
+print(idx)
+ex_matrix <- xts(core,
+                 order.by = idx)
+print(ex_matrix)
+```
+
+```{r}
+# Create the object data using 5 random numbers
+data <- rnorm(5)
+
+# Create dates as a Date class object starting from 2016-01-01
+dates <- seq(as.Date("2016-01-01"), length = 5, by = "days")
+
+# Use xts() to create smith
+smith <- xts(x = data, order.by = dates)
+
+# Create bday (1899-05-08) using a POSIXct date class object
+bday <- as.POSIXct("1899-05-08")
+
+# Create hayek and add a new attribute called born
+hayek <- xts(x = data, order.by = dates, born = bday)
+str(hayek)
+```
+
+
+# ARIMA Models
+
+
+
+
+
